@@ -26,7 +26,19 @@ String resolveFabricApi(String mcVersion) {
     if (explicit) return explicit as String
     def root = rootProject
     if (!root.ext.has('fabricApiMetadata')) {
-        root.ext.fabricApiMetadata = new URI('https://maven.fabricmc.net/net/fabricmc/fabric-api/fabric-api/maven-metadata.xml').toURL().text
+        // The download occasionally fails with a connection reset: retry a few times.
+        def url = new URI('https://maven.fabricmc.net/net/fabricmc/fabric-api/fabric-api/maven-metadata.xml').toURL()
+        def text = null
+        for (int attempt = 1; text == null; attempt++) {
+            try {
+                text = url.text
+            } catch (IOException e) {
+                if (attempt >= 5) throw e
+                logger.warn("Fabric API metadata download failed (${e.message}), retry ${attempt}/4")
+                Thread.sleep(2000L * attempt)
+            }
+        }
+        root.ext.fabricApiMetadata = text
     }
     def all = (root.ext.fabricApiMetadata =~ /<version>([^<]+)<\/version>/).collect { it[1] }
     def matching = all.findAll { it.endsWith("+${mcVersion}") }
