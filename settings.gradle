@@ -1,0 +1,34 @@
+pluginManagement {
+    repositories {
+        maven {
+            name = 'Fabric'
+            url = 'https://maven.fabricmc.net/'
+        }
+        gradlePluginPortal()
+        mavenCentral()
+    }
+    // Loom snapshots (needed for 26.x) are published only on Fabric's maven,
+    // so resolve both plugin ids straight from the module coordinate.
+    resolutionStrategy {
+        eachPlugin {
+            if (requested.id.id == 'fabric-loom' || requested.id.id == 'net.fabricmc.fabric-loom') {
+                useModule("net.fabricmc:fabric-loom:${requested.version}")
+            }
+        }
+    }
+}
+
+plugins {
+    id 'org.gradle.toolchains.foojay-resolver-convention' version '1.0.0'
+}
+
+rootProject.name = 'musicmod'
+
+// Every folder in versions/ is one Minecraft target (one jar).
+file('versions').listFiles()
+        .findAll { it.isDirectory() && new File(it, 'build.gradle').exists() }
+        .sort { it.name }
+        .each { dir ->
+            include(":${dir.name}")
+            project(":${dir.name}").projectDir = dir
+        }

@@ -1,0 +1,135 @@
+// Shared build logic for every Minecraft target in versions/<mc>/.
+// Each versions/<mc>/build.gradle only picks the right Loom plugin id and then
+// applies this file.
+//
+//   1.21.x -> 'fabric-loom'               (obfuscated game, Mojang mappings)
+//   26.x   -> 'net.fabricmc.fabric-loom'  (unobfuscated game, no mappings)
+
+def mc = project.property('mc') as String
+def nativeNames = mc.startsWith('26.') || mc.startsWith('27.')
+def javaVersion = nativeNames ? 25 : 21
+def compatDirs = (project.property('compat') as String).split(',').collect { it.trim() }.findAll { it }
+
+group = rootProject.property('mod_group')
+version = "${rootProject.property('mod_version')}+${project.name}"
+base { archivesName = rootProject.property('mod_id') }
+
+repositories {
+    maven { name = 'Fabric'; url = 'https://maven.fabricmc.net/' }
+    mavenCentral()
+}
+
+// --- Fabric API version: explicit in versions/<mc>/gradle.properties, or the
+// newest build published for this Minecraft version. -------------------------
+String resolveFabricApi(String mcVersion) {
+    def explicit = project.findProperty('fabric_api')
+    if (explicit) return explicit as String
+    def root = rootProject
+    if (!root.ext.has('fabricApiMetadata')) {
+        root.ext.fabricApiMetadata = new URI('https://maven.fabricmc.net/net/fabricmc/fabric-api/fabric-api/maven-metadata.xml').toURL().text
+    }
+    def all = (root.ext.fabricApiMetadata =~ /<version>([^<]+)<\/version>/).collect { it[1] }
+    def matching = all.findAll { it.endsWith("+${mcVersion}") }
+    if (matching.isEmpty()) throw new GradleException("No Fabric API build found for Minecraft ${mcVersion}")
+    return matching.last()
+}
+
+def gameVersion = (project.findProperty('mc_build') ?: mc) as String
+def fabricApi = resolveFabricApi(gameVersion)
+logger.lifecycle("Musicmod ${project.name}: Minecraft ${gameVersion}, Fabric API ${fabricApi}, Java ${javaVersion}, compat ${compatDirs}")
+
+dependencies {
+    minecraft "com.mojang:minecraft:${gameVersion}"
+    if (!nativeNames) {
+        mappings loom.officialMojangMappings()
+    }
+    def modConfig = nativeNames ? 'implementation' : 'modImplementation'
+    add(modConfig, "net.fabricmc:fabric-loader:${rootProject.property('loader_version')}")
+    add(modConfig, "net.fabricmc.fabric-api:fabric-api:${fabricApi}")
+}
+
+// --- Sources: shared code + the compat layers this version needs. ----------
+sourceSets {
+    main {
+        java {
+            srcDirs = [rootProject.file('src/main/java')] + compatDirs.collect { rootProject.file("src/compat/${it}/java") }
+        }
+        resources {
+            srcDirs = [rootProject.file('src/main/resources')]
+        }
+    }
+}
+
+// --- Access widener (generated: only the namespace header differs). --------
+def awFile = layout.buildDirectory.file('generated/aw/musicmod.accesswidener').get().asFile
+awFile.parentFile.mkdirs()
+def awBody = project.hasProperty('noAw') ? '' : rootProject.file('src/main/musicmod.accesswidener.body').text
+awFile.text = "accessWidener\tv2\t${nativeNames ? 'official' : 'named'}\n\n" + awBody
+loom {
+    accessWidenerPath = awFile
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(javaVersion)
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+    options.release = javaVersion
+}
+
+processResources {
+    def props = [
+            version: project.version,
+            mc_dep : project.property('mc_dep'),
+            java   : javaVersion.toString(),
+    ]
+    inputs.properties(props)
+    from(awFile)
+    filesMatching('fabric.mod.json') {
+        expand(props)
+    }
+}
+
+jar {
+    from(rootProject.file('LICENSE')) { rename { "${it}_musicmod" } }
+    if (!nativeNames) {
+        archiveClassifier = 'dev'
+    }
+}
+
+// --- Final jar -> build/dist/<mc>.jar (the layout the Discord bot expects). -
+def finalJarTask = nativeNames ? 'jar' : 'remapJar'
+tasks.register('dist', Copy) {
+    dependsOn finalJarTask
+    from(tasks.named(finalJarTask).flatMap { it.archiveFile })
+    into(rootProject.layout.buildDirectory.dir('dist'))
+    rename { "${project.name}.jar" }
+}
+
+// --- API probe: prints class signatures from this game version so compat
+// code can be written against the real API. Run: ./gradlew :<mc>:probeApi --
+tasks.register('probeApi') {
+    doLast {
+        def launcher = javaToolchains.launcherFor { languageVersion = JavaLanguageVersion.of(javaVersion) }.get()
+        def javap = new File(launcher.metadata.installationPath.asFile, 'bin/javap').path
+        def cp = sourceSets.main.compileClasspath.files.join(File.pathSeparator)
+        rootProject.file('probe-classes.txt').readLines()
+                .collect { it.trim() }
+                .findAll { it && !it.startsWith('#') }
+                .each { line ->
+                    def parts = line.split(/\s+/, 2)
+                    def cls = parts[0]
+                    def filter = parts.length > 1 ? ~parts[1] : null
+                    def proc = [javap, '-p', '-cp', cp, cls].execute()
+                    def out = new StringBuilder(), err = new StringBuilder()
+                    proc.waitForProcessOutput(out, err)
+                    def lines = (out.toString() + err.toString()).readLines()
+                    if (filter != null) lines = lines.findAll { it =~ filter || it.contains('class ') || it.contains('interface ') || it.contains('error') }
+                    println "PROBE[${project.name}] ===== ${cls}"
+                    lines.each { println "PROBE[${project.name}] ${it}" }
+                }
+    }
+}

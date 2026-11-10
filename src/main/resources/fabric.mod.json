@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "id": "musicmod",
+  "version": "${version}",
+  "name": "Musicmod",
+  "description": "Synced lyrics of the song you are playing (Spotify, YouTube...) floating in the sky and in a top bar, plus a clean HUD with now playing, clock, FPS, ping, coordinates and speed.",
+  "authors": ["ServerGunnik"],
+  "contact": {
+    "sources": "https://github.com/ServerGunnik/Musicmod",
+    "issues": "https://github.com/ServerGunnik/Musicmod/issues"
+  },
+  "license": "MIT",
+  "icon": "assets/musicmod/icon.png",
+  "environment": "client",
+  "entrypoints": {
+    "client": ["dev.servergunnik.musicmod.MusicmodClient"]
+  },
+  "accessWidener": "musicmod.accesswidener",
+  "depends": {
+    "fabricloader": ">=0.16.0",
+    "fabric-api": "*",
+    "minecraft": "${mc_dep}",
+    "java": ">=${java}"
+  }
+}

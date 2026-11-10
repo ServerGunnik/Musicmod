@@ -1,0 +1,31 @@
+# Classes printed by `./gradlew :<mc>:probeApi` (javap -p). Optional regex after
+# the class name keeps only matching lines.
+net.minecraft.client.gui.GuiGraphics (fill|drawString|text\(|pose|enableScissor|disableScissor|guiWidth|guiHeight)
+net.minecraft.client.gui.GuiGraphicsExtractor (fill|drawString|text|pose|Scissor|guiWidth|guiHeight)
+net.minecraft.client.gui.screens.Screen (render|extract|mouse|keyPressed|isPauseScreen|removed|onClose|Screen\()
+net.minecraft.client.KeyMapping (KeyMapping\(|consumeClick|Category)
+net.minecraft.client.KeyMapping$Category
+net.minecraft.client.Minecraft (isLocalServer|getInstance|getFps|getConnection|setScreen|screen|player|level|options|font| gui)
+net.minecraft.client.multiplayer.ClientLevel (addEntity|removeEntity|putNonPlayerEntity)
+net.minecraft.world.entity.Display (DATA_|BillboardConstraints|setTransformation)
+net.minecraft.world.entity.Display$TextDisplay (DATA_|setText|TextDisplay\()
+net.minecraft.world.entity.Display$BillboardConstraints
+net.minecraft.world.entity.Entity (setOldPos|setPos\(|setId|discard|getEyeY|getYRot|getXRot|isRemoved| getX\(|getUUID)
+net.minecraft.world.entity.EntityType TEXT_DISPLAY
+net.minecraft.world.entity.EntityTypes TEXT_DISPLAY
+net.minecraft.network.chat.Style (withColor|EMPTY)
+net.minecraft.network.chat.Component (literal|empty)
+net.minecraft.network.chat.MutableComponent (append|withStyle)
+net.minecraft.client.gui.Font (width|lineHeight)
+net.minecraft.client.resources.language.I18n
+net.minecraft.client.multiplayer.PlayerInfo (getLatency)
+net.minecraft.resources.Identifier (fromNamespaceAndPath)
+net.minecraft.resources.ResourceLocation (fromNamespaceAndPath)
+net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback
+net.fabricmc.fabric.api.client.rendering.v1.hud.HudElementRegistry
+net.fabricmc.fabric.api.client.rendering.v1.hud.HudElement
+net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper
+net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper
+net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents (END_CLIENT_TICK)
+net.minecraft.client.gui.Gui (screen|Screen)
+net.minecraft.client.Options hideGui

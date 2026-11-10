@@ -1,0 +1,8 @@
+// Root project: nothing to build here. Every Minecraft target lives in versions/<mc>/.
+// ./gradlew buildAll  -> builds all targets and copies the jars to build/dist/<mc>.jar
+
+tasks.register('buildAll') {
+    group = 'build'
+    description = 'Builds every Minecraft target and collects jars in build/dist/.'
+    dependsOn subprojects.collect { "${it.path}:dist" }
+}

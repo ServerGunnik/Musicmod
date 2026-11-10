@@ -1,0 +1,12 @@
+# Body of the access widener; the header line is generated per Minecraft version
+# by common.gradle (namespace 'named' on 1.21.x, 'official' on 26.x).
+# Lets the mod drive a client-side text display entity (lyrics in the sky).
+accessible field net/minecraft/world/entity/Display DATA_SCALE_ID Lnet/minecraft/network/syncher/EntityDataAccessor;
+accessible field net/minecraft/world/entity/Display DATA_BILLBOARD_RENDER_CONSTRAINTS_ID Lnet/minecraft/network/syncher/EntityDataAccessor;
+accessible field net/minecraft/world/entity/Display DATA_BRIGHTNESS_OVERRIDE_ID Lnet/minecraft/network/syncher/EntityDataAccessor;
+accessible field net/minecraft/world/entity/Display DATA_VIEW_RANGE_ID Lnet/minecraft/network/syncher/EntityDataAccessor;
+accessible field net/minecraft/world/entity/Display$TextDisplay DATA_TEXT_ID Lnet/minecraft/network/syncher/EntityDataAccessor;
+accessible field net/minecraft/world/entity/Display$TextDisplay DATA_LINE_WIDTH_ID Lnet/minecraft/network/syncher/EntityDataAccessor;
+accessible field net/minecraft/world/entity/Display$TextDisplay DATA_BACKGROUND_COLOR_ID Lnet/minecraft/network/syncher/EntityDataAccessor;
+accessible field net/minecraft/world/entity/Display$TextDisplay DATA_TEXT_OPACITY_ID Lnet/minecraft/network/syncher/EntityDataAccessor;
+accessible field net/minecraft/world/entity/Display$TextDisplay DATA_STYLE_FLAGS_ID Lnet/minecraft/network/syncher/EntityDataAccessor;

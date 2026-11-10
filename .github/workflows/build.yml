@@ -1,0 +1,84 @@
+name: Build
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: build-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: MC ${{ matrix.mc }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        mc: ["1.21.4", "1.21.5", "1.21.6", "1.21.7", "1.21.8", "1.21.9", "1.21.10", "1.21.11", "26.1", "26.2", "26.3"]
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: JDK 21
+        uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: JDK 25
+        uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: 25
+
+      - uses: gradle/actions/setup-gradle@v6
+
+      - name: Print API of this Minecraft version (debug)
+        if: ${{ hashFiles('probe-classes.txt') != '' }}
+        continue-on-error: true
+        run: ./gradlew ":${{ matrix.mc }}:probeApi" -PnoAw --no-daemon -q
+
+      - name: Build
+        run: ./gradlew ":${{ matrix.mc }}:dist" --no-daemon --stacktrace
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: musicmod-${{ matrix.mc }}
+          path: build/dist/${{ matrix.mc }}.jar
+          if-no-files-found: error
+
+  # Puts every jar on the `builds` branch as versions/<mc>.jar: exactly the layout
+  # the Discord bot reads from data/mods/musicmod/versions/.
+  publish:
+    name: Publish jars to the builds branch
+    needs: build
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v8
+        with:
+          path: artifacts
+          pattern: musicmod-*
+          merge-multiple: true
+
+      - name: Commit jars
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p out/versions
+          cp artifacts/*.jar out/versions/
+          cd out
+          cat > README.md <<MD
+          Built from ${GITHUB_REPOSITORY}@${GITHUB_SHA} (branch ${GITHUB_REF_NAME}).
+          Copy versions/*.jar to the bot's data/mods/musicmod/versions/.
+          MD
+          git init -q -b builds
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -qm "Jars from ${GITHUB_SHA::7}"
+          git push -f "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" builds
