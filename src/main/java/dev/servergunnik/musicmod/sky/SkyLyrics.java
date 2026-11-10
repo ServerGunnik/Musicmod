@@ -100,7 +100,7 @@ public final class SkyLyrics {
         float scale;
         if (pinned) {
             if (!anchored) {
-                pin(c);
+                pin(c, widest(line, s.nextLine()));
             }
             scale = pinnedScale;
         } else {
@@ -169,7 +169,7 @@ public final class SkyLyrics {
     }
 
     /** Pinned mode: fix position, orientation and size from what the player looks at right now. */
-    private void pin(Config c) {
+    private void pin(Config c, String text) {
         double[] t = GameState.lookTarget(c.distance);
         double px = t[0], py = t[1], pz = t[2];
         double nx = t[3], ny = t[4], nz = t[5];
@@ -199,17 +199,53 @@ public final class SkyLyrics {
         dz = -Math.sin(a) * Math.cos(th);
 
         // Keep the apparent size similar: close surfaces get smaller text.
-        double dist = Math.sqrt(sq(px - GameState.x()) + sq(py - GameState.eyeY()) + sq(pz - GameState.z()));
-        pinnedScale = (float) (c.skyScale * Math.max(0.12, Math.min(1.0, dist / Math.max(1, c.distance))));
+        double ex = GameState.x(), ey = GameState.eyeY(), ez = GameState.z();
+        double dist = Math.sqrt(sq(px - ex) + sq(py - ey) + sq(pz - ez));
+        float scale = (float) (c.skyScale * Math.max(0.12, Math.min(1.0, dist / Math.max(1, c.distance))));
 
-        double lineH = LINE_HEIGHT * pinnedScale;
+        // Shrink (or, in the open, pull closer) until the whole line fits without
+        // running into blocks: both ends of the text must be visible from the eye.
+        int widthPx = Math.max(8, GameState.textWidth(text, c.font.id));
+        double yr = Math.toRadians(yaw);
+        double rx = Math.cos(yr), rz = Math.sin(yr);      // along the text
+        double fx = -Math.sin(yr), fz = Math.cos(yr);     // out of the text, toward the reader
+        for (int attempt = 0; ; attempt++) {
+            place(c, px, py, pz, nx, ny, nz, hit, wall, scale);
+            if (attempt >= 10) {
+                break;
+            }
+            double half = widthPx * scale / 80.0 + 0.05;
+            double cy = ay - dy * LINE_HEIGHT * scale / 2;
+            double cxp = ax + fx * 0.06, czp = az + fz * 0.06;
+            boolean fits = GameState.clear(ex, ey, ez, cxp - rx * half, cy, czp - rz * half)
+                    && GameState.clear(ex, ey, ez, cxp + rx * half, cy, czp + rz * half);
+            if (fits) {
+                break;
+            }
+            if (hit) {
+                scale *= 0.8f;
+            } else {
+                // Open air: bring the text toward the player, keeping its apparent size.
+                px = ex + (px - ex) * 0.75;
+                py = ey + (py - ey) * 0.75;
+                pz = ez + (pz - ez) * 0.75;
+                scale *= 0.75f;
+            }
+        }
+        pinnedScale = scale;
+        anchored = true;
+    }
+
+    /** Sets the anchor for a text of the given scale at the look target. */
+    private void place(Config c, double px, double py, double pz, double nx, double ny, double nz,
+                       boolean hit, boolean wall, float scale) {
+        double lineH = LINE_HEIGHT * scale;
         if (hit && !wall) {
             // Standing text: the whole block of lines (current + next) sits on the floor,
             // or hangs just under the ceiling.
-            double block = lineH + 0.32 * pinnedScale;
             ax = px;
             az = pz;
-            ay = ny > 0 ? py + block - lineH + WALL_GAP : py - lineH - WALL_GAP;
+            ay = ny > 0 ? py + 0.32 * scale + WALL_GAP : py - lineH - WALL_GAP;
         } else {
             // Text grows upward from its anchor: start half a line lower so the line is
             // centred on the spot the player looked at, and lift it off the surface.
@@ -219,7 +255,6 @@ public final class SkyLyrics {
             ay = py + ny * gap + dy * half;
             az = pz + nz * gap + dz * half;
         }
-        anchored = true;
     }
 
     /** Follow mode: float in front of the player and ease toward the view direction. */
@@ -238,6 +273,13 @@ public final class SkyLyrics {
             ay += (ty - ay) * 0.25;
             az += (tz - az) * 0.25;
         }
+    }
+
+    /** The wider of the current line and the (smaller) next-line preview decides how much room is needed. */
+    private static String widest(Lyrics.Line line, Lyrics.Line next) {
+        String a = line == null ? "" : line.text();
+        String b = next == null ? "" : next.text();
+        return a.length() >= b.length() * 0.55 ? a : b.substring(0, (int) (b.length() * 0.55));
     }
 
     private static double sq(double v) {
