@@ -10,7 +10,7 @@ public final class Config {
     // Lyrics
     public boolean lyricsEnabled = true;
     public Display display = Display.BOTH;
-    public boolean followView = true;
+    public boolean followView = false;
     public boolean animation = true;
     public boolean nextLine = true;
     public Highlight highlight = Highlight.WORD;

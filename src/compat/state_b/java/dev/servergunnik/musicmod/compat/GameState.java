@@ -5,7 +5,11 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.client.multiplayer.PlayerInfo;
 import net.minecraft.client.resources.language.I18n;
+import net.minecraft.core.Direction;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
 
 /** Read-only game state the HUD and sky lyrics need. */
 public final class GameState {
@@ -71,6 +75,25 @@ public final class GameState {
 
     public static float yaw() {
         return mc().player.getYRot();
+    }
+
+    public static float pitch() {
+        return mc().player.getXRot();
+    }
+
+    /**
+     * What the player looks at within {@code max} blocks:
+     * {x, y, z, normalX, normalY, normalZ, hitBlock(1/0)}. Without a block hit the
+     * point is {@code max} blocks ahead and the normal is zero.
+     */
+    public static double[] lookTarget(double max) {
+        HitResult hit = mc().player.pick(max, 1.0f, false);
+        Vec3 p = hit.getLocation();
+        if (hit.getType() == HitResult.Type.BLOCK && hit instanceof BlockHitResult b) {
+            Direction d = b.getDirection();
+            return new double[]{p.x(), p.y(), p.z(), d.getStepX(), d.getStepY(), d.getStepZ(), 1};
+        }
+        return new double[]{p.x(), p.y(), p.z(), 0, 0, 0, 0};
     }
 
     public static String tr(String key, Object... args) {

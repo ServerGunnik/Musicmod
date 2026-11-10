@@ -25,6 +25,7 @@ public final class TextEntities {
     private static final byte FLAG_SHADOW = 0x01;
     // Display.BillboardConstraints.CENTER (its getId() is not public).
     private static final byte BILLBOARD_CENTER = 3;
+    private static final byte BILLBOARD_FIXED = 0;
     private static int nextId = -2_000_000;
 
     private TextEntities() {
@@ -81,6 +82,21 @@ public final class TextEntities {
             if (v.x() != scale) {
                 e.getEntityData().set(Display.DATA_SCALE_ID, new Vector3f(scale, scale, scale));
             }
+        }
+
+        @Override
+        public void setBillboard(boolean faceCamera) {
+            byte b = faceCamera ? BILLBOARD_CENTER : BILLBOARD_FIXED;
+            if (e.getEntityData().get(Display.DATA_BILLBOARD_RENDER_CONSTRAINTS_ID) != b) {
+                e.getEntityData().set(Display.DATA_BILLBOARD_RENDER_CONSTRAINTS_ID, b);
+            }
+        }
+
+        @Override
+        public void setFacing(float yaw, float pitch) {
+            e.setYRot(yaw);
+            e.setXRot(pitch);
+            e.setOldPosAndRot();
         }
 
         @Override

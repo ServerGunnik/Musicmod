@@ -10,6 +10,12 @@ public interface WorldText {
 
     void setScale(float scale);
 
+    /** true: always turn toward the camera. false: keep the rotation set by {@link #setFacing}. */
+    void setBillboard(boolean faceCamera);
+
+    /** Direction the front of the text points to (Minecraft yaw/pitch, degrees). */
+    void setFacing(float yaw, float pitch);
+
     /** 0..255 */
     void setOpacity(int opacity);
 
