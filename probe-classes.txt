@@ -29,3 +29,4 @@ net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper
 net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents (END_CLIENT_TICK)
 net.minecraft.client.gui.Gui (screen|Screen)
 net.minecraft.client.Options hideGui
+com.mojang.blaze3d.platform.InputConstants (KEY_M |KEY_A |KEY_RSHIFT|UNKNOWN|isKeyDown|getKey)

@@ -47,8 +47,8 @@ public final class MusicmodClient implements ClientModInitializer {
         hud = new HudOverlay();
         sky = new SkyLyrics();
         Hooks.registerHud(hud::render);
-        menuKey = Hooks.registerKey("key.musicmod.menu", true);
-        toggleKey = Hooks.registerKey("key.musicmod.toggle", false);
+        menuKey = Hooks.registerKey("key.musicmod.open_menu", true);
+        toggleKey = Hooks.registerKey("key.musicmod.toggle_lyrics", false);
         Hooks.registerTick(MusicmodClient::tick);
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {

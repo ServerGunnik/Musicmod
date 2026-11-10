@@ -1,8 +1,8 @@
 {
   "key.categories.musicmod": "Musicmod",
   "key.category.musicmod.main": "Musicmod",
-  "key.musicmod.menu": "Open Musicmod menu",
-  "key.musicmod.toggle": "Toggle lyrics",
+  "key.musicmod.open_menu": "Open Musicmod menu",
+  "key.musicmod.toggle_lyrics": "Toggle lyrics",
   "musicmod.tagline": "lyrics in the sky",
   "musicmod.tab.overview": "Overview",
   "musicmod.tab.overview.desc": "What is playing and the quick switches.",

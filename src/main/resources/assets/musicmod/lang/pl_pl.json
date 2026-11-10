@@ -1,8 +1,8 @@
 {
   "key.categories.musicmod": "Musicmod",
   "key.category.musicmod.main": "Musicmod",
-  "key.musicmod.menu": "Otwórz menu Musicmod",
-  "key.musicmod.toggle": "Włącz/wyłącz teksty",
+  "key.musicmod.open_menu": "Otwórz menu Musicmod",
+  "key.musicmod.toggle_lyrics": "Włącz/wyłącz teksty",
   "musicmod.tagline": "tekst piosenki na niebie",
   "musicmod.tab.overview": "Przegląd",
   "musicmod.tab.overview.desc": "Co teraz gra i szybkie przełączniki.",

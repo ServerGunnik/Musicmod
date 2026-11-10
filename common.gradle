@@ -123,7 +123,7 @@ tasks.register('probeApi') {
                     def parts = line.split(/\s+/, 2)
                     def cls = parts[0]
                     def filter = parts.length > 1 ? ~parts[1] : null
-                    def proc = [javap, '-p', '-cp', cp, cls].execute()
+                    def proc = [javap, '-p', '-constants', '-cp', cp, cls].execute()
                     def out = new StringBuilder(), err = new StringBuilder()
                     proc.waitForProcessOutput(out, err)
                     def lines = (out.toString() + err.toString()).readLines()
