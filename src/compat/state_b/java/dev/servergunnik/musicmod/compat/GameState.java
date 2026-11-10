@@ -6,6 +6,7 @@ import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.client.multiplayer.PlayerInfo;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.Direction;
+import net.minecraft.server.packs.repository.PackRepository;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.phys.BlockHitResult;
@@ -107,6 +108,24 @@ public final class GameState {
         HitResult hit = mc().level.clip(new ClipContext(new Vec3(x1, y1, z1), new Vec3(x2, y2, z2),
                 ClipContext.Block.VISUAL, ClipContext.Fluid.NONE, mc().player));
         return hit.getType() == HitResult.Type.MISS;
+    }
+
+    /** Enables or disables a resource pack by id and reloads resources when something changed. */
+    public static void applySkyPack(String packId, boolean enabled) {
+        PackRepository repo = mc().getResourcePackRepository();
+        repo.reload();
+        boolean was = repo.getSelectedIds().contains(packId);
+        if (enabled) {
+            repo.addPack(packId);
+        } else {
+            repo.removePack(packId);
+        }
+        boolean now = repo.getSelectedIds().contains(packId);
+        if (was != now) {
+            mc().options.updateResourcePacks(repo); // saves the list and reloads
+        } else if (now) {
+            mc().reloadResourcePacks();             // same pack, new texture
+        }
     }
 
     public static String tr(String key, Object... args) {

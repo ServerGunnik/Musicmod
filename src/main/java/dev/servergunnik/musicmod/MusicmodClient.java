@@ -9,6 +9,8 @@ import dev.servergunnik.musicmod.core.ConfigStore;
 import dev.servergunnik.musicmod.core.LyricsProvider;
 import dev.servergunnik.musicmod.core.LyricsTracker;
 import dev.servergunnik.musicmod.core.MediaSource;
+import dev.servergunnik.musicmod.core.Sky;
+import dev.servergunnik.musicmod.core.SkyPack;
 import dev.servergunnik.musicmod.hud.HudOverlay;
 import dev.servergunnik.musicmod.sky.SkyLyrics;
 import dev.servergunnik.musicmod.ui.MenuUi;
@@ -90,6 +92,22 @@ public final class MusicmodClient implements ClientModInitializer {
     public static void resetConfig() {
         config = new Config();
         saveConfig();
+    }
+
+    /** Writes the sky resource pack for the configured sky and switches it on or off in the game. */
+    public static void applySky() {
+        Sky sky = config.sky;
+        boolean on = sky.id != null
+                && SkyPack.write(FabricLoader.getInstance().getGameDir().resolve("resourcepacks"), sky);
+        try {
+            GameState.applySkyPack(SkyPack.PACK_ID, on);
+        } catch (RuntimeException e) {
+            org.slf4j.LoggerFactory.getLogger("Musicmod").warn("Musicmod: cannot switch the sky pack", e);
+        }
+    }
+
+    public static boolean skyRendererPresent() {
+        return FabricLoader.getInstance().isModLoaded("skyboxify");
     }
 
     /** Translated string (falls back to the key). */

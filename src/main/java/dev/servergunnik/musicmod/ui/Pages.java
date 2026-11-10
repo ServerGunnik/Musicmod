@@ -4,6 +4,7 @@ import dev.servergunnik.musicmod.MusicmodClient;
 import dev.servergunnik.musicmod.core.Config;
 import dev.servergunnik.musicmod.core.LyricFont;
 import dev.servergunnik.musicmod.core.MediaInfo;
+import dev.servergunnik.musicmod.core.Sky;
 
 import java.util.List;
 
@@ -22,7 +23,7 @@ final class Pages {
             case LYRICS -> lyrics(out, ui);
             case STYLES -> styles(out, ui);
             case HUD -> hud(out, ui);
-            case SKIES -> skies(out);
+            case SKIES -> skies(out, ui);
             case SETTINGS -> settings(out, ui);
             case INFO -> info(out);
         }
@@ -91,8 +92,18 @@ final class Pages {
         out.add(new Widget.Toggle(ui, "musicmod.opt.hud_speed", () -> cfg().hudSpeed, v -> cfg().hudSpeed = v));
     }
 
-    private static void skies(List<Widget> out) {
-        out.add(new Widget.Paragraph(() -> tr("musicmod.skies.soon"), MenuUi.TEXT));
+    private static void skies(List<Widget> out, MenuUi ui) {
+        if (!MusicmodClient.skyRendererPresent()) {
+            out.add(new Widget.Paragraph(() -> tr("musicmod.skies.need_mod"), 0xFFE8C547));
+        }
+        out.add(new Widget.Choice(ui, "musicmod.opt.sky",
+                () -> cfg().sky == Sky.OFF ? tr("musicmod.sky.off") : cfg().sky.label,
+                dir -> cfg().sky = cycle(Sky.values(), cfg().sky, dir)));
+        out.add(new Widget.Button("musicmod.btn.apply_sky", () -> {
+            MusicmodClient.saveConfig();
+            MusicmodClient.applySky();
+        }));
+        out.add(new Widget.Paragraph(() -> tr("musicmod.skies.help"), MenuUi.DIM));
     }
 
     private static void settings(List<Widget> out, MenuUi ui) {

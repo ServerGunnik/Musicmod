@@ -13,7 +13,7 @@
   "musicmod.tab.hud": "HUD",
   "musicmod.tab.hud.desc": "Top pill and the info next to the hotbar.",
   "musicmod.tab.skies": "Skies",
-  "musicmod.tab.skies.desc": "Custom skies.",
+  "musicmod.tab.skies.desc": "Custom skies: nebula, galaxy, aurora, sunsets.",
   "musicmod.tab.settings": "Settings",
   "musicmod.tab.settings.desc": "Lyrics cache and reset.",
   "musicmod.tab.info": "Information",
@@ -81,7 +81,6 @@
   "musicmod.player.failed": "Windows media controls are not available.",
   "musicmod.overview.help": "Play a song in Spotify. Musicmod finds its lyrics and shows them in the sky and in the top bar, word by word. Open this menu with M (change it in Options > Controls > Key Binds > Musicmod).",
   "musicmod.styles.help": "Left color: sung words. Middle: the word being sung now. Right: words still to come.",
-  "musicmod.skies.soon": "Custom skies (galaxy, aurora, sunsets...) are coming in a next update.",
   "musicmod.btn.retry": "Search lyrics again for this song",
   "musicmod.btn.reset": "Reset all settings",
   "musicmod.settings.help": "Lyrics are saved in config/musicmod/lyrics-cache so every song is downloaded only once.",
@@ -92,5 +91,11 @@
   "musicmod.section.position": "Position",
   "musicmod.btn.move": "Move HUD elements",
   "musicmod.btn.reset_positions": "Reset positions",
-  "musicmod.move.hint": "Drag the elements. Click empty space to go back."
+  "musicmod.move.hint": "Drag the elements. Click empty space to go back.",
+  "musicmod.opt.sky": "Sky",
+  "musicmod.opt.sky.desc": "Pick a sky, then press Apply.",
+  "musicmod.sky.off": "Off (normal sky)",
+  "musicmod.btn.apply_sky": "Apply sky (reloads resources)",
+  "musicmod.skies.need_mod": "Skies are drawn by the Skyboxify mod, which is not installed. Install Skyboxify (Modrinth) to see them.",
+  "musicmod.skies.help": "Applying takes a few seconds because the game reloads its resources. The sky is saved as the resource pack \"musicmod_sky\"; Musicmod turns it on and off for you."
 }

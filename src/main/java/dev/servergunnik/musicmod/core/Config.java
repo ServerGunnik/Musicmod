@@ -23,6 +23,7 @@ public final class Config {
     // Look
     public Theme theme = Theme.LAVENDER;
     public LyricFont font = LyricFont.MINECRAFT;
+    public Sky sky = Sky.OFF;
 
     // HUD
     public boolean hudEnabled = true;
@@ -56,6 +57,7 @@ public final class Config {
         if (highlight == null) highlight = Highlight.WORD;
         if (theme == null) theme = Theme.LAVENDER;
         if (font == null) font = LyricFont.MINECRAFT;
+        if (sky == null) sky = Sky.OFF;
         offsetMs = clamp(offsetMs, -5000, 5000);
         distance = clamp(distance, 8, 96);
         height = clamp(height, -8, 48);
