@@ -36,7 +36,7 @@
   "musicmod.display.sky": "Sky",
   "musicmod.display.top_bar": "Top bar",
   "musicmod.opt.highlight": "Highlight",
-  "musicmod.opt.highlight.desc": "How the sung part is marked.",
+  "musicmod.opt.highlight.desc": "Whole line with highlight, words appearing one by one, or one word at a time.",
   "musicmod.highlight.word": "Word",
   "musicmod.highlight.karaoke": "Karaoke",
   "musicmod.highlight.line": "Whole line",
@@ -97,5 +97,12 @@
   "musicmod.sky.off": "Off (normal sky)",
   "musicmod.btn.apply_sky": "Apply sky (reloads resources)",
   "musicmod.skies.need_mod": "Skies are drawn by the Skyboxify mod, which is not installed. Install Skyboxify (Modrinth) to see them.",
-  "musicmod.skies.help": "Applying takes a few seconds because the game reloads its resources. The sky is saved as the resource pack \"musicmod_sky\"; Musicmod turns it on and off for you."
+  "musicmod.skies.help": "Applying takes a few seconds because the game reloads its resources. The sky is saved as the resource pack \"musicmod_sky\"; Musicmod turns it on and off for you.",
+  "musicmod.highlight.reveal": "Word by word",
+  "musicmod.highlight.single": "One word",
+  "musicmod.sky.status.on": "Sky is on. If you do not see it, check that Skyboxify is installed and enabled.",
+  "musicmod.sky.status.off": "Sky is off (normal sky).",
+  "musicmod.sky.status.missing": "The game does not list the pack \"musicmod_sky\". Send the game log to the mod author.",
+  "musicmod.sky.status.write_failed": "Could not write the sky pack to the resourcepacks folder.",
+  "musicmod.sky.status.error": "Switching the sky failed. See the game log."
 }

@@ -241,6 +241,11 @@ public final class HudOverlay {
         for (Span sp : spans) {
             w += d.textWidth(sp.text(), font);
         }
+        boolean wordMode = c.highlight == Config.Highlight.REVEAL || c.highlight == Config.Highlight.SINGLE;
+        if (wordMode && s.status() == LyricsProvider.Status.FOUND && s.hasLine() && !s.lineFinished()) {
+            // Words appear one by one: size the bar for the whole line so it does not jump.
+            w = Math.max(w, d.textWidth(s.line().text(), font));
+        }
         int maxW = d.width() - 40;
         float scale = w > maxW ? Math.max(0.6f, maxW / (float) w) : 1f;
         int boxW = Math.round(w * scale) + 16;
@@ -250,8 +255,13 @@ public final class HudOverlay {
         bounds(BAR, x, y, x + boxW, y + h);
         d.rect(x, y, x + boxW, y + h, (th.panel & 0x00FFFFFF) | 0xA0000000, 0);
 
+        int spansW = 0;
+        for (Span sp : spans) {
+            spansW += d.textWidth(sp.text(), font);
+        }
         d.push(x + 8, y + 4, scale);
-        int cx = 0;
+        // A single word sits in the middle of the bar; everything else starts at the left.
+        int cx = c.highlight == Config.Highlight.SINGLE ? Math.max(0, (w - spansW) / 2) : 0;
         for (Span sp : spans) {
             d.text(sp.text(), cx, 0, 0xFF000000 | sp.rgb(), true, font);
             cx += d.textWidth(sp.text(), font);

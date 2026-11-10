@@ -25,6 +25,34 @@ public final class LineColoring {
             return out;
         }
         List<Lyrics.Word> words = line.words();
+        if (mode == Config.Highlight.REVEAL) {
+            // Only the words that have started; the newest one is highlighted.
+            for (int i = 0; i < words.size(); i++) {
+                Lyrics.Word w = words.get(i);
+                if (timeMs < w.startMs()) {
+                    break;
+                }
+                if (i > 0) {
+                    add(out, " ", theme.sung);
+                }
+                boolean newest = i + 1 >= words.size() || timeMs < words.get(i + 1).startMs();
+                add(out, w.text(), newest ? theme.current : theme.sung);
+            }
+            return out;
+        }
+        if (mode == Config.Highlight.SINGLE) {
+            // Just the word being sung (it stays until the next word starts).
+            Lyrics.Word shown = null;
+            for (Lyrics.Word w : words) {
+                if (timeMs >= w.startMs()) {
+                    shown = w;
+                }
+            }
+            if (shown != null) {
+                out.add(new Span(shown.text(), theme.current));
+            }
+            return out;
+        }
         for (int i = 0; i < words.size(); i++) {
             Lyrics.Word w = words.get(i);
             String sep = i + 1 < words.size() ? " " : "";

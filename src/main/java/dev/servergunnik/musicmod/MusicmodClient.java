@@ -94,16 +94,33 @@ public final class MusicmodClient implements ClientModInitializer {
         saveConfig();
     }
 
-    /** Writes the sky resource pack for the configured sky and switches it on or off in the game. */
+    private static String skyStatus = "";
+
+    /**
+     * Writes the sky resource pack for the configured sky and switches it on or off in
+     * the game. The outcome ("on", "off", "missing", "write_failed", "error") is kept
+     * for the menu, see {@link #skyStatus()}.
+     */
     public static void applySky() {
+        org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger("Musicmod");
         Sky sky = config.sky;
-        boolean on = sky.id != null
-                && SkyPack.write(FabricLoader.getInstance().getGameDir().resolve("resourcepacks"), sky);
+        String mc = FabricLoader.getInstance().getModContainer("minecraft")
+                .map(c -> c.getMetadata().getVersion().getFriendlyString()).orElse("");
+        boolean want = sky.id != null;
+        boolean written = want && SkyPack.write(FabricLoader.getInstance().getGameDir().resolve("resourcepacks"), sky, mc);
         try {
-            GameState.applySkyPack(SkyPack.PACK_ID, on);
+            skyStatus = want && !written ? "write_failed" : GameState.applySkyPack(SkyPack.PACK_ID, written);
         } catch (RuntimeException e) {
-            org.slf4j.LoggerFactory.getLogger("Musicmod").warn("Musicmod: cannot switch the sky pack", e);
+            skyStatus = "error";
+            log.warn("Musicmod: cannot switch the sky pack", e);
         }
+        log.info("Musicmod sky: {} -> {} (Minecraft {}, Skyboxify {})", sky, skyStatus, mc,
+                skyRendererPresent() ? "installed" : "NOT installed");
+    }
+
+    /** Result of the last {@link #applySky()} call, or "" when it has not run. */
+    public static String skyStatus() {
+        return skyStatus;
     }
 
     public static boolean skyRendererPresent() {

@@ -47,6 +47,8 @@ final class Pages {
         out.add(new Widget.Choice(ui, "musicmod.opt.highlight",
                 () -> tr("musicmod.highlight." + cfg().highlight.name().toLowerCase()),
                 dir -> cfg().highlight = cycle(Config.Highlight.values(), cfg().highlight, dir)));
+        out.add(new Widget.Choice(ui, "musicmod.opt.font", () -> cfg().font.label,
+                dir -> cfg().font = cycle(LyricFont.values(), cfg().font, dir)));
         out.add(new Widget.Toggle(ui, "musicmod.opt.next_line", () -> cfg().nextLine, v -> cfg().nextLine = v));
         out.add(new Widget.Slider(ui, "musicmod.opt.offset", -2000, 2000, 50,
                 () -> cfg().offsetMs, v -> cfg().offsetMs = v, v -> (v > 0 ? "+" : "") + v + " ms"));
@@ -103,6 +105,8 @@ final class Pages {
             MusicmodClient.saveConfig();
             MusicmodClient.applySky();
         }));
+        out.add(new Widget.Paragraph(() -> MusicmodClient.skyStatus().isEmpty() ? ""
+                : tr("musicmod.sky.status." + MusicmodClient.skyStatus()), 0xFFE8C547));
         out.add(new Widget.Paragraph(() -> tr("musicmod.skies.help"), MenuUi.DIM));
     }
 

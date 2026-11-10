@@ -36,7 +36,7 @@
   "musicmod.display.sky": "Niebo",
   "musicmod.display.top_bar": "Górny pasek",
   "musicmod.opt.highlight": "Podświetlanie",
-  "musicmod.opt.highlight.desc": "Jak zaznaczać to, co jest śpiewane.",
+  "musicmod.opt.highlight.desc": "Cała linijka z podświetleniem, słowa pojawiające się po kolei albo jedno słowo naraz.",
   "musicmod.highlight.word": "Słowo",
   "musicmod.highlight.karaoke": "Karaoke",
   "musicmod.highlight.line": "Cała linijka",
@@ -97,5 +97,12 @@
   "musicmod.sky.off": "Wyłączone (zwykłe niebo)",
   "musicmod.btn.apply_sky": "Zastosuj niebo (przeładuje zasoby)",
   "musicmod.skies.need_mod": "Niebo rysuje mod Skyboxify, a nie jest zainstalowany. Zainstaluj Skyboxify (Modrinth), żeby je zobaczyć.",
-  "musicmod.skies.help": "Zastosowanie trwa kilka sekund, bo gra przeładowuje zasoby. Niebo zapisuje się jako paczka zasobów „musicmod_sky”; Musicmod sam ją włącza i wyłącza."
+  "musicmod.skies.help": "Zastosowanie trwa kilka sekund, bo gra przeładowuje zasoby. Niebo zapisuje się jako paczka zasobów „musicmod_sky”; Musicmod sam ją włącza i wyłącza.",
+  "musicmod.highlight.reveal": "Słowo po słowie",
+  "musicmod.highlight.single": "Jedno słowo",
+  "musicmod.sky.status.on": "Niebo włączone. Jeśli go nie widać, sprawdź, czy Skyboxify jest zainstalowany i włączony.",
+  "musicmod.sky.status.off": "Niebo wyłączone (zwykłe niebo).",
+  "musicmod.sky.status.missing": "Gra nie widzi paczki „musicmod_sky”. Wyślij log gry autorowi moda.",
+  "musicmod.sky.status.write_failed": "Nie udało się zapisać paczki nieba w folderze resourcepacks.",
+  "musicmod.sky.status.error": "Przełączenie nieba nie powiodło się. Zobacz log gry."
 }

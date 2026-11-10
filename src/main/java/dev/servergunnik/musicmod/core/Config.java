@@ -5,7 +5,11 @@ public final class Config {
 
     public enum Display { BOTH, SKY, TOP_BAR }
 
-    public enum Highlight { WORD, KARAOKE, LINE }
+    /**
+     * WORD/KARAOKE/LINE show the whole line and mark what is sung. REVEAL adds the
+     * words one by one as they are sung; SINGLE shows only the word being sung.
+     */
+    public enum Highlight { WORD, KARAOKE, LINE, REVEAL, SINGLE }
 
     // Lyrics
     public boolean lyricsEnabled = true;

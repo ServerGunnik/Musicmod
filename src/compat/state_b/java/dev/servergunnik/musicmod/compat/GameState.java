@@ -110,10 +110,16 @@ public final class GameState {
         return hit.getType() == HitResult.Type.MISS;
     }
 
-    /** Enables or disables a resource pack by id and reloads resources when something changed. */
-    public static void applySkyPack(String packId, boolean enabled) {
+    /**
+     * Enables or disables a resource pack by id and reloads resources when something
+     * changed. Returns "on", "off", or "missing" when the game does not list the pack.
+     */
+    public static String applySkyPack(String packId, boolean enabled) {
         PackRepository repo = mc().getResourcePackRepository();
         repo.reload();
+        if (enabled && !repo.getAvailableIds().contains(packId)) {
+            return "missing";
+        }
         boolean was = repo.getSelectedIds().contains(packId);
         if (enabled) {
             repo.addPack(packId);
@@ -126,6 +132,7 @@ public final class GameState {
         } else if (now) {
             mc().reloadResourcePacks();             // same pack, new texture
         }
+        return now ? "on" : "off";
     }
 
     public static String tr(String key, Object... args) {
