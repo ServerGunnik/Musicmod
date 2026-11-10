@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * The Musicmod menu (Right Shift). Version independent: it only draws through
+ * The Musicmod menu (key M by default). Version independent: it only draws through
  * {@link Draw} and receives mouse input from the version's Screen wrapper.
  */
 public final class MenuUi {

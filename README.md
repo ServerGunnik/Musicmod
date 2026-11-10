@@ -2,7 +2,7 @@
 
 Client-side Fabric mod: the lyrics of the song you are playing (Spotify, YouTube in the browser, …) appear
 **word by word in the sky** and in a **top bar**, plus a clean HUD (now playing, clock, FPS, ping,
-coordinates, speed). Menu: **Right Shift**.
+coordinates, speed). Menu: **M** (rebindable in Controls).
 
 - Music is read from **Windows Media Controls** (no Spotify login, no API key). Windows only for now.
 - Lyrics come from **[LRCLIB](https://lrclib.net)** (free) and are cached in `config/musicmod/lyrics-cache`.

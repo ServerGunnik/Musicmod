@@ -79,7 +79,7 @@
   "musicmod.player.starting": "Łączę się z Windows...",
   "musicmod.player.unsupported": "Odczyt odtwarzacza działa na razie tylko na Windowsie.",
   "musicmod.player.failed": "Sterowanie multimediami Windows jest niedostępne.",
-  "musicmod.overview.help": "Puść piosenkę w Spotify. Musicmod znajdzie jej tekst i pokaże go na niebie i u góry ekranu, słowo po słowie. To menu otwierasz prawym Shiftem (zmienisz w Sterowaniu).",
+  "musicmod.overview.help": "Puść piosenkę w Spotify. Musicmod znajdzie jej tekst i pokaże go na niebie i u góry ekranu, słowo po słowie. To menu otwierasz klawiszem M (zmienisz w Opcje > Sterowanie > Przypisanie klawiszy > Musicmod).",
   "musicmod.styles.help": "Lewy kolor: zaśpiewane słowa. Środkowy: słowo śpiewane teraz. Prawy: słowa, które dopiero będą.",
   "musicmod.skies.soon": "Własne niebiosa (galaktyka, zorza, zachody słońca...) pojawią się w kolejnej aktualizacji.",
   "musicmod.btn.retry": "Szukaj tekstu tej piosenki jeszcze raz",

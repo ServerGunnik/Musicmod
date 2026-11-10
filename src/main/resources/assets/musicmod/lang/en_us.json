@@ -79,7 +79,7 @@
   "musicmod.player.starting": "Connecting to Windows media controls...",
   "musicmod.player.unsupported": "Reading the player works on Windows only (for now).",
   "musicmod.player.failed": "Windows media controls are not available.",
-  "musicmod.overview.help": "Play a song in Spotify. Musicmod finds its lyrics and shows them in the sky and in the top bar, word by word. Open this menu with Right Shift (change it in Controls).",
+  "musicmod.overview.help": "Play a song in Spotify. Musicmod finds its lyrics and shows them in the sky and in the top bar, word by word. Open this menu with M (change it in Options > Controls > Key Binds > Musicmod).",
   "musicmod.styles.help": "Left color: sung words. Middle: the word being sung now. Right: words still to come.",
   "musicmod.skies.soon": "Custom skies (galaxy, aurora, sunsets...) are coming in a next update.",
   "musicmod.btn.retry": "Search lyrics again for this song",
