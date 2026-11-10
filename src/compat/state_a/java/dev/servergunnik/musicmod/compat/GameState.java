@@ -1,6 +1,7 @@
 package dev.servergunnik.musicmod.compat;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.client.multiplayer.PlayerInfo;
 import net.minecraft.client.resources.language.I18n;
@@ -26,6 +27,10 @@ public final class GameState {
 
     public static Object currentScreen() {
         return mc().screen;
+    }
+
+    public static void openScreen(Screen screen) {
+        mc().setScreen(screen);
     }
 
     public static Object levelToken() {

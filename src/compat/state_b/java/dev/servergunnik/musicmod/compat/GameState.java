@@ -1,6 +1,7 @@
 package dev.servergunnik.musicmod.compat;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.client.multiplayer.PlayerInfo;
 import net.minecraft.client.resources.language.I18n;
@@ -21,11 +22,16 @@ public final class GameState {
     }
 
     public static boolean hudHidden() {
-        return mc().options.hideGui;
+        // 26.2+: the HUD is not drawn at all while the GUI is hidden (F1).
+        return false;
     }
 
     public static Object currentScreen() {
         return mc().gui.screen();
+    }
+
+    public static void openScreen(Screen screen) {
+        mc().gui.setScreen(screen);
     }
 
     public static Object levelToken() {

@@ -11,6 +11,7 @@ import net.minecraft.world.entity.Display;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import org.joml.Vector3f;
+import org.joml.Vector3fc;
 
 import java.util.List;
 
@@ -76,7 +77,7 @@ public final class TextEntities {
 
         @Override
         public void setScale(float scale) {
-            Vector3f v = e.getEntityData().get(Display.DATA_SCALE_ID);
+            Vector3fc v = e.getEntityData().get(Display.DATA_SCALE_ID);
             if (v.x() != scale) {
                 e.getEntityData().set(Display.DATA_SCALE_ID, new Vector3f(scale, scale, scale));
             }
