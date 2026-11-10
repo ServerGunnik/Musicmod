@@ -20,7 +20,12 @@ public final class Hooks {
         HudRenderCallback.EVENT.register((g, tick) -> renderer.accept(GuiDraw.of(g)));
     }
 
-    public static KeyHandle registerKey(String name, int key) {
+    /**
+     * Registers a key mapping. Key codes come from the game's own constants: since
+     * 26.1 input goes through SDL and raw GLFW numbers (like -1 for "unbound") crash.
+     */
+    public static KeyHandle registerKey(String name, boolean defaultM) {
+        int key = defaultM ? InputConstants.KEY_M : InputConstants.UNKNOWN.getValue();
         KeyMapping mapping = KeyBindingHelper.registerKeyBinding(
                 new KeyMapping(name, InputConstants.Type.KEYSYM, key, "key.categories.musicmod"));
         return mapping::consumeClick;

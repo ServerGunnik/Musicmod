@@ -20,8 +20,6 @@ import java.nio.file.Path;
 public final class MusicmodClient implements ClientModInitializer {
 
     public static final String MOD_ID = "musicmod";
-    private static final int KEY_M = 77;
-    private static final int KEY_NONE = -1;
 
     private static String version = "dev";
     private static ConfigStore store;
@@ -49,8 +47,8 @@ public final class MusicmodClient implements ClientModInitializer {
         hud = new HudOverlay();
         sky = new SkyLyrics();
         Hooks.registerHud(hud::render);
-        menuKey = Hooks.registerKey("key.musicmod.menu", KEY_M);
-        toggleKey = Hooks.registerKey("key.musicmod.toggle", KEY_NONE);
+        menuKey = Hooks.registerKey("key.musicmod.menu", true);
+        toggleKey = Hooks.registerKey("key.musicmod.toggle", false);
         Hooks.registerTick(MusicmodClient::tick);
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
