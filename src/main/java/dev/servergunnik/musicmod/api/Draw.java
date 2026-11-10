@@ -17,6 +17,11 @@ public interface Draw {
 
     int textWidth(String text);
 
+    /** Same as {@link #text} but in one of the mod's fonts (null = Minecraft's font). */
+    int text(String text, int x, int y, int argb, boolean shadow, String font);
+
+    int textWidth(String text, String font);
+
     int lineHeight();
 
     /** Translates to (x, y) and scales; undo with {@link #pop()}. */

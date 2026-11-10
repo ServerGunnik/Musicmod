@@ -45,7 +45,7 @@
   "musicmod.opt.offset": "Timing offset",
   "musicmod.opt.offset.desc": "Lyrics too early: lower it. Too late: raise it.",
   "musicmod.opt.follow": "Follow view",
-  "musicmod.opt.follow.desc": "Off: each line appears where you look (on walls too) and stays there. On: floats in front of you.",
+  "musicmod.opt.follow.desc": "Off: each line appears where you look (on walls, standing on the ground) and stays. On: floats in front of you.",
   "musicmod.opt.animation": "Animation",
   "musicmod.opt.animation.desc": "New lines fade in and rise.",
   "musicmod.opt.sky_background": "Background",
@@ -85,5 +85,12 @@
   "musicmod.btn.retry": "Search lyrics again for this song",
   "musicmod.btn.reset": "Reset all settings",
   "musicmod.settings.help": "Lyrics are saved in config/musicmod/lyrics-cache so every song is downloaded only once.",
-  "musicmod.info.text": "Lyrics: LRCLIB (lrclib.net), free and open.\nMusic: read from Windows media controls, so it works with Spotify, YouTube in the browser and other players. No login, no API key.\nMade by ServerGunnik."
+  "musicmod.info.text": "Lyrics: LRCLIB (lrclib.net), free and open.\nMusic: read from Windows media controls, so it works with Spotify, YouTube in the browser and other players. No login, no API key.\nMade by ServerGunnik.",
+  "musicmod.section.font": "Font",
+  "musicmod.opt.font": "Lyrics font",
+  "musicmod.opt.font.desc": "Font of the lyrics in the world and in the top bar.",
+  "musicmod.section.position": "Position",
+  "musicmod.btn.move": "Move HUD elements",
+  "musicmod.btn.reset_positions": "Reset positions",
+  "musicmod.move.hint": "Drag the elements. Click empty space to go back."
 }

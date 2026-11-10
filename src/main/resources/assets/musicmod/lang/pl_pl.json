@@ -45,7 +45,7 @@
   "musicmod.opt.offset": "Przesunięcie",
   "musicmod.opt.offset.desc": "Tekst za wcześnie: zmniejsz. Za późno: zwiększ.",
   "musicmod.opt.follow": "Podążaj za wzrokiem",
-  "musicmod.opt.follow.desc": "Wył.: linijka pojawia się tam, gdzie patrzysz (też na ścianie) i zostaje. Wł.: unosi się przed Tobą.",
+  "musicmod.opt.follow.desc": "Wył.: linijka pojawia się tam, gdzie patrzysz (na ścianie, stojąc na ziemi) i zostaje. Wł.: unosi się przed Tobą.",
   "musicmod.opt.animation": "Animacja",
   "musicmod.opt.animation.desc": "Nowe linijki płynnie się pojawiają.",
   "musicmod.opt.sky_background": "Tło",
@@ -85,5 +85,12 @@
   "musicmod.btn.retry": "Szukaj tekstu tej piosenki jeszcze raz",
   "musicmod.btn.reset": "Przywróć domyślne ustawienia",
   "musicmod.settings.help": "Teksty są zapisywane w config/musicmod/lyrics-cache, więc każda piosenka pobiera się tylko raz.",
-  "musicmod.info.text": "Teksty: LRCLIB (lrclib.net), darmowe i otwarte.\nMuzyka: odczyt z multimediów Windows, więc działa ze Spotify, YouTube w przeglądarce i innymi odtwarzaczami. Bez logowania i bez klucza API.\nAutor: ServerGunnik."
+  "musicmod.info.text": "Teksty: LRCLIB (lrclib.net), darmowe i otwarte.\nMuzyka: odczyt z multimediów Windows, więc działa ze Spotify, YouTube w przeglądarce i innymi odtwarzaczami. Bez logowania i bez klucza API.\nAutor: ServerGunnik.",
+  "musicmod.section.font": "Czcionka",
+  "musicmod.opt.font": "Czcionka tekstu",
+  "musicmod.opt.font.desc": "Czcionka tekstu w świecie i w górnym pasku.",
+  "musicmod.section.position": "Położenie",
+  "musicmod.btn.move": "Przesuń elementy HUD",
+  "musicmod.btn.reset_positions": "Przywróć położenie",
+  "musicmod.move.hint": "Przeciągnij elementy. Kliknij w puste miejsce, aby wrócić."
 }

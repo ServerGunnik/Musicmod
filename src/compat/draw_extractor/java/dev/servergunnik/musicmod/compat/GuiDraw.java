@@ -3,6 +3,7 @@ package dev.servergunnik.musicmod.compat;
 import dev.servergunnik.musicmod.api.Draw;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
+import net.minecraft.network.chat.Component;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 
 /** Draw implementation for this Minecraft version. */
@@ -44,6 +45,18 @@ public final class GuiDraw implements Draw {
     @Override
     public int textWidth(String text) {
         return font.width(text);
+    }
+
+    @Override
+    public int text(String text, int x, int y, int argb, boolean shadow, String fontName) {
+        Component c = Fonts.text(text, fontName);
+        g.text(font, c, x, y, argb, shadow);
+        return x + font.width(c);
+    }
+
+    @Override
+    public int textWidth(String text, String fontName) {
+        return font.width(Fonts.text(text, fontName));
     }
 
     @Override

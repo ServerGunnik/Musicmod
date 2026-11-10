@@ -4,7 +4,8 @@ import java.util.List;
 
 /** A floating text in the world (backed by a client-only text display entity). */
 public interface WorldText {
-    void setText(List<Span> spans);
+    /** {@code font}: one of the mod's fonts, or null for Minecraft's font. */
+    void setText(List<Span> spans, String font);
 
     void setPos(double x, double y, double z);
 

@@ -2,6 +2,7 @@ package dev.servergunnik.musicmod.ui;
 
 import dev.servergunnik.musicmod.MusicmodClient;
 import dev.servergunnik.musicmod.core.Config;
+import dev.servergunnik.musicmod.core.LyricFont;
 import dev.servergunnik.musicmod.core.MediaInfo;
 
 import java.util.List;
@@ -64,11 +65,21 @@ final class Pages {
     private static void styles(List<Widget> out, MenuUi ui) {
         out.add(new Widget.Header("musicmod.section.look"));
         out.add(new Widget.ThemeGrid(ui));
+        out.add(new Widget.Header("musicmod.section.font"));
+        out.add(new Widget.Choice(ui, "musicmod.opt.font", () -> cfg().font.label,
+                dir -> cfg().font = cycle(LyricFont.values(), cfg().font, dir)));
         out.add(new Widget.Paragraph(() -> tr("musicmod.styles.help"), MenuUi.DIM));
     }
 
     private static void hud(List<Widget> out, MenuUi ui) {
         out.add(new Widget.Toggle(ui, "musicmod.opt.hud", () -> cfg().hudEnabled, v -> cfg().hudEnabled = v));
+        out.add(new Widget.Header("musicmod.section.position"));
+        out.add(new Widget.Button("musicmod.btn.move", ui::startMoving));
+        out.add(new Widget.Button("musicmod.btn.reset_positions", () -> {
+            Config c = cfg();
+            c.pillDx = c.pillDy = c.barDx = c.barDy = c.infoDx = c.infoDy = 0;
+            ui.changed();
+        }));
         out.add(new Widget.Header("musicmod.section.top"));
         out.add(new Widget.Toggle(ui, "musicmod.opt.hud_song", () -> cfg().hudSong, v -> cfg().hudSong = v));
         out.add(new Widget.Toggle(ui, "musicmod.opt.hud_clock", () -> cfg().hudClock, v -> cfg().hudClock = v));

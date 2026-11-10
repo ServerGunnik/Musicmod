@@ -1,0 +1,28 @@
+{
+  "providers": [
+    {
+      "type": "ttf",
+      "file": "musicmod:kanit_latin.ttf",
+      "shift": [
+        0.0,
+        1.0
+      ],
+      "size": 10.0,
+      "oversample": 6.0
+    },
+    {
+      "type": "ttf",
+      "file": "musicmod:kanit_latin_ext.ttf",
+      "shift": [
+        0.0,
+        1.0
+      ],
+      "size": 10.0,
+      "oversample": 6.0
+    },
+    {
+      "type": "reference",
+      "id": "minecraft:default"
+    }
+  ]
+}

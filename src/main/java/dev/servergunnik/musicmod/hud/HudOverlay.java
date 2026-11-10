@@ -28,6 +28,15 @@ public final class HudOverlay {
     private static final int TEXT = 0xFFF2F2F2;
     private static final int DIM = 0xFF9A9A9A;
 
+    /** Index into {@link #BOUNDS}. */
+    public static final int PILL = 0;
+    public static final int BAR = 1;
+    public static final int INFO = 2;
+    /** Where each element was drawn last frame: {x1, y1, x2, y2} (empty when hidden). */
+    public static final int[][] BOUNDS = new int[3][4];
+    /** True while the menu's "move HUD" mode is open: every element is shown, with sample content. */
+    public static volatile boolean editing;
+
     private double lastX;
     private double lastZ;
     private boolean hasLast;
@@ -59,16 +68,30 @@ public final class HudOverlay {
         Config c = MusicmodClient.config();
         Theme th = c.theme;
         LyricsTracker.Snapshot s = MusicmodClient.tracker().snapshot();
-        int y = 4;
-        if (c.hudEnabled) {
-            y = renderPill(d, c, th, s, y) + 4;
+        for (int[] b : BOUNDS) {
+            java.util.Arrays.fill(b, 0);
         }
-        if (c.showTopBar() && s.media().active()) {
-            renderTopBar(d, c, th, s, y);
+        if (c.hudEnabled) {
+            renderPill(d, c, th, s, 4 + c.pillDy);
+        }
+        if (c.showTopBar() && (s.media().active() || editing)) {
+            // Default spot: right under the pill's default spot.
+            renderTopBar(d, c, th, s, 4 + d.lineHeight() + 7 + 4 + c.barDy);
         }
         if (c.hudEnabled && (c.hudCoords || c.hudSpeed)) {
             renderInfo(d, c, th);
         }
+    }
+
+    private static void bounds(int i, int x1, int y1, int x2, int y2) {
+        BOUNDS[i][0] = x1;
+        BOUNDS[i][1] = y1;
+        BOUNDS[i][2] = x2;
+        BOUNDS[i][3] = y2;
+    }
+
+    private static int clamp(int v, int lo, int hi) {
+        return Math.max(lo, Math.min(Math.max(lo, hi), v));
     }
 
     // ------------------------------------------------------------------ pill
@@ -133,7 +156,9 @@ public final class HudOverlay {
         }
         total += gap * (segs.size() - 1) + pad * 2;
         int h = d.lineHeight() + 7;
-        int x = (d.width() - total) / 2;
+        int x = clamp((d.width() - total) / 2 + c.pillDx, 0, d.width() - total);
+        y = clamp(y, 0, d.height() - h);
+        bounds(PILL, x, y, x + total, y + h);
         d.rect(x, y, x + total, y + h, th.panel, (th.border & 0x00FFFFFF) | 0xC0000000);
 
         int cx = x + pad;
@@ -190,7 +215,10 @@ public final class HudOverlay {
 
     private void renderTopBar(Draw d, Config c, Theme th, LyricsTracker.Snapshot s, int y) {
         List<Span> spans;
-        if (s.status() == LyricsProvider.Status.FOUND) {
+        String font = c.font.id;
+        if (editing && s.status() != LyricsProvider.Status.FOUND) {
+            spans = List.of(new Span("\u266A ", th.sung), new Span("Musicmod ", th.current), new Span("lyrics", th.upcoming));
+        } else if (s.status() == LyricsProvider.Status.FOUND) {
             if (s.hasLine() && !s.lineFinished()) {
                 spans = LineColoring.spans(s.line(), s.timeMs(), c.highlight, th);
             } else {
@@ -211,20 +239,22 @@ public final class HudOverlay {
 
         int w = 0;
         for (Span sp : spans) {
-            w += d.textWidth(sp.text());
+            w += d.textWidth(sp.text(), font);
         }
         int maxW = d.width() - 40;
         float scale = w > maxW ? Math.max(0.6f, maxW / (float) w) : 1f;
         int boxW = Math.round(w * scale) + 16;
         int h = d.lineHeight() + 8;
-        int x = (d.width() - boxW) / 2;
+        int x = clamp((d.width() - boxW) / 2 + c.barDx, 0, d.width() - boxW);
+        y = clamp(y, 0, d.height() - h);
+        bounds(BAR, x, y, x + boxW, y + h);
         d.rect(x, y, x + boxW, y + h, (th.panel & 0x00FFFFFF) | 0xA0000000, 0);
 
         d.push(x + 8, y + 4, scale);
         int cx = 0;
         for (Span sp : spans) {
-            d.text(sp.text(), cx, 0, 0xFF000000 | sp.rgb(), true);
-            cx += d.textWidth(sp.text());
+            d.text(sp.text(), cx, 0, 0xFF000000 | sp.rgb(), true, font);
+            cx += d.textWidth(sp.text(), font);
         }
         d.pop();
 
@@ -232,8 +262,8 @@ public final class HudOverlay {
             var next = s.nextLine();
             if (next != null && !next.isBlank()) {
                 String text = d.ellipsize(next.text(), maxW);
-                d.push(d.width() / 2f, y + h + 3, 0.8f);
-                d.centered(text, 0, 0, 0xC0000000 | th.upcoming, true);
+                d.push(x + boxW / 2f, y + h + 3, 0.8f);
+                d.text(text, -d.textWidth(text, font) / 2, 0, 0xC0000000 | th.upcoming, true, font);
                 d.pop();
             }
         }
@@ -263,6 +293,9 @@ public final class HudOverlay {
             x = d.width() - w - 2;
             y = d.height() - 22 - h - 4;
         }
+        x = clamp(x + c.infoDx, 0, d.width() - w);
+        y = clamp(y + c.infoDy, 0, d.height() - h);
+        bounds(INFO, x, y, x + w, y + h);
         d.rect(x, y, x + w, y + h, th.panel, (th.border & 0x00FFFFFF) | 0x90000000);
         d.text(text, x + 6, y + 3, TEXT, false);
     }

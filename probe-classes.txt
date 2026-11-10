@@ -13,7 +13,7 @@ net.minecraft.world.entity.Display$BillboardConstraints
 net.minecraft.world.entity.Entity (setOldPos|setPos\(|setId|discard|getEyeY|getYRot|getXRot|isRemoved| getX\(|getUUID)
 net.minecraft.world.entity.EntityType TEXT_DISPLAY
 net.minecraft.world.entity.EntityTypes TEXT_DISPLAY
-net.minecraft.network.chat.Style (withColor|EMPTY)
+net.minecraft.network.chat.Style (withColor|withFont|EMPTY)
 net.minecraft.network.chat.Component (literal|empty)
 net.minecraft.network.chat.MutableComponent (append|withStyle)
 net.minecraft.client.gui.Font (width|lineHeight)
@@ -30,3 +30,5 @@ net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents (END_CLIENT_T
 net.minecraft.client.gui.Gui (screen|Screen)
 net.minecraft.client.Options hideGui
 com.mojang.blaze3d.platform.InputConstants (KEY_M |KEY_A |KEY_RSHIFT|UNKNOWN|isKeyDown|getKey)
+net.minecraft.network.chat.FontDescription
+net.minecraft.network.chat.FontDescription$Resource

@@ -4,6 +4,7 @@ import dev.servergunnik.musicmod.MusicmodClient;
 import dev.servergunnik.musicmod.api.Draw;
 import dev.servergunnik.musicmod.core.Config;
 import dev.servergunnik.musicmod.core.Theme;
+import dev.servergunnik.musicmod.hud.HudOverlay;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +39,14 @@ public final class MenuUi {
     private Widget dragging;
     private boolean dirty;
     private boolean needsLayout = true;
+
+    // "Move HUD" mode: the panel is hidden and the HUD elements can be dragged.
+    private boolean moving;
+    private int moveIndex = -1;
+    private double moveStartX;
+    private double moveStartY;
+    private int moveStartDx;
+    private int moveStartDy;
 
     public MenuUi() {
         rebuild();
@@ -85,7 +94,82 @@ public final class MenuUi {
 
     // ---------------------------------------------------------------- render
 
+    void startMoving() {
+        moving = true;
+        moveIndex = -1;
+        HudOverlay.editing = true;
+    }
+
+    private void stopMoving() {
+        moving = false;
+        moveIndex = -1;
+        HudOverlay.editing = false;
+    }
+
+    private static int[] offsets(int i) {
+        Config c = cfg();
+        return switch (i) {
+            case HudOverlay.PILL -> new int[]{c.pillDx, c.pillDy};
+            case HudOverlay.BAR -> new int[]{c.barDx, c.barDy};
+            default -> new int[]{c.infoDx, c.infoDy};
+        };
+    }
+
+    private static void setOffsets(int i, int dx, int dy) {
+        Config c = cfg();
+        switch (i) {
+            case HudOverlay.PILL -> {
+                c.pillDx = dx;
+                c.pillDy = dy;
+            }
+            case HudOverlay.BAR -> {
+                c.barDx = dx;
+                c.barDy = dy;
+            }
+            default -> {
+                c.infoDx = dx;
+                c.infoDy = dy;
+            }
+        }
+    }
+
+    private static int elementAt(double mx, double my) {
+        for (int i = 0; i < HudOverlay.BOUNDS.length; i++) {
+            int[] b = HudOverlay.BOUNDS[i];
+            if (b[2] > b[0] && mx >= b[0] - 2 && mx < b[2] + 2 && my >= b[1] - 2 && my < b[3] + 2) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    private void renderMoving(Draw d, int mouseX, int mouseY) {
+        Theme th = theme();
+        int hover = moveIndex >= 0 ? moveIndex : elementAt(mouseX, mouseY);
+        for (int i = 0; i < HudOverlay.BOUNDS.length; i++) {
+            int[] b = HudOverlay.BOUNDS[i];
+            if (b[2] <= b[0]) {
+                continue;
+            }
+            int color = i == hover ? th.accentArgb() : 0x90FFFFFF;
+            d.fill(b[0] - 2, b[1] - 2, b[2] + 2, b[1] - 1, color);
+            d.fill(b[0] - 2, b[3] + 1, b[2] + 2, b[3] + 2, color);
+            d.fill(b[0] - 2, b[1] - 1, b[0] - 1, b[3] + 1, color);
+            d.fill(b[2] + 1, b[1] - 1, b[2] + 2, b[3] + 1, color);
+        }
+        String hint = tr("musicmod.move.hint");
+        int w = d.textWidth(hint) + 16;
+        int x = (d.width() - w) / 2;
+        int y = d.height() / 2 - 8;
+        d.rect(x, y, x + w, y + 17, th.panel, th.border);
+        d.text(hint, x + 8, y + 5, TEXT, false);
+    }
+
     public void render(Draw d, int mouseX, int mouseY) {
+        if (moving) {
+            renderMoving(d, mouseX, mouseY);
+            return;
+        }
         scale = Math.min(1f, Math.min((d.width() - 16) / (float) W, (d.height() - 16) / (float) H));
         ox = (d.width() - W * scale) / 2f;
         oy = (d.height() - H * scale) / 2f;
@@ -188,6 +272,20 @@ public final class MenuUi {
     // ----------------------------------------------------------------- input
 
     public boolean mouseClicked(double mx, double my, int button) {
+        if (moving) {
+            int i = elementAt(mx, my);
+            if (i < 0) {
+                stopMoving(); // click on empty space: back to the menu
+            } else {
+                moveIndex = i;
+                moveStartX = mx;
+                moveStartY = my;
+                int[] o = offsets(i);
+                moveStartDx = o[0];
+                moveStartDy = o[1];
+            }
+            return true;
+        }
         double lx = (mx - ox) / scale;
         double ly = (my - oy) / scale;
         if (lx < 0 || ly < 0 || lx >= W || ly >= H) {
@@ -222,6 +320,13 @@ public final class MenuUi {
     }
 
     public boolean mouseDragged(double mx, double my) {
+        if (moving) {
+            if (moveIndex >= 0) {
+                setOffsets(moveIndex, moveStartDx + (int) Math.round(mx - moveStartX), moveStartDy + (int) Math.round(my - moveStartY));
+                changed();
+            }
+            return true;
+        }
         if (dragging == null) {
             return false;
         }
@@ -230,6 +335,11 @@ public final class MenuUi {
     }
 
     public boolean mouseReleased() {
+        if (moving) {
+            // Keep the stored offset equal to where the element really ended up (it is clamped to the screen).
+            moveIndex = -1;
+            return true;
+        }
         if (dragging != null) {
             dragging = null;
             return true;
@@ -245,6 +355,7 @@ public final class MenuUi {
 
     /** Saves settings if anything changed (called when the screen closes). */
     public void onClose() {
+        HudOverlay.editing = false;
         if (dirty) {
             MusicmodClient.saveConfig();
             dirty = false;

@@ -22,8 +22,8 @@ import java.util.Objects;
  * <ul>
  *   <li><b>Pinned</b> (default, "follow view" off): each new line appears where the
  *       player is looking at that moment and then stays put. Looking at a block
- *       puts the text flat on that face (wall, floor or ceiling); looking at the
- *       sky puts it {@code distance} blocks away, facing the spot the player
+ *       puts the text flat on a wall, or standing upright on a floor / under a
+ *       ceiling; looking at the sky puts it {@code distance} blocks away, facing the spot the player
  *       stood on. It never turns or moves afterwards.</li>
  *   <li><b>Follow view</b>: the text floats in front of the player, follows the
  *       view and always faces the camera.</li>
@@ -45,6 +45,7 @@ public final class SkyLyrics {
     private int lineAge;
     private List<Span> lastMain;
     private List<Span> lastNext;
+    private String lastFont;
 
     // Anchor of the current line: position of the text's bottom centre.
     private boolean anchored;
@@ -120,8 +121,14 @@ public final class SkyLyrics {
         if (main == null) {
             return;
         }
+        String font = c.font.id;
+        if (!Objects.equals(font, lastFont)) {
+            lastFont = font;
+            lastMain = null;
+            lastNext = null;
+        }
         if (!Objects.equals(spans, lastMain)) {
-            main.setText(spans);
+            main.setText(spans, font);
             lastMain = spans;
         }
         place(main, pinned, scale, 0, rise);
@@ -135,7 +142,7 @@ public final class SkyLyrics {
             next = ensure(next);
             if (next != null) {
                 if (!Objects.equals(ns, lastNext)) {
-                    next.setText(ns);
+                    next.setText(ns, font);
                     lastNext = ns;
                 }
                 place(next, pinned, scale * 0.55f, 0.32 * scale, rise);
@@ -168,14 +175,16 @@ public final class SkyLyrics {
         double nx = t[3], ny = t[4], nz = t[5];
         boolean hit = t[6] > 0;
 
-        if (hit && ny == 0) {
+        boolean wall = hit && ny == 0;
+        if (wall) {
             // Wall: flat on the face, upright.
             yaw = (float) Math.toDegrees(Math.atan2(-nx, nz));
             pitch = 0;
         } else if (hit) {
-            // Floor (ny > 0) or ceiling: flat on the face, readable from where the player stands.
+            // Floor or ceiling: the text stands upright on the spot (like a sign), turned
+            // toward where the player stands now. It is never laid flat.
             yaw = GameState.yaw() + 180f;
-            pitch = ny > 0 ? -90f : 90f;
+            pitch = 0;
         } else {
             // Sky: face exactly back at the player.
             yaw = GameState.yaw() + 180f;
@@ -193,13 +202,23 @@ public final class SkyLyrics {
         double dist = Math.sqrt(sq(px - GameState.x()) + sq(py - GameState.eyeY()) + sq(pz - GameState.z()));
         pinnedScale = (float) (c.skyScale * Math.max(0.12, Math.min(1.0, dist / Math.max(1, c.distance))));
 
-        // Text grows upward from its anchor: start half a line lower so the line is
-        // centred on the spot the player looked at, and lift it off the surface.
-        double half = LINE_HEIGHT * pinnedScale / 2;
-        double gap = hit ? WALL_GAP : 0;
-        ax = px + nx * gap + dx * half;
-        ay = py + ny * gap + dy * half;
-        az = pz + nz * gap + dz * half;
+        double lineH = LINE_HEIGHT * pinnedScale;
+        if (hit && !wall) {
+            // Standing text: the whole block of lines (current + next) sits on the floor,
+            // or hangs just under the ceiling.
+            double block = lineH + 0.32 * pinnedScale;
+            ax = px;
+            az = pz;
+            ay = ny > 0 ? py + block - lineH + WALL_GAP : py - lineH - WALL_GAP;
+        } else {
+            // Text grows upward from its anchor: start half a line lower so the line is
+            // centred on the spot the player looked at, and lift it off the surface.
+            double half = lineH / 2;
+            double gap = hit ? WALL_GAP : 0;
+            ax = px + nx * gap + dx * half;
+            ay = py + ny * gap + dy * half;
+            az = pz + nz * gap + dz * half;
+        }
         anchored = true;
     }
 

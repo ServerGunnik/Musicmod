@@ -22,6 +22,7 @@ public final class Config {
 
     // Look
     public Theme theme = Theme.LAVENDER;
+    public LyricFont font = LyricFont.MINECRAFT;
 
     // HUD
     public boolean hudEnabled = true;
@@ -32,6 +33,14 @@ public final class Config {
     public boolean hudPing = true;
     public boolean hudCoords = true;
     public boolean hudSpeed = true;
+
+    // HUD element positions: offsets in GUI pixels from the default spot (drag them in the menu).
+    public int pillDx;
+    public int pillDy;
+    public int barDx;
+    public int barDy;
+    public int infoDx;
+    public int infoDy;
 
     public boolean showSky() {
         return lyricsEnabled && display != Display.TOP_BAR;
@@ -46,6 +55,7 @@ public final class Config {
         if (display == null) display = Display.BOTH;
         if (highlight == null) highlight = Highlight.WORD;
         if (theme == null) theme = Theme.LAVENDER;
+        if (font == null) font = LyricFont.MINECRAFT;
         offsetMs = clamp(offsetMs, -5000, 5000);
         distance = clamp(distance, 8, 96);
         height = clamp(height, -8, 48);
