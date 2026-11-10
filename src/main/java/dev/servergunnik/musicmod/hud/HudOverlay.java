@@ -76,7 +76,7 @@ public final class HudOverlay {
         }
         if (c.showTopBar() && (s.media().active() || editing)) {
             // Default spot: right under the pill's default spot.
-            renderTopBar(d, c, th, s, 4 + d.lineHeight() + 7 + 4 + c.barDy);
+            renderTopBar(d, c, th, s, 4 + d.lineHeight() + 9 + 4 + c.barDy);
         }
         if (c.hudEnabled && (c.hudCoords || c.hudSpeed)) {
             renderInfo(d, c, th);
@@ -113,14 +113,21 @@ public final class HudOverlay {
         if (c.hudSong && m.active()) {
             songIndex = segs.size();
             String label = m.artist().isEmpty() ? m.title() : m.title() + " – " + m.artist();
+            // Where we are in the song: "1:23 / 3:45" (only the elapsed time when the player gives no length).
+            String time = !c.hudSongTime ? ""
+                    : m.durationMs() > 0 ? MediaInfo.formatTime(m.positionMs()) + " / " + MediaInfo.formatTime(m.durationMs())
+                    : MediaInfo.formatTime(m.positionMs());
             segs.add(new Segment() {
                 public int width(Draw d) {
-                    return 13 + d.textWidth(d.ellipsize(label, 150));
+                    return 13 + d.textWidth(d.ellipsize(label, 150)) + (time.isEmpty() ? 0 : 6 + d.textWidth(time));
                 }
 
                 public void draw(Draw d, int x, int y) {
                     drawBars(d, x, y + d.lineHeight() - 1, m.playing(), th.accentArgb());
-                    d.text(d.ellipsize(label, 150), x + 13, y, TEXT, false);
+                    int end = d.text(d.ellipsize(label, 150), x + 13, y, TEXT, false);
+                    if (!time.isEmpty()) {
+                        d.text(time, end + 6, y, th.accentArgb(), false);
+                    }
                 }
             });
         }
@@ -155,7 +162,7 @@ public final class HudOverlay {
             total += widths[i];
         }
         total += gap * (segs.size() - 1) + pad * 2;
-        int h = d.lineHeight() + 7;
+        int h = d.lineHeight() + 9;
         int x = clamp((d.width() - total) / 2 + c.pillDx, 0, d.width() - total);
         y = clamp(y, 0, d.height() - h);
         bounds(PILL, x, y, x + total, y + h);
@@ -166,10 +173,12 @@ public final class HudOverlay {
         for (int i = 0; i < segs.size(); i++) {
             segs.get(i).draw(d, cx, ty);
             if (i == songIndex && m.durationMs() > 0) {
-                int barY = y + h - 2;
+                // Progress bar under the song, with a marker at the current position.
+                int barY = y + h - 3;
                 int fillW = Math.round(widths[i] * m.progress());
-                d.fill(cx, barY, cx + widths[i], barY + 1, 0x40FFFFFF);
-                d.fill(cx, barY, cx + fillW, barY + 1, th.accentArgb());
+                d.fill(cx, barY, cx + widths[i], barY + 2, 0x60FFFFFF);
+                d.fill(cx, barY, cx + fillW, barY + 2, th.accentArgb());
+                d.fill(cx + fillW - 1, barY - 1, cx + fillW + 1, barY + 3, 0xFFFFFFFF);
             }
             cx += widths[i];
             if (i + 1 < segs.size()) {

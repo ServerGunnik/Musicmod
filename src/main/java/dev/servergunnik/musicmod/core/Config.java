@@ -32,6 +32,7 @@ public final class Config {
     // HUD
     public boolean hudEnabled = true;
     public boolean hudSong = true;
+    public boolean hudSongTime = true;
     public boolean hudClock = true;
     public boolean hudClock24h = true;
     public boolean hudFps = true;

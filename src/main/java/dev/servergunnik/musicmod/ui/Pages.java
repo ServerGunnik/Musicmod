@@ -85,6 +85,7 @@ final class Pages {
         }));
         out.add(new Widget.Header("musicmod.section.top"));
         out.add(new Widget.Toggle(ui, "musicmod.opt.hud_song", () -> cfg().hudSong, v -> cfg().hudSong = v));
+        out.add(new Widget.Toggle(ui, "musicmod.opt.hud_song_time", () -> cfg().hudSongTime, v -> cfg().hudSongTime = v));
         out.add(new Widget.Toggle(ui, "musicmod.opt.hud_clock", () -> cfg().hudClock, v -> cfg().hudClock = v));
         out.add(new Widget.Toggle(ui, "musicmod.opt.hud_clock24", () -> cfg().hudClock24h, v -> cfg().hudClock24h = v));
         out.add(new Widget.Toggle(ui, "musicmod.opt.hud_fps", () -> cfg().hudFps, v -> cfg().hudFps = v));

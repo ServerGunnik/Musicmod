@@ -104,5 +104,7 @@
   "musicmod.sky.status.off": "Niebo wyłączone (zwykłe niebo).",
   "musicmod.sky.status.missing": "Gra nie widzi paczki „musicmod_sky”. Wyślij log gry autorowi moda.",
   "musicmod.sky.status.write_failed": "Nie udało się zapisać paczki nieba w folderze resourcepacks.",
-  "musicmod.sky.status.error": "Przełączenie nieba nie powiodło się. Zobacz log gry."
+  "musicmod.sky.status.error": "Przełączenie nieba nie powiodło się. Zobacz log gry.",
+  "musicmod.opt.hud_song_time": "Moment piosenki",
+  "musicmod.opt.hud_song_time.desc": "Pokazuje czas w piosence, np. 1:23 / 3:45."
 }

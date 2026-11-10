@@ -104,5 +104,7 @@
   "musicmod.sky.status.off": "Sky is off (normal sky).",
   "musicmod.sky.status.missing": "The game does not list the pack \"musicmod_sky\". Send the game log to the mod author.",
   "musicmod.sky.status.write_failed": "Could not write the sky pack to the resourcepacks folder.",
-  "musicmod.sky.status.error": "Switching the sky failed. See the game log."
+  "musicmod.sky.status.error": "Switching the sky failed. See the game log.",
+  "musicmod.opt.hud_song_time": "Song position",
+  "musicmod.opt.hud_song_time.desc": "Shows the time in the song, e.g. 1:23 / 3:45."
 }
