@@ -22,6 +22,8 @@ public final class TextEntities {
 
     private static final int FULL_BRIGHT = (15 << 4) | (15 << 20);
     private static final byte FLAG_SHADOW = 0x01;
+    // Display.BillboardConstraints.CENTER (its getId() is not public).
+    private static final byte BILLBOARD_CENTER = 3;
     private static int nextId = -2_000_000;
 
     private TextEntities() {
@@ -36,7 +38,7 @@ public final class TextEntities {
         Display.TextDisplay e = new Display.TextDisplay(EntityTypes.TEXT_DISPLAY, level);
         e.setId(nextId--);
         SynchedEntityData d = e.getEntityData();
-        d.set(Display.DATA_BILLBOARD_RENDER_CONSTRAINTS_ID, Display.BillboardConstraints.CENTER.getId());
+        d.set(Display.DATA_BILLBOARD_RENDER_CONSTRAINTS_ID, BILLBOARD_CENTER);
         d.set(Display.DATA_BRIGHTNESS_OVERRIDE_ID, FULL_BRIGHT);
         d.set(Display.DATA_VIEW_RANGE_ID, 4.0f);
         d.set(Display.TextDisplay.DATA_LINE_WIDTH_ID, 4000);

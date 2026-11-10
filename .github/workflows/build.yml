@@ -40,23 +40,31 @@ jobs:
       - name: Print API of this Minecraft version (debug)
         if: ${{ hashFiles('probe-classes.txt') != '' }}
         continue-on-error: true
-        run: ./gradlew ":${{ matrix.mc }}:probeApi" -PnoAw --no-daemon -q
+        run: |
+          mkdir -p reports
+          ./gradlew ":${{ matrix.mc }}:probeApi" -PnoAw --no-daemon -q 2>&1 | tee "reports/${{ matrix.mc }}-probe.txt"
 
       - name: Build
-        run: ./gradlew ":${{ matrix.mc }}:dist" --no-daemon --stacktrace
+        run: |
+          mkdir -p reports
+          set -o pipefail
+          ./gradlew ":${{ matrix.mc }}:dist" --no-daemon 2>&1 | tee "reports/${{ matrix.mc }}-build.txt"
 
       - uses: actions/upload-artifact@v7
+        if: always()
         with:
           name: musicmod-${{ matrix.mc }}
-          path: build/dist/${{ matrix.mc }}.jar
-          if-no-files-found: error
+          path: |
+            build/dist/${{ matrix.mc }}.jar
+            reports/
+          if-no-files-found: warn
 
   # Puts every jar on the `builds` branch as versions/<mc>.jar: exactly the layout
   # the Discord bot reads from data/mods/musicmod/versions/.
   publish:
     name: Publish jars to the builds branch
     needs: build
-    if: github.event_name != 'pull_request'
+    if: always() && github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/download-artifact@v8
@@ -69,8 +77,10 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          mkdir -p out/versions
-          cp artifacts/*.jar out/versions/
+          mkdir -p out/versions out/reports
+          cp artifacts/build/dist/*.jar out/versions/ 2>/dev/null || true
+          cp artifacts/reports/* out/reports/ 2>/dev/null || true
+          ls -R out
           cd out
           cat > README.md <<MD
           Built from ${GITHUB_REPOSITORY}@${GITHUB_SHA} (branch ${GITHUB_REF_NAME}).
