@@ -279,6 +279,92 @@ abstract class Widget {
         }
     }
 
+    /** Draws a small picture inside a grid tile. */
+    interface Painter {
+        void paint(Draw d, int index, int x, int y, int w, int h);
+    }
+
+    /**
+     * Grid of tiles to pick one option from (click = select), like the theme grid.
+     * Each tile can show its label in its own font and an optional picture above it.
+     */
+    static final class OptionGrid extends Widget {
+        private final int cols;
+        private final int count;
+        private final IntFunction<String> label;
+        private final IntFunction<String> fontOf;
+        private final IntSupplier selected;
+        private final IntConsumer select;
+        private final Painter painter;
+        private final int pictureH;
+
+        OptionGrid(int cols, int count, IntFunction<String> label, IntFunction<String> fontOf,
+                   IntSupplier selected, IntConsumer select, Painter painter, int pictureH) {
+            this.cols = cols;
+            this.count = count;
+            this.label = label;
+            this.fontOf = fontOf;
+            this.selected = selected;
+            this.select = select;
+            this.painter = painter;
+            this.pictureH = painter == null ? 0 : pictureH;
+        }
+
+        private int cellH() {
+            return 18 + pictureH;
+        }
+
+        private int cellW() {
+            return (w - (cols - 1) * 4) / cols;
+        }
+
+        int measure(Draw d, int width) {
+            int rows = (count + cols - 1) / cols;
+            return rows * (cellH() + 4) - 4;
+        }
+
+        void render(Draw d, double mx, double my, boolean hovered) {
+            Theme th = MenuUi.theme();
+            int sel = selected.getAsInt();
+            for (int i = 0; i < count; i++) {
+                int cx = x + (i % cols) * (cellW() + 4);
+                int cy = y + (i / cols) * (cellH() + 4);
+                boolean hov = mx >= cx && mx < cx + cellW() && my >= cy && my < cy + cellH();
+                boolean on = i == sel;
+                d.rect(cx, cy, cx + cellW(), cy + cellH(),
+                        on ? (th.sung & 0x00FFFFFF) | 0x66000000 : hov ? 0x33FFFFFF : 0x1AFFFFFF,
+                        on ? th.accentArgb() : hov ? 0x80FFFFFF : 0x30FFFFFF);
+                if (painter != null) {
+                    painter.paint(d, i, cx + 2, cy + 2, cellW() - 4, pictureH);
+                }
+                String font = fontOf == null ? null : fontOf.apply(i);
+                String text = label.apply(i);
+                int tw = d.textWidth(text, font);
+                int max = cellW() - 6;
+                int ty = cy + pictureH + 5;
+                if (tw > max) {
+                    // Too long for the tile: shrink the label instead of cutting it.
+                    float sc = max / (float) tw;
+                    d.push(cx + cellW() / 2f - max / 2f, ty + 4 * (1 - sc), sc);
+                    d.text(text, 0, 0, on ? 0xFFFFFFFF : 0xFFD6D6D6, false, font);
+                    d.pop();
+                } else {
+                    d.text(text, cx + (cellW() - tw) / 2, ty, on ? 0xFFFFFFFF : 0xFFD6D6D6, false, font);
+                }
+            }
+        }
+
+        boolean click(double mx, double my, int button) {
+            int col = (int) ((mx - x) / (cellW() + 4));
+            int row = (int) ((my - y) / (cellH() + 4));
+            int i = row * cols + col;
+            if (col >= 0 && col < cols && i >= 0 && i < count && i != selected.getAsInt()) {
+                select.accept(i);
+            }
+            return true;
+        }
+    }
+
     /** Wrapped paragraph of dim text. */
     static final class Paragraph extends Widget {
         private final Supplier<String> text;

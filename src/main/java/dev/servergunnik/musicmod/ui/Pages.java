@@ -1,6 +1,7 @@
 package dev.servergunnik.musicmod.ui;
 
 import dev.servergunnik.musicmod.MusicmodClient;
+import dev.servergunnik.musicmod.api.Draw;
 import dev.servergunnik.musicmod.core.Config;
 import dev.servergunnik.musicmod.core.LyricFont;
 import dev.servergunnik.musicmod.core.MediaInfo;
@@ -41,14 +42,12 @@ final class Pages {
         out.add(new NowPlaying());
         out.add(new Widget.Header("musicmod.section.general"));
         out.add(new Widget.Toggle(ui, "musicmod.opt.lyrics", () -> cfg().lyricsEnabled, v -> cfg().lyricsEnabled = v));
-        out.add(new Widget.Choice(ui, "musicmod.opt.display",
-                () -> tr("musicmod.display." + cfg().display.name().toLowerCase()),
-                dir -> cfg().display = cycle(Config.Display.values(), cfg().display, dir)));
-        out.add(new Widget.Choice(ui, "musicmod.opt.highlight",
-                () -> tr("musicmod.highlight." + cfg().highlight.name().toLowerCase()),
-                dir -> cfg().highlight = cycle(Config.Highlight.values(), cfg().highlight, dir)));
-        out.add(new Widget.Choice(ui, "musicmod.opt.font", () -> cfg().font.label,
-                dir -> cfg().font = cycle(LyricFont.values(), cfg().font, dir)));
+        out.add(new Widget.Header("musicmod.opt.display"));
+        out.add(enumGrid(ui, 3, Config.Display.values(), "musicmod.display.", () -> cfg().display, v -> cfg().display = v));
+        out.add(new Widget.Header("musicmod.opt.highlight"));
+        out.add(enumGrid(ui, 3, Config.Highlight.values(), "musicmod.highlight.", () -> cfg().highlight, v -> cfg().highlight = v));
+        out.add(new Widget.Header("musicmod.opt.font"));
+        out.add(fontGrid(ui));
         out.add(new Widget.Toggle(ui, "musicmod.opt.next_line", () -> cfg().nextLine, v -> cfg().nextLine = v));
         out.add(new Widget.Slider(ui, "musicmod.opt.offset", -2000, 2000, 50,
                 () -> cfg().offsetMs, v -> cfg().offsetMs = v, v -> (v > 0 ? "+" : "") + v + " ms"));
@@ -69,8 +68,7 @@ final class Pages {
         out.add(new Widget.Header("musicmod.section.look"));
         out.add(new Widget.ThemeGrid(ui));
         out.add(new Widget.Header("musicmod.section.font"));
-        out.add(new Widget.Choice(ui, "musicmod.opt.font", () -> cfg().font.label,
-                dir -> cfg().font = cycle(LyricFont.values(), cfg().font, dir)));
+        out.add(fontGrid(ui));
         out.add(new Widget.Paragraph(() -> tr("musicmod.styles.help"), MenuUi.DIM));
     }
 
@@ -99,13 +97,18 @@ final class Pages {
         if (!MusicmodClient.skyRendererPresent()) {
             out.add(new Widget.Paragraph(() -> tr("musicmod.skies.need_mod"), 0xFFE8C547));
         }
-        out.add(new Widget.Choice(ui, "musicmod.opt.sky",
-                () -> cfg().sky == Sky.OFF ? tr("musicmod.sky.off") : cfg().sky.label,
-                dir -> cfg().sky = cycle(Sky.values(), cfg().sky, dir)));
-        out.add(new Widget.Button("musicmod.btn.apply_sky", () -> {
-            MusicmodClient.saveConfig();
-            MusicmodClient.applySky();
-        }));
+        Sky[] skies = Sky.values();
+        out.add(new Widget.OptionGrid(3, skies.length,
+                i -> skies[i] == Sky.OFF ? tr("musicmod.sky.off") : skies[i].label, null,
+                () -> cfg().sky.ordinal(),
+                i -> {
+                    // Picking a sky applies it right away (the game reloads its resources).
+                    cfg().sky = skies[i];
+                    MusicmodClient.saveConfig();
+                    MusicmodClient.applySky();
+                    ui.rebuild(); // the status text below changed
+                },
+                Pages::paintSky, 30));
         out.add(new Widget.Paragraph(() -> MusicmodClient.skyStatus().isEmpty() ? ""
                 : tr("musicmod.sky.status." + MusicmodClient.skyStatus()), 0xFFE8C547));
         out.add(new Widget.Paragraph(() -> tr("musicmod.skies.help"), MenuUi.DIM));
@@ -130,6 +133,57 @@ final class Pages {
     private static void info(List<Widget> out) {
         out.add(new Widget.Paragraph(() -> "Musicmod v" + MusicmodClient.version(), MenuUi.TEXT));
         out.add(new Widget.Paragraph(() -> tr("musicmod.info.text"), MenuUi.DIM));
+    }
+
+    private static Widget fontGrid(MenuUi ui) {
+        LyricFont[] fonts = LyricFont.values();
+        return new Widget.OptionGrid(3, fonts.length, i -> fonts[i].label, i -> fonts[i].id,
+                () -> cfg().font.ordinal(),
+                i -> {
+                    cfg().font = fonts[i];
+                    ui.changed();
+                }, null, 0);
+    }
+
+    private static <E extends Enum<E>> Widget enumGrid(MenuUi ui, int cols, E[] values, String keyPrefix,
+                                                       java.util.function.Supplier<E> get, java.util.function.Consumer<E> set) {
+        return new Widget.OptionGrid(cols, values.length, i -> tr(keyPrefix + values[i].name().toLowerCase()), null,
+                () -> get.get().ordinal(),
+                i -> {
+                    set.accept(values[i]);
+                    ui.changed();
+                }, null, 0);
+    }
+
+    /** Small picture of a sky: its colors from zenith to horizon, with a few stars for night skies. */
+    private static void paintSky(Draw d, int index, int x, int y, int w, int h) {
+        Sky sky = Sky.values()[index];
+        int[] c = sky.preview;
+        for (int row = 0; row < h; row++) {
+            float t = row / (float) Math.max(1, h - 1) * (c.length - 1);
+            int i = Math.min(c.length - 2, (int) t);
+            d.fill(x, y + row, x + w, y + row + 1, 0xFF000000 | mix(c[i], c[i + 1], t - i));
+        }
+        if (sky.stars) {
+            int seed = 7 + index * 131;
+            for (int k = 0; k < 14; k++) {
+                seed = seed * 1103515245 + 12345;
+                int sx = x + 1 + ((seed >>> 16) & 0x7FFF) % Math.max(1, w - 2);
+                seed = seed * 1103515245 + 12345;
+                int sy = y + 1 + ((seed >>> 16) & 0x7FFF) % Math.max(1, h / 2);
+                d.fill(sx, sy, sx + 1, sy + 1, 0xE0FFFFFF);
+            }
+        } else if (sky != Sky.OFF) {
+            // Sunsets: a small sun on the horizon.
+            d.fill(x + w / 2 - 2, y + h - 6, x + w / 2 + 2, y + h - 2, 0xFFFFE9B0);
+        }
+    }
+
+    private static int mix(int a, int b, float t) {
+        int r = Math.round(((a >> 16) & 255) * (1 - t) + ((b >> 16) & 255) * t);
+        int g = Math.round(((a >> 8) & 255) * (1 - t) + ((b >> 8) & 255) * t);
+        int bl = Math.round((a & 255) * (1 - t) + (b & 255) * t);
+        return (r << 16) | (g << 8) | bl;
     }
 
     static <E extends Enum<E>> E cycle(E[] values, E current, int dir) {
