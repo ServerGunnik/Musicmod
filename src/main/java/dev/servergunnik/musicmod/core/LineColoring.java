@@ -36,7 +36,7 @@ public final class LineColoring {
                     add(out, " ", theme.sung);
                 }
                 boolean newest = i + 1 >= words.size() || timeMs < words.get(i + 1).startMs();
-                add(out, w.text(), newest ? theme.current : theme.sung);
+                add(out, w.text(), newest ? theme.current : theme.sung, newest);
             }
             return out;
         }
@@ -49,7 +49,7 @@ public final class LineColoring {
                 }
             }
             if (shown != null) {
-                out.add(new Span(shown.text(), theme.current));
+                out.add(new Span(shown.text(), theme.current, true));
             }
             return out;
         }
@@ -63,10 +63,13 @@ public final class LineColoring {
             } else if (mode == Config.Highlight.KARAOKE) {
                 float f = (timeMs - w.startMs()) / (float) Math.max(1, w.endMs() - w.startMs());
                 int cut = Math.max(0, Math.min(w.text().length(), Math.round(f * w.text().length())));
-                add(out, w.text().substring(0, cut), theme.current);
-                add(out, w.text().substring(cut) + sep, theme.upcoming);
+                // The word being sung: the part already sung is bright, the rest still dim,
+                // and the whole word is marked as "now".
+                add(out, w.text().substring(0, cut), theme.current, true);
+                add(out, w.text().substring(cut), theme.upcoming, true);
+                add(out, sep, theme.upcoming);
             } else {
-                add(out, w.text(), theme.current);
+                add(out, w.text(), theme.current, true);
                 add(out, sep, theme.upcoming);
             }
         }
@@ -83,14 +86,18 @@ public final class LineColoring {
     }
 
     private static void add(List<Span> out, String text, int rgb) {
+        add(out, text, rgb, false);
+    }
+
+    private static void add(List<Span> out, String text, int rgb, boolean now) {
         if (text.isEmpty()) {
             return;
         }
-        if (!out.isEmpty() && out.get(out.size() - 1).rgb() == rgb) {
-            Span last = out.remove(out.size() - 1);
-            out.add(new Span(last.text() + text, rgb));
+        Span last = out.isEmpty() ? null : out.get(out.size() - 1);
+        if (last != null && last.rgb() == rgb && last.now() == now) {
+            out.set(out.size() - 1, new Span(last.text() + text, rgb, now));
         } else {
-            out.add(new Span(text, rgb));
+            out.add(new Span(text, rgb, now));
         }
     }
 }

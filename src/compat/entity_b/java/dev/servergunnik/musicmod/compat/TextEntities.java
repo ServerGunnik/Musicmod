@@ -65,7 +65,8 @@ public final class TextEntities {
         public void setText(List<Span> spans, String font) {
             MutableComponent c = Component.empty();
             for (Span s : spans) {
-                c.append(Component.literal(s.text()).withStyle(style -> Fonts.apply(style.withColor(s.rgb()), font)));
+                c.append(Component.literal(s.text()).withStyle(style -> Fonts.apply(
+                        style.withColor(s.rgb()).withBold(s.now()).withUnderlined(s.now()), font)));
             }
             e.getEntityData().set(Display.TextDisplay.DATA_TEXT_ID, c);
         }

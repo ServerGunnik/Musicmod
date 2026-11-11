@@ -272,8 +272,13 @@ public final class HudOverlay {
         // A single word sits in the middle of the bar; everything else starts at the left.
         int cx = c.highlight == Config.Highlight.SINGLE ? Math.max(0, (w - spansW) / 2) : 0;
         for (Span sp : spans) {
+            int sw = d.textWidth(sp.text(), font);
             d.text(sp.text(), cx, 0, 0xFF000000 | sp.rgb(), true, font);
-            cx += d.textWidth(sp.text(), font);
+            if (sp.now()) {
+                // Marker under the word being sung.
+                d.fill(cx, d.lineHeight(), cx + sw, d.lineHeight() + 1, th.accentArgb());
+            }
+            cx += sw;
         }
         d.pop();
 
