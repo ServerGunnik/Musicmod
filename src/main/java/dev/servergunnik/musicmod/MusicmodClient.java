@@ -10,7 +10,8 @@ import dev.servergunnik.musicmod.core.LyricsProvider;
 import dev.servergunnik.musicmod.core.LyricsTracker;
 import dev.servergunnik.musicmod.core.MediaSource;
 import dev.servergunnik.musicmod.core.Sky;
-import dev.servergunnik.musicmod.core.SkyPack;
+import dev.servergunnik.musicmod.core.ModPack;
+import dev.servergunnik.musicmod.core.Styles;
 import dev.servergunnik.musicmod.hud.HudOverlay;
 import dev.servergunnik.musicmod.sky.SkyLyrics;
 import dev.servergunnik.musicmod.ui.MenuUi;
@@ -106,15 +107,16 @@ public final class MusicmodClient implements ClientModInitializer {
         Sky sky = config.sky;
         String mc = FabricLoader.getInstance().getModContainer("minecraft")
                 .map(c -> c.getMetadata().getVersion().getFriendlyString()).orElse("");
-        boolean want = sky.id != null;
-        boolean written = want && SkyPack.write(FabricLoader.getInstance().getGameDir().resolve("resourcepacks"), sky, mc);
+        java.util.Map<String, String> styleFiles = Styles.files(config.styles);
+        boolean want = sky.id != null || !styleFiles.isEmpty();
+        boolean written = want && ModPack.write(FabricLoader.getInstance().getGameDir().resolve("resourcepacks"), sky, styleFiles, mc);
         try {
-            skyStatus = want && !written ? "write_failed" : GameState.applySkyPack(SkyPack.PACK_ID, written);
+            skyStatus = want && !written ? "write_failed" : GameState.applySkyPack(ModPack.PACK_ID, written);
         } catch (RuntimeException e) {
             skyStatus = "error";
             log.warn("Musicmod: cannot switch the sky pack", e);
         }
-        log.info("Musicmod sky: {} -> {} (Minecraft {}, Skyboxify {})", sky, skyStatus, mc,
+        log.info("Musicmod pack: sky {}, styles {} -> {} (Minecraft {}, Skyboxify {})", sky, config.styles, skyStatus, mc,
                 skyRendererPresent() ? "installed" : "NOT installed");
     }
 

@@ -103,15 +103,23 @@ public final class HudOverlay {
     }
 
     private int renderPill(Draw d, Config c, Theme th, LyricsTracker.Snapshot s, int y) {
+        // Three pills side by side: [FPS] [clock + song] [ping].
         List<Segment> segs = new ArrayList<>();
+        List<Integer> groups = new ArrayList<>();
+        if (c.hudFps) {
+            segs.add(textSegment(GameState.fps() + " FPS", TEXT));
+            groups.add(0);
+        }
         if (c.hudClock) {
             String time = LocalTime.now().format(c.hudClock24h ? CLOCK_24 : CLOCK_12);
             segs.add(textSegment(time, TEXT));
+            groups.add(1);
         }
         MediaInfo m = s.media();
         int songIndex = -1;
         if (c.hudSong && m.active()) {
             songIndex = segs.size();
+            groups.add(1);
             String label = m.artist().isEmpty() ? m.title() : m.title() + " – " + m.artist();
             // Where we are in the song: "1:23 / 3:45" (only the elapsed time when the player gives no length).
             String time = !c.hudSongTime ? ""
@@ -131,11 +139,9 @@ public final class HudOverlay {
                 }
             });
         }
-        if (c.hudFps) {
-            segs.add(textSegment(GameState.fps() + " FPS", TEXT));
-        }
         int ping = GameState.ping();
         if (c.hudPing && ping >= 0) {
+            groups.add(2);
             segs.add(new Segment() {
                 final String label = ping + " ms";
 
@@ -154,23 +160,39 @@ public final class HudOverlay {
         }
 
         int pad = 7;
-        int gap = 11;
+        int gap = 11;       // between items inside one pill
+        int pillGap = 4;    // between pills
         int total = 0;
         int[] widths = new int[segs.size()];
         for (int i = 0; i < segs.size(); i++) {
             widths[i] = segs.get(i).width(d);
-            total += widths[i];
+            boolean first = i == 0 || !groups.get(i).equals(groups.get(i - 1));
+            total += widths[i] + (first ? pad * 2 + (i == 0 ? 0 : pillGap) : gap);
         }
-        total += gap * (segs.size() - 1) + pad * 2;
         int h = d.lineHeight() + 9;
         int x = clamp((d.width() - total) / 2 + c.pillDx, 0, d.width() - total);
         y = clamp(y, 0, d.height() - h);
         bounds(PILL, x, y, x + total, y + h);
-        d.rect(x, y, x + total, y + h, th.panel, (th.border & 0x00FFFFFF) | 0xC0000000);
 
-        int cx = x + pad;
+        int cx = x;
         int ty = y + 4;
         for (int i = 0; i < segs.size(); i++) {
+            boolean first = i == 0 || !groups.get(i).equals(groups.get(i - 1));
+            if (first) {
+                // Start a new pill: measure the whole group and draw its background.
+                int gw = pad * 2;
+                for (int k = i; k < segs.size() && groups.get(k).equals(groups.get(i)); k++) {
+                    gw += widths[k] + (k > i ? gap : 0);
+                }
+                if (i > 0) {
+                    cx += pillGap;
+                }
+                d.rect(cx, y, cx + gw, y + h, th.panel, (th.border & 0x00FFFFFF) | 0xC0000000);
+                cx += pad;
+            } else {
+                d.text("\u00B7", cx + gap / 2 - 1, ty, DIM, false);
+                cx += gap;
+            }
             segs.get(i).draw(d, cx, ty);
             if (i == songIndex && m.durationMs() > 0) {
                 // Progress bar under the song, with a marker at the current position.
@@ -181,9 +203,9 @@ public final class HudOverlay {
                 d.fill(cx + fillW - 1, barY - 1, cx + fillW + 1, barY + 3, 0xFFFFFFFF);
             }
             cx += widths[i];
-            if (i + 1 < segs.size()) {
-                d.text("·", cx + gap / 2 - 1, ty, DIM, false);
-                cx += gap;
+            boolean last = i + 1 >= segs.size() || !groups.get(i + 1).equals(groups.get(i));
+            if (last) {
+                cx += pad;
             }
         }
         return y + h;

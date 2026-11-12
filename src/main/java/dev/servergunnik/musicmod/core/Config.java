@@ -28,6 +28,8 @@ public final class Config {
     public Theme theme = Theme.LAVENDER;
     public LyricFont font = LyricFont.MINECRAFT;
     public Sky sky = Sky.OFF;
+    /** PvP styles: kind ("totem", "crystal", "obsidian", "anchor") -> style id; missing or "" = vanilla. */
+    public java.util.Map<String, String> styles = new java.util.HashMap<>();
 
     // HUD
     public boolean hudEnabled = true;
@@ -63,6 +65,7 @@ public final class Config {
         if (theme == null) theme = Theme.LAVENDER;
         if (font == null) font = LyricFont.MINECRAFT;
         if (sky == null) sky = Sky.OFF;
+        if (styles == null) styles = new java.util.HashMap<>();
         offsetMs = clamp(offsetMs, -5000, 5000);
         distance = clamp(distance, 8, 96);
         height = clamp(height, -8, 48);

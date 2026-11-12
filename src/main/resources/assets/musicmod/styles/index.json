@@ -1,0 +1,227 @@
+{
+ "obsidian": {
+  "midnight": {
+   "label": "Midnight",
+   "color": "#121b4d",
+   "files": {
+    "textures/block/obsidian.png": "obsidian/midnight/obsidian.png"
+   }
+  },
+  "crimson": {
+   "label": "Crimson",
+   "color": "#5a0f1e",
+   "files": {
+    "textures/block/obsidian.png": "obsidian/crimson/obsidian.png"
+   }
+  },
+  "starry": {
+   "label": "Starry",
+   "color": "#0a0a16",
+   "files": {
+    "textures/block/obsidian.png": "obsidian/starry/obsidian.png"
+   }
+  },
+  "outline": {
+   "label": "Outline",
+   "color": "#150f26",
+   "files": {
+    "textures/block/obsidian.png": "obsidian/outline/obsidian.png"
+   }
+  },
+  "lava": {
+   "label": "Lava",
+   "color": "#17100b",
+   "files": {
+    "textures/block/obsidian.png": "obsidian/lava/obsidian.png"
+   }
+  },
+  "frost": {
+   "label": "Frost",
+   "color": "#7c9cb8",
+   "files": {
+    "textures/block/obsidian.png": "obsidian/frost/obsidian.png"
+   }
+  }
+ },
+ "totem": {
+  "gold": {
+   "label": "Gold",
+   "color": "#f2c230",
+   "files": {
+    "textures/item/totem_of_undying.png": "totem/gold/totem_of_undying.png"
+   }
+  },
+  "ice": {
+   "label": "Ice",
+   "color": "#8fd3f0",
+   "files": {
+    "textures/item/totem_of_undying.png": "totem/ice/totem_of_undying.png"
+   }
+  },
+  "amethyst": {
+   "label": "Amethyst",
+   "color": "#a56be8",
+   "files": {
+    "textures/item/totem_of_undying.png": "totem/amethyst/totem_of_undying.png"
+   }
+  },
+  "lava": {
+   "label": "Lava",
+   "color": "#f07a1e",
+   "files": {
+    "textures/item/totem_of_undying.png": "totem/lava/totem_of_undying.png"
+   }
+  },
+  "galaxy": {
+   "label": "Galaxy",
+   "color": "#4a35b0",
+   "files": {
+    "textures/item/totem_of_undying.png": "totem/galaxy/totem_of_undying.png"
+   }
+  },
+  "emerald": {
+   "label": "Emerald",
+   "color": "#2fc46a",
+   "files": {
+    "textures/item/totem_of_undying.png": "totem/emerald/totem_of_undying.png"
+   }
+  }
+ },
+ "crystal": {
+  "amethyst": {
+   "label": "Amethyst",
+   "color": "#9b5cf0",
+   "files": {
+    "textures/entity/end_crystal/end_crystal.png": "crystal/amethyst/end_crystal.png"
+   }
+  },
+  "aqua": {
+   "label": "Aqua",
+   "color": "#35c6f0",
+   "files": {
+    "textures/entity/end_crystal/end_crystal.png": "crystal/aqua/end_crystal.png"
+   }
+  },
+  "inferno": {
+   "label": "Inferno",
+   "color": "#f0622a",
+   "files": {
+    "textures/entity/end_crystal/end_crystal.png": "crystal/inferno/end_crystal.png"
+   }
+  },
+  "toxic": {
+   "label": "Toxic",
+   "color": "#4fe070",
+   "files": {
+    "textures/entity/end_crystal/end_crystal.png": "crystal/toxic/end_crystal.png"
+   }
+  },
+  "frost": {
+   "label": "Frost",
+   "color": "#cfe6ff",
+   "files": {
+    "textures/entity/end_crystal/end_crystal.png": "crystal/frost/end_crystal.png"
+   }
+  },
+  "gold": {
+   "label": "Gold",
+   "color": "#f2c430",
+   "files": {
+    "textures/entity/end_crystal/end_crystal.png": "crystal/gold/end_crystal.png"
+   }
+  },
+  "eclipse": {
+   "label": "Eclipse",
+   "color": "#2a2a30",
+   "files": {
+    "textures/entity/end_crystal/end_crystal.png": "crystal/eclipse/end_crystal.png"
+   }
+  }
+ },
+ "anchor": {
+  "vibrant": {
+   "label": "Vibrant",
+   "color": "#9b3cf0",
+   "files": {
+    "textures/block/respawn_anchor_side0.png": "anchor/vibrant/respawn_anchor_side0.png",
+    "textures/block/respawn_anchor_side1.png": "anchor/vibrant/respawn_anchor_side1.png",
+    "textures/block/respawn_anchor_side2.png": "anchor/vibrant/respawn_anchor_side2.png",
+    "textures/block/respawn_anchor_side3.png": "anchor/vibrant/respawn_anchor_side3.png",
+    "textures/block/respawn_anchor_side4.png": "anchor/vibrant/respawn_anchor_side4.png",
+    "textures/block/respawn_anchor_top_off.png": "anchor/vibrant/respawn_anchor_top_off.png",
+    "textures/block/respawn_anchor_top.png": "anchor/vibrant/respawn_anchor_top.png",
+    "textures/block/respawn_anchor_bottom.png": "anchor/vibrant/respawn_anchor_bottom.png"
+   }
+  },
+  "golden": {
+   "label": "Golden",
+   "color": "#e09a1e",
+   "files": {
+    "textures/block/respawn_anchor_side0.png": "anchor/golden/respawn_anchor_side0.png",
+    "textures/block/respawn_anchor_side1.png": "anchor/golden/respawn_anchor_side1.png",
+    "textures/block/respawn_anchor_side2.png": "anchor/golden/respawn_anchor_side2.png",
+    "textures/block/respawn_anchor_side3.png": "anchor/golden/respawn_anchor_side3.png",
+    "textures/block/respawn_anchor_side4.png": "anchor/golden/respawn_anchor_side4.png",
+    "textures/block/respawn_anchor_top_off.png": "anchor/golden/respawn_anchor_top_off.png",
+    "textures/block/respawn_anchor_top.png": "anchor/golden/respawn_anchor_top.png",
+    "textures/block/respawn_anchor_bottom.png": "anchor/golden/respawn_anchor_bottom.png"
+   }
+  },
+  "aqua": {
+   "label": "Aqua",
+   "color": "#1eb8d0",
+   "files": {
+    "textures/block/respawn_anchor_side0.png": "anchor/aqua/respawn_anchor_side0.png",
+    "textures/block/respawn_anchor_side1.png": "anchor/aqua/respawn_anchor_side1.png",
+    "textures/block/respawn_anchor_side2.png": "anchor/aqua/respawn_anchor_side2.png",
+    "textures/block/respawn_anchor_side3.png": "anchor/aqua/respawn_anchor_side3.png",
+    "textures/block/respawn_anchor_side4.png": "anchor/aqua/respawn_anchor_side4.png",
+    "textures/block/respawn_anchor_top_off.png": "anchor/aqua/respawn_anchor_top_off.png",
+    "textures/block/respawn_anchor_top.png": "anchor/aqua/respawn_anchor_top.png",
+    "textures/block/respawn_anchor_bottom.png": "anchor/aqua/respawn_anchor_bottom.png"
+   }
+  },
+  "void": {
+   "label": "Void",
+   "color": "#9a9aa6",
+   "files": {
+    "textures/block/respawn_anchor_side0.png": "anchor/void/respawn_anchor_side0.png",
+    "textures/block/respawn_anchor_side1.png": "anchor/void/respawn_anchor_side1.png",
+    "textures/block/respawn_anchor_side2.png": "anchor/void/respawn_anchor_side2.png",
+    "textures/block/respawn_anchor_side3.png": "anchor/void/respawn_anchor_side3.png",
+    "textures/block/respawn_anchor_side4.png": "anchor/void/respawn_anchor_side4.png",
+    "textures/block/respawn_anchor_top_off.png": "anchor/void/respawn_anchor_top_off.png",
+    "textures/block/respawn_anchor_top.png": "anchor/void/respawn_anchor_top.png",
+    "textures/block/respawn_anchor_bottom.png": "anchor/void/respawn_anchor_bottom.png"
+   }
+  },
+  "neon": {
+   "label": "Neon",
+   "color": "#f02ac0",
+   "files": {
+    "textures/block/respawn_anchor_side0.png": "anchor/neon/respawn_anchor_side0.png",
+    "textures/block/respawn_anchor_side1.png": "anchor/neon/respawn_anchor_side1.png",
+    "textures/block/respawn_anchor_side2.png": "anchor/neon/respawn_anchor_side2.png",
+    "textures/block/respawn_anchor_side3.png": "anchor/neon/respawn_anchor_side3.png",
+    "textures/block/respawn_anchor_side4.png": "anchor/neon/respawn_anchor_side4.png",
+    "textures/block/respawn_anchor_top_off.png": "anchor/neon/respawn_anchor_top_off.png",
+    "textures/block/respawn_anchor_top.png": "anchor/neon/respawn_anchor_top.png",
+    "textures/block/respawn_anchor_bottom.png": "anchor/neon/respawn_anchor_bottom.png"
+   }
+  },
+  "royal": {
+   "label": "Royal",
+   "color": "#7a3ad0",
+   "files": {
+    "textures/block/respawn_anchor_side0.png": "anchor/royal/respawn_anchor_side0.png",
+    "textures/block/respawn_anchor_side1.png": "anchor/royal/respawn_anchor_side1.png",
+    "textures/block/respawn_anchor_side2.png": "anchor/royal/respawn_anchor_side2.png",
+    "textures/block/respawn_anchor_side3.png": "anchor/royal/respawn_anchor_side3.png",
+    "textures/block/respawn_anchor_side4.png": "anchor/royal/respawn_anchor_side4.png",
+    "textures/block/respawn_anchor_top_off.png": "anchor/royal/respawn_anchor_top_off.png",
+    "textures/block/respawn_anchor_top.png": "anchor/royal/respawn_anchor_top.png",
+    "textures/block/respawn_anchor_bottom.png": "anchor/royal/respawn_anchor_bottom.png"
+   }
+  }
+ }
+}

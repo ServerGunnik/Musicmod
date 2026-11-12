@@ -145,8 +145,99 @@ def pink_sunset(d, e, az):
     return _sunset(d, e, az, stops, np.array([1.0, 0.8, 0.7]), np.array([1.0, 0.8, 0.9]), 127)
 
 
+
+def _tangent(d, az_deg, el_deg):
+    """Flat coordinates (degrees) around a point of the sky: u to the right, v up, plus the angle to it."""
+    az, el = np.radians(az_deg), np.radians(el_deg)
+    c = np.array([np.cos(el) * np.cos(az), np.sin(el), np.cos(el) * np.sin(az)])
+    r = np.cross(c, np.array([0.0, 1.0, 0.0]))
+    r /= np.linalg.norm(r)
+    up = np.cross(r, c)
+    dc = np.clip((d * c).sum(-1), 1e-6, None)
+    front = (d * c).sum(-1) > 0.2
+    u = np.degrees((d * r).sum(-1) / dc)
+    v = np.degrees((d * up).sum(-1) / dc)
+    return np.where(front, u, 999.0), np.where(front, v, 999.0)
+
+
+def saturn(d, e, az):
+    base = ramp(e, [(-90, rgb('#03030c')), (0, rgb('#141235')), (30, rgb('#0b0a24')), (90, rgb('#05051a'))])
+    mist = smooth(0.5, 0.8, fbm(d * 2.6 + 2.0, 211))[..., None] * np.array([0.25, 0.2, 0.4])
+    col = base + 0.35 * mist + (stars(d, 31, 0.08) + 0.6 * stars(d, 32, 0.1, 120.0))[..., None]
+    u, v = _tangent(d, -90.0, 10.0)                     # the planet hangs low in the north
+    tilt = np.radians(-18)
+    ur, vr = u * np.cos(tilt) - v * np.sin(tilt), u * np.sin(tilt) + v * np.cos(tilt)
+    R = 6.2
+    rr = np.sqrt(ur ** 2 + vr ** 2)
+    ring_r = np.sqrt(ur ** 2 + (vr / 0.28) ** 2)
+    ring = ((ring_r > 1.35 * R) & (ring_r < 2.3 * R)).astype(float) * (0.55 + 0.45 * np.sin(ring_r * 4.0))
+    gap = (np.abs(ring_r - 1.9 * R) < 0.12 * R)
+    ring = np.where(gap, 0.0, ring)
+    planet = smooth(R, R - 0.25, rr)
+    bands = 0.82 + 0.18 * np.sin(vr * 2.6 + 0.6 * np.sin(ur * 0.7))
+    light = np.clip(0.55 + 0.45 * (-ur * 0.6 + vr * 0.5) / R, 0.15, 1.0)
+    pcol = (bands * light)[..., None] * np.array([0.93, 0.8, 0.6])
+    rcol = ring[..., None] * np.array([0.85, 0.76, 0.6])
+    behind = vr > 0                                      # far half of the ring passes behind the planet
+    col = col * (1 - (ring * 0.9)[..., None]) + rcol
+    col = np.where((planet > 0)[..., None] & (behind | (ring <= 0))[..., None], col * (1 - planet[..., None]) + pcol * planet[..., None], col)
+    return col
+
+
+def eclipse(d, e, az):
+    base = ramp(e, [(-90, rgb('#02040b')), (0, rgb('#1a2647')), (25, rgb('#0d1630')), (90, rgb('#050a1c'))])
+    col = base + (stars(d, 37, 0.07) * 0.9)[..., None]
+    u, v = _tangent(d, -90.0, 13.0)
+    rr = np.sqrt(u ** 2 + v ** 2)
+    ang = np.arctan2(v, u)
+    rays = 0.6 + 0.4 * np.sin(ang * 23 + 3 * np.sin(ang * 5)) * np.sin(ang * 7 + 1.3)
+    R = 3.8
+    corona = np.exp(-np.clip(rr - R, 0, None) / 1.3) + 0.55 * np.exp(-np.clip(rr - R, 0, None) / 5.0) * rays
+    col = col + corona[..., None] * np.array([0.9, 0.95, 1.0])
+    return col * (1 - smooth(R + 0.15, R - 0.1, rr))[..., None]
+
+
+def blood_moon(d, e, az):
+    base = ramp(e, [(-90, rgb('#0a0203')), (0, rgb('#5a1614')), (20, rgb('#3a0d10')), (90, rgb('#120407'))])
+    u, v = _tangent(d, -90.0, 13.0)
+    rr = np.sqrt(u ** 2 + v ** 2)
+    col = base + (np.exp(-rr / 16.0) * 0.5)[..., None] * np.array([0.9, 0.2, 0.15]) + (stars(d, 41, 0.06) * 0.8)[..., None]
+    R = 6.6
+    disk = smooth(R, R - 0.3, rr)
+    seas = smooth(0.45, 0.7, fbm(np.stack([u, v, np.zeros_like(u)], -1) * 0.35 + 7.0, 223))
+    craters = smooth(0.62, 0.7, fbm(np.stack([u, v, np.zeros_like(u)], -1) * 1.3, 227))
+    shade = np.clip(1.0 - 0.35 * (rr / R) ** 3, 0, 1) * (1 - 0.3 * seas) * (1 - 0.25 * craters)
+    mcol = shade[..., None] * np.array([1.0, 0.36, 0.22])
+    return col * (1 - disk[..., None]) + mcol * disk[..., None]
+
+
+def neon_horizon(d, e, az):
+    base = ramp(e, [(-90, rgb('#120018')), (-3, rgb('#3a0a4a')), (0, rgb('#ff3fb4')), (8, rgb('#c026b8')),
+                    (24, rgb('#4a1a8a')), (50, rgb('#1c0f4a')), (90, rgb('#0d0828'))])
+    u, v = _tangent(d, 180.0, 0.5)                      # sun sitting on the western horizon
+    rr = np.sqrt(u ** 2 + v ** 2)
+    R = 7.0
+    stripes = (np.mod(v + 30, 1.6) > 0.55) | (v > 2.5)
+    sun = smooth(R, R - 0.3, rr) * stripes * (v > -0.3)
+    scol = ramp(np.clip(v * 3, -5, 30), [(-5, rgb('#ff4fa0')), (10, rgb('#ffb040')), (30, rgb('#fff080'))])
+    glow = (np.exp(-rr / 14.0) * 0.45)[..., None] * np.array([1.0, 0.35, 0.7])
+    st = (stars(d, 43, 0.06) * smooth(18, 45, e))[..., None]
+    return (base + glow) * (1 - sun[..., None]) + scol * sun[..., None] + st
+
+
+def cherry(d, e, az):
+    base = ramp(e, [(-90, rgb('#4a3050')), (-4, rgb('#c88aa8')), (0, rgb('#ffd0dc')), (12, rgb('#ffb3d0')),
+                    (30, rgb('#d9a6e8')), (60, rgb('#b19cf0')), (90, rgb('#9a8cf0'))])
+    puffs = smooth(0.48, 0.72, fbm(d * np.array([2.5, 7.0, 2.5]) + 1.0, 233))
+    low = np.exp(-((e - 20) / 16.0) ** 2)
+    wisps = smooth(0.55, 0.8, fbm(d * np.array([5.0, 16.0, 5.0]), 239)) * np.exp(-((e - 9) / 8.0) ** 2)
+    return base * (1 - 0.15 * (puffs * low)[..., None]) + 0.5 * (puffs * low)[..., None] * np.array([1.0, 0.92, 0.98]) \
+        + 0.35 * wisps[..., None] * np.array([1.0, 0.8, 0.9])
+
+
 SKIES = {'nebula': nebula, 'galaxy': galaxy, 'aurora': aurora, 'starry': starry,
-         'sunset': sunset, 'pink_sunset': pink_sunset}
+         'sunset': sunset, 'pink_sunset': pink_sunset, 'saturn': saturn, 'eclipse': eclipse,
+         'blood_moon': blood_moon, 'neon_horizon': neon_horizon, 'cherry': cherry}
 
 
 def shade(fn, d):
@@ -184,7 +275,11 @@ def render(fn):
 
 if __name__ == '__main__':
     os.makedirs(OUT, exist_ok=True)
+    import sys
+    only = sys.argv[1:]
     for name, fn in SKIES.items():
+        if only and name not in only:
+            continue
         path = os.path.join(OUT, name + '.png')
         render(fn).save(path, optimize=True)
         print(name, os.path.getsize(path) // 1024, 'KB')

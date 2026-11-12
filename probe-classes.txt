@@ -1,7 +1,7 @@
 # Classes printed by `./gradlew :<mc>:probeApi` (javap -p). Optional regex after
 # the class name keeps only matching lines.
-net.minecraft.client.gui.GuiGraphics (fill|drawString|text\(|pose|enableScissor|disableScissor|guiWidth|guiHeight)
-net.minecraft.client.gui.GuiGraphicsExtractor (fill|drawString|text|pose|Scissor|guiWidth|guiHeight)
+net.minecraft.client.gui.GuiGraphics (blit\(|fill|drawString|text\(|pose|enableScissor|disableScissor|guiWidth|guiHeight)
+net.minecraft.client.gui.GuiGraphicsExtractor (blit\(|fill|drawString|text|pose|Scissor|guiWidth|guiHeight)
 net.minecraft.client.gui.screens.Screen (render|extract|mouse|keyPressed|isPauseScreen|removed|onClose|Screen\()
 net.minecraft.client.KeyMapping (KeyMapping\(|consumeClick|Category)
 net.minecraft.client.KeyMapping$Category

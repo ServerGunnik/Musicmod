@@ -11,7 +11,12 @@ public enum Sky {
     AURORA("Aurora", "aurora", true, 0x020912, 0x04131F, 0x3DFFA0, 0x06202A),
     STARRY("Starry night", "starry", true, 0x050A25, 0x0A1640, 0x12245C, 0x1A3170),
     SUNSET("Sunset", "sunset", false, 0x1A1D4A, 0x8A4A9C, 0xFF6F6F, 0xFF9A4A),
-    PINK_SUNSET("Pink sunset", "pink_sunset", false, 0x6A78D0, 0xC79BE0, 0xFF9EC4, 0xFFC2A8);
+    PINK_SUNSET("Pink sunset", "pink_sunset", false, 0x6A78D0, 0xC79BE0, 0xFF9EC4, 0xFFC2A8),
+    CHERRY("Cherry blossom", "cherry", false, 0x9A8CF0, 0xD9A6E8, 0xFFB3D0, 0xFFD0DC),
+    NEON_HORIZON("Neon horizon", "neon_horizon", true, 0x0D0828, 0x4A1A8A, 0xC026B8, 0xFF3FB4),
+    SATURN("Saturn", "saturn", true, 0x05051A, 0x0B0A24, 0x141235, 0x1A1840),
+    ECLIPSE("Solar eclipse", "eclipse", true, 0x050A1C, 0x0D1630, 0x1A2647, 0x22305A),
+    BLOOD_MOON("Blood moon", "blood_moon", true, 0x120407, 0x3A0D10, 0x5A1614, 0x6A1C18);
 
     public final String label;
     public final String id;

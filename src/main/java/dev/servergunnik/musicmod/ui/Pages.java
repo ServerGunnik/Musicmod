@@ -6,6 +6,7 @@ import dev.servergunnik.musicmod.core.Config;
 import dev.servergunnik.musicmod.core.LyricFont;
 import dev.servergunnik.musicmod.core.MediaInfo;
 import dev.servergunnik.musicmod.core.Sky;
+import dev.servergunnik.musicmod.core.Styles;
 
 import java.util.List;
 
@@ -74,6 +75,45 @@ final class Pages {
         out.add(new Widget.Header("musicmod.section.font"));
         out.add(fontGrid(ui));
         out.add(new Widget.Paragraph(() -> tr("musicmod.styles.help"), MenuUi.DIM));
+        // PvP styles: recolored textures, one grid per item/block.
+        for (String kind : Styles.KINDS) {
+            List<Styles.Style> list = Styles.of(kind);
+            if (list.isEmpty()) {
+                continue;
+            }
+            out.add(new Widget.Header("musicmod.style." + kind));
+            out.add(new Widget.OptionGrid(4, list.size() + 1,
+                    i -> i == 0 ? tr("musicmod.style.default") : list.get(i - 1).label(), null,
+                    () -> {
+                        String chosen = cfg().styles.getOrDefault(kind, "");
+                        for (int i = 0; i < list.size(); i++) {
+                            if (list.get(i).id().equals(chosen)) {
+                                return i + 1;
+                            }
+                        }
+                        return 0;
+                    },
+                    i -> {
+                        cfg().styles.put(kind, i == 0 ? "" : list.get(i - 1).id());
+                        MusicmodClient.saveConfig();
+                        MusicmodClient.applySky();
+                        ui.rebuild();
+                    },
+                    (d, i, x, y, w, h) -> {
+                        // Swatch in the style's color (a crossed box for the vanilla look).
+                        int cx = x + w / 2;
+                        if (i == 0) {
+                            d.rect(cx - 7, y + 1, cx + 7, y + h - 1, 0x30FFFFFF, 0x80FFFFFF);
+                            d.centered("\u00D7", cx, y + h / 2 - 4, MenuUi.DIM, false);
+                        } else {
+                            int col = list.get(i - 1).color();
+                            d.rect(cx - 7, y + 1, cx + 7, y + h - 1, 0xFF000000 | col, 0xFF000000 | mix(col, 0xFFFFFF, 0.45f));
+                            d.fill(cx - 5, y + 3, cx - 1, y + 6, 0xFF000000 | mix(col, 0xFFFFFF, 0.6f));
+                        }
+                    }, 18));
+        }
+        out.add(new Widget.Paragraph(() -> MusicmodClient.skyStatus().isEmpty() ? ""
+                : tr("musicmod.pack.status." + MusicmodClient.skyStatus()), 0xFFE8C547));
     }
 
     private static void hud(List<Widget> out, MenuUi ui) {

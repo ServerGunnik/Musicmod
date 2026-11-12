@@ -9,7 +9,7 @@
   "musicmod.tab.lyrics": "Lyrics",
   "musicmod.tab.lyrics.desc": "Synced lyrics in the world, where you look, and in the top bar.",
   "musicmod.tab.styles": "Styles",
-  "musicmod.tab.styles.desc": "Colors and fonts of the lyrics.",
+  "musicmod.tab.styles.desc": "Colors, fonts and PvP styles.",
   "musicmod.tab.hud": "HUD",
   "musicmod.tab.hud.desc": "Top pill and the info next to the hotbar.",
   "musicmod.tab.skies": "Skies",
@@ -108,5 +108,15 @@
   "musicmod.opt.hud_song_time": "Song position",
   "musicmod.opt.hud_song_time.desc": "Shows the time in the song, e.g. 1:23 / 3:45.",
   "musicmod.banner": "Skies · Lyrics · Styles",
-  "musicmod.section.now_playing": "Now playing"
+  "musicmod.section.now_playing": "Now playing",
+  "musicmod.style.totem": "Totem",
+  "musicmod.style.crystal": "End crystal",
+  "musicmod.style.obsidian": "Obsidian",
+  "musicmod.style.anchor": "Respawn anchor",
+  "musicmod.style.default": "Default",
+  "musicmod.pack.status.on": "Applied. The game reloaded its resources.",
+  "musicmod.pack.status.off": "Everything is back to default.",
+  "musicmod.pack.status.missing": "The game does not list the pack \"musicmod_sky\". Send the game log to the mod author.",
+  "musicmod.pack.status.write_failed": "Could not write the pack to the resourcepacks folder.",
+  "musicmod.pack.status.error": "Applying failed. See the game log."
 }
