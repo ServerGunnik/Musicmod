@@ -2,6 +2,7 @@ package dev.servergunnik.musicmod.ui;
 
 import dev.servergunnik.musicmod.MusicmodClient;
 import dev.servergunnik.musicmod.api.Draw;
+import dev.servergunnik.musicmod.core.CapeList;
 import dev.servergunnik.musicmod.core.Config;
 import dev.servergunnik.musicmod.core.LyricFont;
 import dev.servergunnik.musicmod.core.MediaInfo;
@@ -75,6 +76,36 @@ final class Pages {
         out.add(new Widget.Header("musicmod.section.font"));
         out.add(fontGrid(ui));
         out.add(new Widget.Paragraph(() -> tr("musicmod.styles.help"), MenuUi.DIM));
+        // Capes: tiles with a picture of the design. Only you see your cape.
+        List<CapeList.Cape> capes = CapeList.all();
+        if (!capes.isEmpty()) {
+            out.add(new Widget.Header("musicmod.section.cape"));
+            out.add(new Widget.OptionGrid(5, capes.size() + 1,
+                    i -> i == 0 ? tr("musicmod.cape.none") : capes.get(i - 1).label(), null,
+                    () -> {
+                        for (int i = 0; i < capes.size(); i++) {
+                            if (capes.get(i).id().equals(cfg().cape)) {
+                                return i + 1;
+                            }
+                        }
+                        return 0;
+                    },
+                    i -> {
+                        cfg().cape = i == 0 ? "" : capes.get(i - 1).id();
+                        ui.changed();
+                    },
+                    (d, i, x, y, w, h) -> {
+                        int iw = h * 40 / 64;   // the design is 40x64
+                        int ix = x + (w - iw) / 2;
+                        if (i == 0) {
+                            d.rect(ix, y, ix + iw, y + h, 0x30FFFFFF, 0x80FFFFFF);
+                            d.centered("\u00D7", x + w / 2, y + h / 2 - 4, MenuUi.DIM, false);
+                        } else {
+                            d.image("textures/cape/" + capes.get(i - 1).id() + "_icon.png", ix, y, iw, h);
+                        }
+                    }, 48));
+            out.add(new Widget.Paragraph(() -> tr("musicmod.cape.help"), MenuUi.DIM));
+        }
         // PvP styles: recolored textures, one grid per item/block.
         for (String kind : Styles.KINDS) {
             List<Styles.Style> list = Styles.of(kind);

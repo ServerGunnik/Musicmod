@@ -9,7 +9,7 @@
   "musicmod.tab.lyrics": "Teksty",
   "musicmod.tab.lyrics.desc": "Tekst w świecie, tam gdzie patrzysz, i u góry ekranu.",
   "musicmod.tab.styles": "Style",
-  "musicmod.tab.styles.desc": "Kolory, czcionki i style PvP.",
+  "musicmod.tab.styles.desc": "Kolory, czcionki, peleryny i style PvP.",
   "musicmod.tab.hud": "HUD",
   "musicmod.tab.hud.desc": "Górna pigułka i informacje przy hotbarze.",
   "musicmod.tab.skies": "Niebo",
@@ -118,5 +118,8 @@
   "musicmod.pack.status.off": "Wszystko wróciło do domyślnego wyglądu.",
   "musicmod.pack.status.missing": "Gra nie widzi paczki „musicmod_sky”. Wyślij log gry autorowi moda.",
   "musicmod.pack.status.write_failed": "Nie udało się zapisać paczki w folderze resourcepacks.",
-  "musicmod.pack.status.error": "Nie udało się zastosować. Zobacz log gry."
+  "musicmod.pack.status.error": "Nie udało się zastosować. Zobacz log gry.",
+  "musicmod.section.cape": "Peleryna",
+  "musicmod.cape.none": "Brak",
+  "musicmod.cape.help": "Tę pelerynę widzisz tylko Ty (inni gracze jej nie zobaczą). Wciśnij F5, żeby ją obejrzeć."
 }

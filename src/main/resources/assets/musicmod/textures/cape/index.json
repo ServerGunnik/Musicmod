@@ -1,0 +1,50 @@
+[
+ {
+  "id": "note",
+  "label": "Note"
+ },
+ {
+  "id": "galaxy",
+  "label": "Galaxy"
+ },
+ {
+  "id": "aurora",
+  "label": "Aurora"
+ },
+ {
+  "id": "sunset",
+  "label": "Sunset"
+ },
+ {
+  "id": "flame",
+  "label": "Flame"
+ },
+ {
+  "id": "ice",
+  "label": "Ice"
+ },
+ {
+  "id": "heart",
+  "label": "Heart"
+ },
+ {
+  "id": "moon",
+  "label": "Moon"
+ },
+ {
+  "id": "checker",
+  "label": "Checker"
+ },
+ {
+  "id": "neon",
+  "label": "Neon"
+ },
+ {
+  "id": "mint",
+  "label": "Mint"
+ },
+ {
+  "id": "bolt",
+  "label": "Bolt"
+ }
+]

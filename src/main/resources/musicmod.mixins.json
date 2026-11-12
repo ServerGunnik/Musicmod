@@ -1,0 +1,11 @@
+{
+  "required": false,
+  "package": "dev.servergunnik.musicmod.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "client": [
+    "PlayerCapeMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 0
+  }
+}

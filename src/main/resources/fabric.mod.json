@@ -16,6 +16,7 @@
     "client": ["dev.servergunnik.musicmod.MusicmodClient"]
   },
   "accessWidener": "musicmod.accesswidener",
+  "mixins": ["musicmod.mixins.json"],
   "depends": {
     "fabricloader": ">=0.16.0",
     "fabric-api": "*",

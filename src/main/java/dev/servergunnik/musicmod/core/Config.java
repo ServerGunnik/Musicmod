@@ -28,6 +28,8 @@ public final class Config {
     public Theme theme = Theme.LAVENDER;
     public LyricFont font = LyricFont.MINECRAFT;
     public Sky sky = Sky.OFF;
+    /** Id of the chosen cape, "" = none (keeps the player's own cape). */
+    public String cape = "";
     /** PvP styles: kind ("totem", "crystal", "obsidian", "anchor") -> style id; missing or "" = vanilla. */
     public java.util.Map<String, String> styles = new java.util.HashMap<>();
 
@@ -65,6 +67,7 @@ public final class Config {
         if (theme == null) theme = Theme.LAVENDER;
         if (font == null) font = LyricFont.MINECRAFT;
         if (sky == null) sky = Sky.OFF;
+        if (cape == null) cape = "";
         if (styles == null) styles = new java.util.HashMap<>();
         offsetMs = clamp(offsetMs, -5000, 5000);
         distance = clamp(distance, 8, 96);

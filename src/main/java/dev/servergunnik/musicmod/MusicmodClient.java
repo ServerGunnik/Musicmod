@@ -125,6 +125,12 @@ public final class MusicmodClient implements ClientModInitializer {
         return skyStatus;
     }
 
+    /** Cape chosen in the menu, or null for none (also null before the mod has started). */
+    public static String capeId() {
+        Config c = config;
+        return c == null || c.cape == null || c.cape.isEmpty() ? null : c.cape;
+    }
+
     public static boolean skyRendererPresent() {
         return FabricLoader.getInstance().isModLoaded("skyboxify");
     }
