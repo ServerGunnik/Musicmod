@@ -242,7 +242,7 @@ public final class MediaSource {
         Path out = null;
         if (!source.isEmpty()) {
             Path target = workDir.resolve("cover_" + (coverVersion & 1) + ".png");
-            if (Images.cover(Path.of(source), target, 64)) {
+            if (Images.cover(Path.of(source), target, 256)) {
                 out = target;
             }
         }

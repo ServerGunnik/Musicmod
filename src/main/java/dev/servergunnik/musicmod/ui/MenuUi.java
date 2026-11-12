@@ -40,6 +40,11 @@ public final class MenuUi {
     private boolean dirty;
     private boolean needsLayout = true;
 
+    private final SidePanel side = new SidePanel();
+    private boolean showSide;
+    private int sideX;
+    private int sideY;
+
     // "Move HUD" mode: the panel is hidden and the HUD elements can be dragged.
     private boolean moving;
     private int moveIndex = -1;
@@ -173,6 +178,14 @@ public final class MenuUi {
         scale = Math.min(1f, Math.min((d.width() - 16) / (float) W, (d.height() - 16) / (float) H));
         ox = (d.width() - W * scale) / 2f;
         oy = (d.height() - H * scale) / 2f;
+        // With enough room the menu moves right and a "now playing" panel sits on its left.
+        int room = SidePanel.WIDTH + 28;
+        showSide = d.width() - W * scale >= room + 24;
+        if (showSide) {
+            ox += room / 2f;
+            sideX = Math.round(ox) - room + 8;
+            sideY = Math.round(oy) + 6;
+        }
         double lx = (mouseX - ox) / scale;
         double ly = (mouseY - oy) / scale;
         Theme th = theme();
@@ -181,6 +194,9 @@ public final class MenuUi {
         }
 
         d.fill(0, 0, d.width(), d.height(), 0x70000000);
+        if (showSide) {
+            side.render(d, sideX, sideY, mouseX, mouseY);
+        }
 
         d.push(ox, oy, scale);
         d.rect(0, 0, W, H, th.panel, th.border);
@@ -294,6 +310,9 @@ public final class MenuUi {
                 moveStartDx = o[0];
                 moveStartDy = o[1];
             }
+            return true;
+        }
+        if (showSide && side.click(mx, my)) {
             return true;
         }
         double lx = (mx - ox) / scale;
