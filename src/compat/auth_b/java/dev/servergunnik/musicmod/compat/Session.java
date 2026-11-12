@@ -3,8 +3,8 @@ package dev.servergunnik.musicmod.compat;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.AbstractClientPlayer;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.UUID;
 
 /** The player's Minecraft account and the players around, for the online capes service. */
@@ -37,16 +37,16 @@ public final class Session {
         }
     }
 
-    /** UUIDs of the other players in the world (render thread). */
-    public static List<UUID> otherPlayers() {
+    /** The other players in the world, UUID -> name (render thread). */
+    public static Map<UUID, String> otherPlayers() {
         Minecraft mc = Minecraft.getInstance();
-        List<UUID> out = new ArrayList<>();
+        Map<UUID, String> out = new LinkedHashMap<>();
         if (mc.level == null) {
             return out;
         }
         for (AbstractClientPlayer p : mc.level.players()) {
             if (p != mc.player) {
-                out.add(p.getUUID());
+                out.put(p.getUUID(), p.getScoreboardName());
             }
         }
         return out;

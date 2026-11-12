@@ -17,7 +17,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.security.SecureRandom;
 import java.time.Duration;
-import java.util.ArrayList;
 import java.util.Base64;
 import java.util.HexFormat;
 import java.util.List;
@@ -139,35 +138,55 @@ public final class CloudCapes {
         if (++ticks % POLL_TICKS != 0) {
             return;
         }
-        List<UUID> ask = new ArrayList<>();
-        for (UUID id : Session.otherPlayers()) {
-            Known k = known.get(id);
+        Map<UUID, String> ask = new java.util.LinkedHashMap<>();
+        for (Map.Entry<UUID, String> p : Session.otherPlayers().entrySet()) {
+            Known k = known.get(p.getKey());
             if ((k == null || now - k.at() > KNOWN_TTL_MS) && ask.size() < 100) {
-                ask.add(id);
+                ask.put(p.getKey(), p.getValue());
             }
         }
         if (ask.isEmpty()) {
             return;
         }
-        for (UUID id : ask) {
+        for (UUID id : ask.keySet()) {
             Known old = known.get(id);
             known.put(id, new Known(old == null ? "" : old.cape(), old == null ? null : old.hash(), now));
         }
         WORKER.execute(() -> lookup(base, ask));
     }
 
-    private static void lookup(String base, List<UUID> ask) {
-        StringBuilder q = new StringBuilder();
-        for (UUID id : ask) {
-            q.append(q.isEmpty() ? "" : ",").append(id.toString().replace("-", ""));
+    /**
+     * Offline-mode ("non-premium") servers give every player a local UUID made from
+     * the name (version 3), which the service does not know. Those players are
+     * looked up by name instead; real accounts (version 4) by UUID.
+     */
+    private static boolean localUuid(UUID id) {
+        return id.version() != 4;
+    }
+
+    private static void lookup(String base, Map<UUID, String> ask) {
+        StringBuilder uuids = new StringBuilder();
+        StringBuilder names = new StringBuilder();
+        for (Map.Entry<UUID, String> p : ask.entrySet()) {
+            if (localUuid(p.getKey())) {
+                if (p.getValue() != null && p.getValue().matches("[A-Za-z0-9_]{1,16}")) {
+                    names.append(names.isEmpty() ? "" : ",").append(p.getValue());
+                }
+            } else {
+                uuids.append(uuids.isEmpty() ? "" : ",").append(p.getKey().toString().replace("-", ""));
+            }
         }
-        JsonObject res = get(base + "/v1/capes?uuids=" + q);
+        JsonObject res = get(base + "/v1/capes?uuids=" + uuids + "&names=" + names);
         if (res == null) {
             return;
         }
         long now = System.currentTimeMillis();
-        for (UUID id : ask) {
-            JsonElement e = res.get(id.toString().replace("-", ""));
+        for (Map.Entry<UUID, String> p : ask.entrySet()) {
+            UUID id = p.getKey();
+            String key = localUuid(id)
+                    ? "@" + String.valueOf(p.getValue()).toLowerCase(java.util.Locale.ROOT)
+                    : id.toString().replace("-", "");
+            JsonElement e = res.get(key);
             if (e == null || !e.isJsonObject()) {
                 known.put(id, new Known("", null, now));
                 continue;
