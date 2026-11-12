@@ -36,6 +36,8 @@ public final class SkyLyrics {
     private static final double LINE_HEIGHT = 0.25;
     /** Gap between the text and the block face, so it does not z-fight with the wall. */
     private static final double WALL_GAP = 0.03;
+    /** Lines wider than this (font pixels) wrap onto two or more rows, like a title. */
+    private static final int WRAP_PX = 190;
 
     private WorldText main;
     private WorldText next;
@@ -57,6 +59,7 @@ public final class SkyLyrics {
     private float yaw;
     private float pitch;
     private float pinnedScale = 1f;
+    private int pinnedRows = 1;
     /** Unit vector pointing "down" in the plane of the text (where the next line goes). */
     private double dx;
     private double dy = -1;
@@ -159,6 +162,7 @@ public final class SkyLyrics {
     /** Positions one text: {@code below} blocks under the anchor, in the plane of the text. */
     private void place(WorldText t, boolean pinned, float scale, double below, double rise) {
         t.setScale(scale);
+        t.setLineWidth(t == next ? Math.round(WRAP_PX / 0.55f) : WRAP_PX);
         t.setBillboard(!pinned);
         if (pinned) {
             t.setFacing(yaw, pitch);
@@ -205,7 +209,9 @@ public final class SkyLyrics {
 
         // Shrink (or, in the open, pull closer) until the whole line fits without
         // running into blocks: both ends of the text must be visible from the eye.
-        int widthPx = Math.max(8, GameState.textWidth(text, c.font.id));
+        int fullPx = Math.max(8, GameState.textWidth(text, c.font.id));
+        int widthPx = Math.min(fullPx, WRAP_PX);
+        pinnedRows = Math.max(1, (int) Math.ceil(fullPx / (double) WRAP_PX));
         double yr = Math.toRadians(yaw);
         double rx = Math.cos(yr), rz = Math.sin(yr);      // along the text
         double fx = -Math.sin(yr), fz = Math.cos(yr);     // out of the text, toward the reader
@@ -239,7 +245,8 @@ public final class SkyLyrics {
     /** Sets the anchor for a text of the given scale at the look target. */
     private void place(Config c, double px, double py, double pz, double nx, double ny, double nz,
                        boolean hit, boolean wall, float scale) {
-        double lineH = LINE_HEIGHT * scale;
+        // Wrapped text is several rows tall; rows stack upward from the anchor.
+        double lineH = LINE_HEIGHT * scale * pinnedRows;
         if (hit && !wall) {
             // Standing text: the whole block of lines (current + next) sits on the floor,
             // or hangs just under the ceiling.

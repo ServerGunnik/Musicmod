@@ -31,6 +31,10 @@ final class Pages {
     }
 
     private static void overview(List<Widget> out, MenuUi ui) {
+        out.add(new Widget.Banner());
+        out.add(new Widget.Cards(ui, MenuUi.Tab.SKIES, MenuUi.Tab.LYRICS, MenuUi.Tab.STYLES,
+                MenuUi.Tab.HUD, MenuUi.Tab.SETTINGS, MenuUi.Tab.INFO));
+        out.add(new Widget.Header("musicmod.section.now_playing"));
         out.add(new NowPlaying());
         out.add(new Widget.Header("musicmod.section.quick"));
         out.add(new Widget.Toggle(ui, "musicmod.opt.lyrics", () -> cfg().lyricsEnabled, v -> cfg().lyricsEnabled = v));

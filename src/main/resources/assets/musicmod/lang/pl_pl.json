@@ -9,7 +9,7 @@
   "musicmod.tab.lyrics": "Teksty",
   "musicmod.tab.lyrics.desc": "Tekst w świecie, tam gdzie patrzysz, i u góry ekranu.",
   "musicmod.tab.styles": "Style",
-  "musicmod.tab.styles.desc": "Kolory tekstu, HUD i tego menu.",
+  "musicmod.tab.styles.desc": "Kolory i czcionki tekstu.",
   "musicmod.tab.hud": "HUD",
   "musicmod.tab.hud.desc": "Górna pigułka i informacje przy hotbarze.",
   "musicmod.tab.skies": "Niebo",
@@ -106,5 +106,7 @@
   "musicmod.sky.status.write_failed": "Nie udało się zapisać paczki nieba w folderze resourcepacks.",
   "musicmod.sky.status.error": "Przełączenie nieba nie powiodło się. Zobacz log gry.",
   "musicmod.opt.hud_song_time": "Moment piosenki",
-  "musicmod.opt.hud_song_time.desc": "Pokazuje czas w piosence, np. 1:23 / 3:45."
+  "musicmod.opt.hud_song_time.desc": "Pokazuje czas w piosence, np. 1:23 / 3:45.",
+  "musicmod.banner": "Niebo · Teksty · Style",
+  "musicmod.section.now_playing": "Teraz gra"
 }

@@ -86,6 +86,13 @@ public final class TextEntities {
         }
 
         @Override
+        public void setLineWidth(int pixels) {
+            if (e.getEntityData().get(Display.TextDisplay.DATA_LINE_WIDTH_ID) != pixels) {
+                e.getEntityData().set(Display.TextDisplay.DATA_LINE_WIDTH_ID, pixels);
+            }
+        }
+
+        @Override
         public void setBillboard(boolean faceCamera) {
             byte b = faceCamera ? BILLBOARD_CENTER : BILLBOARD_FIXED;
             if (e.getEntityData().get(Display.DATA_BILLBOARD_RENDER_CONSTRAINTS_ID) != b) {

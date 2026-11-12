@@ -9,7 +9,7 @@
   "musicmod.tab.lyrics": "Lyrics",
   "musicmod.tab.lyrics.desc": "Synced lyrics in the world, where you look, and in the top bar.",
   "musicmod.tab.styles": "Styles",
-  "musicmod.tab.styles.desc": "Colors for lyrics, HUD and this menu.",
+  "musicmod.tab.styles.desc": "Colors and fonts of the lyrics.",
   "musicmod.tab.hud": "HUD",
   "musicmod.tab.hud.desc": "Top pill and the info next to the hotbar.",
   "musicmod.tab.skies": "Skies",
@@ -106,5 +106,7 @@
   "musicmod.sky.status.write_failed": "Could not write the sky pack to the resourcepacks folder.",
   "musicmod.sky.status.error": "Switching the sky failed. See the game log.",
   "musicmod.opt.hud_song_time": "Song position",
-  "musicmod.opt.hud_song_time.desc": "Shows the time in the song, e.g. 1:23 / 3:45."
+  "musicmod.opt.hud_song_time.desc": "Shows the time in the song, e.g. 1:23 / 3:45.",
+  "musicmod.banner": "Skies · Lyrics · Styles",
+  "musicmod.section.now_playing": "Now playing"
 }

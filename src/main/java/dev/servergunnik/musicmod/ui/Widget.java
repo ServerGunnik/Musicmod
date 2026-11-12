@@ -279,6 +279,90 @@ abstract class Widget {
         }
     }
 
+    /** Wide banner at the top of the overview page: mod name, tagline and a small night sky. */
+    static final class Banner extends Widget {
+        int measure(Draw d, int width) {
+            return 44;
+        }
+
+        void render(Draw d, double mx, double my, boolean hovered) {
+            Theme th = MenuUi.theme();
+            // Night-sky gradient in the theme color.
+            for (int row = 0; row < h; row++) {
+                int a = 0x30 + row * 0x50 / h;
+                d.fill(x, y + row, x + w, y + row + 1, (a << 24) | (th.sung & 0x00FFFFFF));
+            }
+            d.rect(x, y, x + w, y + h, 0x30000000, (th.border & 0x00FFFFFF) | 0xC0000000);
+            int seed = 12345;
+            for (int k = 0; k < 40; k++) {
+                seed = seed * 1103515245 + 12345;
+                int sx = x + w / 3 + ((seed >>> 16) & 0x7FFF) % Math.max(1, w * 2 / 3 - 3);
+                seed = seed * 1103515245 + 12345;
+                int sy = y + 2 + ((seed >>> 16) & 0x7FFF) % Math.max(1, h - 4);
+                d.fill(sx, sy, sx + 1, sy + 1, (k % 3 == 0 ? 0xFF : 0x90) << 24 | 0xFFFFFF);
+            }
+            d.rect(x + 8, y + 9, x + 34, y + 35, th.accentArgb(), 0);
+            d.push(x + 14, y + 12, 2.4f);
+            d.text("\u266A", 0, 0, 0xFF16121F, false);
+            d.pop();
+            d.push(x + 42, y + 10, 1.6f);
+            d.text("Musicmod", 0, 0, 0xFFFFFFFF, true);
+            d.pop();
+            d.text(MenuUi.tr("musicmod.banner"), x + 42, y + 28, 0xFFD8D0E8, false);
+        }
+    }
+
+    /** Clickable cards that lead to the other tabs (overview page). */
+    static final class Cards extends Widget {
+        private static final int COLS = 3;
+        private static final int CELL_H = 40;
+        private final MenuUi ui;
+        private final MenuUi.Tab[] tabs;
+
+        Cards(MenuUi ui, MenuUi.Tab... tabs) {
+            this.ui = ui;
+            this.tabs = tabs;
+        }
+
+        private int cellW() {
+            return (w - (COLS - 1) * 4) / COLS;
+        }
+
+        int measure(Draw d, int width) {
+            int rows = (tabs.length + COLS - 1) / COLS;
+            return rows * (CELL_H + 4) - 4;
+        }
+
+        void render(Draw d, double mx, double my, boolean hovered) {
+            Theme th = MenuUi.theme();
+            for (int i = 0; i < tabs.length; i++) {
+                int cx = x + (i % COLS) * (cellW() + 4);
+                int cy = y + (i / COLS) * (CELL_H + 4);
+                boolean hov = mx >= cx && mx < cx + cellW() && my >= cy && my < cy + CELL_H;
+                d.rect(cx, cy, cx + cellW(), cy + CELL_H, hov ? 0x33FFFFFF : 0x1AFFFFFF, hov ? th.accentArgb() : 0x30FFFFFF);
+                d.rect(cx + 5, cy + 5, cx + 19, cy + 19, (th.sung & 0x00FFFFFF) | 0xB0000000, 0);
+                d.centered(MenuUi.icon(tabs[i]), cx + 12, cy + 8, 0xFFFFFFFF, false);
+                String key = "musicmod.tab." + tabs[i].name().toLowerCase();
+                d.text(MenuUi.tr(key), cx + 23, cy + 8, MenuUi.TEXT, false);
+                List<String> lines = Paragraph.wrap(d, MenuUi.tr(key + ".desc"), Math.round((cellW() - 12) / 0.75f));
+                for (int l = 0; l < Math.min(2, lines.size()); l++) {
+                    small(d, lines.get(l), cx + 6, cy + 23 + l * 8, MenuUi.DIM);
+                }
+                d.text("\u2192", cx + cellW() - 11, cy + CELL_H - 11, hov ? th.accentArgb() : MenuUi.DIM, false);
+            }
+        }
+
+        boolean click(double mx, double my, int button) {
+            int col = (int) ((mx - x) / (cellW() + 4));
+            int row = (int) ((my - y) / (CELL_H + 4));
+            int i = row * COLS + col;
+            if (col >= 0 && col < COLS && i >= 0 && i < tabs.length) {
+                ui.openTab(tabs[i]);
+            }
+            return true;
+        }
+    }
+
     /** Draws a small picture inside a grid tile. */
     interface Painter {
         void paint(Draw d, int index, int x, int y, int w, int h);

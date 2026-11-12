@@ -257,7 +257,17 @@ public final class MenuUi {
         }
     }
 
-    private static String icon(Tab t) {
+    /** Switches to another tab (used by the cards on the overview page). */
+    void openTab(Tab t) {
+        if (t != tab) {
+            tab = t;
+            lastTab = t;
+            scroll = 0;
+            rebuild();
+        }
+    }
+
+    static String icon(Tab t) {
         return switch (t) {
             case OVERVIEW -> "⌂";
             case LYRICS -> "♫";

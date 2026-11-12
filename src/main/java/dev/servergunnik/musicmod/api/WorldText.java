@@ -11,6 +11,9 @@ public interface WorldText {
 
     void setScale(float scale);
 
+    /** Longest line in font pixels; longer text wraps onto more lines (stacked upward, centered). */
+    void setLineWidth(int pixels);
+
     /** true: always turn toward the camera. false: keep the rotation set by {@link #setFacing}. */
     void setBillboard(boolean faceCamera);
 

@@ -273,10 +273,12 @@ public final class HudOverlay {
         int cx = c.highlight == Config.Highlight.SINGLE ? Math.max(0, (w - spansW) / 2) : 0;
         for (Span sp : spans) {
             int sw = d.textWidth(sp.text(), font);
-            d.text(sp.text(), cx, 0, 0xFF000000 | sp.rgb(), true, font);
             if (sp.now()) {
-                // Marker under the word being sung.
-                d.fill(cx, d.lineHeight(), cx + sw, d.lineHeight() + 1, th.accentArgb());
+                // The word being sung sits in a filled pill in the accent color.
+                d.rect(cx - 2, -2, cx + sw + 2, d.lineHeight() + 1, th.accentArgb(), 0);
+                d.text(sp.text(), cx, 0, 0xFFFFFFFF, true, font);
+            } else {
+                d.text(sp.text(), cx, 0, 0xFF000000 | sp.rgb(), true, font);
             }
             cx += sw;
         }
