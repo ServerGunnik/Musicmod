@@ -2,6 +2,7 @@ package dev.servergunnik.musicmod.ui;
 
 import dev.servergunnik.musicmod.MusicmodClient;
 import dev.servergunnik.musicmod.api.Draw;
+import dev.servergunnik.musicmod.compat.Textures;
 import dev.servergunnik.musicmod.core.LyricsTracker;
 import dev.servergunnik.musicmod.core.MediaInfo;
 import dev.servergunnik.musicmod.core.MediaSource;
@@ -12,6 +13,10 @@ final class NowPlaying extends Widget {
 
     private static final String[] BUTTONS = {"|◀", "▶", "▶|"};
     private static final String[] COMMANDS = {"previous", "playpause", "next"};
+
+    // Shared by every card: the cover is one runtime texture.
+    private static int coverVersion = -1;
+    private static boolean hasCover;
 
     int measure(Draw d, int width) {
         return 46;
@@ -27,11 +32,21 @@ final class NowPlaying extends Widget {
         MediaInfo m = s.media();
         d.rect(x, y, x + w, y + h, 0x1EFFFFFF, 0x30FFFFFF);
 
-        // Cover placeholder
-        d.rect(x + 6, y + 6, x + 34, y + 34, (th.sung & 0x00FFFFFF) | 0x90000000, 0);
-        d.push(x + 14, y + 12, 2f);
-        d.text("♪", 0, 0, 0xFFFFFFFF, true);
-        d.pop();
+        // Album cover (a note on the theme color when the player gives no picture).
+        MediaSource source = MusicmodClient.tracker().media();
+        if (source.coverVersion() != coverVersion) {
+            coverVersion = source.coverVersion();
+            java.nio.file.Path file = source.coverFile();
+            hasCover = file != null && Textures.load("dynamic/cover", file);
+        }
+        if (hasCover && m.active()) {
+            d.image("dynamic/cover", x + 6, y + 6, 28, 28);
+        } else {
+            d.rect(x + 6, y + 6, x + 34, y + 34, (th.sung & 0x00FFFFFF) | 0x90000000, 0);
+            d.push(x + 14, y + 12, 2f);
+            d.text("♪", 0, 0, 0xFFFFFFFF, true);
+            d.pop();
+        }
 
         int tx = x + 40;
         int maxText = w - 40 - 72;
