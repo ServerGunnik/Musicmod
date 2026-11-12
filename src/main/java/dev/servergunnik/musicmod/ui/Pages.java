@@ -152,7 +152,7 @@ final class Pages {
                     MusicmodClient.applySky();
                     ui.rebuild(); // the status text below changed
                 },
-                Pages::paintSky, 30));
+                Pages::paintSky, 44));
         out.add(new Widget.Paragraph(() -> MusicmodClient.skyStatus().isEmpty() ? ""
                 : tr("musicmod.sky.status." + MusicmodClient.skyStatus()), 0xFFE8C547));
         out.add(new Widget.Paragraph(() -> tr("musicmod.skies.help"), MenuUi.DIM));
@@ -199,28 +199,12 @@ final class Pages {
                 }, null, 0);
     }
 
-    /** Small picture of a sky: its colors from zenith to horizon, with a few stars for night skies. */
+    /** Thumbnail of a sky (rendered by tools/gen_skies.py), with a thin frame. */
     private static void paintSky(Draw d, int index, int x, int y, int w, int h) {
         Sky sky = Sky.values()[index];
-        int[] c = sky.preview;
-        for (int row = 0; row < h; row++) {
-            float t = row / (float) Math.max(1, h - 1) * (c.length - 1);
-            int i = Math.min(c.length - 2, (int) t);
-            d.fill(x, y + row, x + w, y + row + 1, 0xFF000000 | mix(c[i], c[i + 1], t - i));
-        }
-        if (sky.stars) {
-            int seed = 7 + index * 131;
-            for (int k = 0; k < 14; k++) {
-                seed = seed * 1103515245 + 12345;
-                int sx = x + 1 + ((seed >>> 16) & 0x7FFF) % Math.max(1, w - 2);
-                seed = seed * 1103515245 + 12345;
-                int sy = y + 1 + ((seed >>> 16) & 0x7FFF) % Math.max(1, h / 2);
-                d.fill(sx, sy, sx + 1, sy + 1, 0xE0FFFFFF);
-            }
-        } else if (sky != Sky.OFF) {
-            // Sunsets: a small sun on the horizon.
-            d.fill(x + w / 2 - 2, y + h - 6, x + w / 2 + 2, y + h - 2, 0xFFFFE9B0);
-        }
+        d.image("textures/gui/sky/" + (sky.id == null ? "off" : sky.id) + ".png", x, y, w, h);
+        d.fill(x, y, x + w, y + 1, 0x40000000);
+        d.fill(x, y + h - 1, x + w, y + h, 0x40000000);
     }
 
     private static int mix(int a, int b, float t) {

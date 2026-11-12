@@ -21,6 +21,11 @@ public final class Fonts {
         return style.withFont(new FontDescription.Resource(id));
     }
 
+    /** Id of a file in the mod's assets, in this game version's id type. */
+    public static ResourceLocation id(String path) {
+        return ResourceLocation.fromNamespaceAndPath("musicmod", path);
+    }
+
     public static MutableComponent text(String text, String font) {
         return Component.literal(text).withStyle(s -> apply(s, font));
     }

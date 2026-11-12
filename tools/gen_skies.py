@@ -273,7 +273,47 @@ def render(fn):
     return Image.fromarray((img * 255 + 0.5).astype(np.uint8), 'RGB')
 
 
+THUMB_OUT = os.path.join(os.path.dirname(__file__), '..', 'src', 'main', 'resources', 'assets', 'musicmod', 'textures', 'gui', 'sky')
+# Which way the menu thumbnail looks (azimuth in degrees), so the main feature is in view.
+LOOK = {'saturn': -90, 'eclipse': -90, 'blood_moon': -90, 'neon_horizon': 180, 'sunset': 180, 'pink_sunset': 180}
+
+
+def vanilla(d, e, az):
+    return ramp(e, [(-90, rgb('#7fa8ff')), (0, rgb('#c4dbff')), (40, rgb('#78a7ff')), (90, rgb('#5a8cff'))])
+
+
+def thumbnail(fn, look_az, w=96, h=54):
+    """Small picture of the sky as seen from the ground, with a dark skyline in front."""
+    fov = np.radians(62)
+    xs = (np.arange(w) + 0.5) / w * 2 - 1
+    ys = 1 - (np.arange(h) + 0.5) / h * 2
+    X, Y = np.meshgrid(xs * np.tan(fov / 2), ys * np.tan(fov / 2) * h / w)
+    pitch, yaw = np.radians(11), np.radians(look_az)
+    fwd = np.array([np.cos(pitch) * np.cos(yaw), np.sin(pitch), np.cos(pitch) * np.sin(yaw)])
+    right = np.array([-np.sin(yaw), 0.0, np.cos(yaw)])
+    up = np.cross(right, fwd)
+    d = fwd + X[..., None] * right + Y[..., None] * up
+    d /= np.linalg.norm(d, axis=-1, keepdims=True)
+    img = np.clip(shade(fn, d), 0, 1)
+    # Blocky skyline: hills in steps of 3 px plus a few simple trees.
+    r = np.random.RandomState(5)
+    height = 9.0
+    for x0 in range(0, w, 3):
+        height = float(np.clip(height + r.randint(-2, 3), 5, 15))
+        img[h - int(height):, x0:x0 + 3] = np.array([0.03, 0.02, 0.06])
+        if r.rand() < 0.16:
+            t = h - int(height)
+            img[t - 6:t, x0 + 1:x0 + 2] = np.array([0.03, 0.02, 0.06])
+            img[t - 9:t - 5, max(0, x0 - 1):x0 + 4] = np.array([0.03, 0.02, 0.06])
+    return Image.fromarray((img * 255 + 0.5).astype(np.uint8), 'RGB')
+
+
 if __name__ == '__main__':
+    os.makedirs(THUMB_OUT, exist_ok=True)
+    for name, fn in list(SKIES.items()) + [('off', vanilla)]:
+        thumbnail(fn, LOOK.get(name, 0)).save(os.path.join(THUMB_OUT, name + '.png'), optimize=True)
+    if 'thumbs' in __import__('sys').argv:
+        raise SystemExit
     os.makedirs(OUT, exist_ok=True)
     import sys
     only = sys.argv[1:]

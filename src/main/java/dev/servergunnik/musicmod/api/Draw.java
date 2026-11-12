@@ -24,6 +24,9 @@ public interface Draw {
 
     int lineHeight();
 
+    /** Draws a whole texture from the mod's assets (path like "textures/gui/x.png") scaled into the box. */
+    void image(String path, int x, int y, int w, int h);
+
     /** Translates to (x, y) and scales; undo with {@link #pop()}. */
     void push(float x, float y, float scale);
 

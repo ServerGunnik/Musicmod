@@ -3,6 +3,7 @@ package dev.servergunnik.musicmod.compat;
 import dev.servergunnik.musicmod.api.Draw;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.client.gui.GuiGraphics;
 
@@ -57,6 +58,12 @@ public final class GuiDraw implements Draw {
     @Override
     public int textWidth(String text, String fontName) {
         return font.width(Fonts.text(text, fontName));
+    }
+
+    @Override
+    public void image(String path, int x, int y, int w, int h) {
+        // Texture size = box size, so the whole picture is stretched into the box.
+        g.blit(RenderType::guiTextured, Fonts.id(path), x, y, 0f, 0f, w, h, w, h);
     }
 
     @Override
