@@ -216,6 +216,10 @@ final class Pages {
                 MusicmodClient.tracker().provider().retry(m);
             }
         }));
+        out.add(new Widget.Toggle(ui, "musicmod.opt.cover_online", () -> cfg().coverOnline, v -> {
+            cfg().coverOnline = v;
+            dev.servergunnik.musicmod.core.MediaSource.onlineCovers = v;
+        }));
         out.add(new Widget.Header("musicmod.section.reset"));
         out.add(new Widget.Button("musicmod.btn.reset", () -> {
             MusicmodClient.resetConfig();

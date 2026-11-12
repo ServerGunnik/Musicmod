@@ -42,6 +42,7 @@ public final class MusicmodClient implements ClientModInitializer {
         store = new ConfigStore(dir.resolve("config.json"));
         config = store.load();
 
+        MediaSource.onlineCovers = config.coverOnline;
         MediaSource media = new MediaSource(dir.resolve("bridge"));
         media.start();
         LyricsProvider provider = new LyricsProvider(dir.resolve("lyrics-cache"),

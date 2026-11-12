@@ -56,22 +56,49 @@ $coverFile = ''
 $coverTries = 0
 $coverIndex = 0
 
+function Write-Log($text) {
+    [Console]::Out.WriteLine((@{ log = [string]$text } | ConvertTo-Json -Compress))
+    [Console]::Out.Flush()
+}
+
 function Save-Cover($props) {
     if ($CoverDir -eq '' -or $props -eq $null) { return '' }
+    $thumb = $props.Thumbnail
+    if ($thumb -eq $null) { return '' }
+    $script:coverIndex = ($script:coverIndex + 1) % 4
+    $file = Join-Path $CoverDir ("cover_" + $script:coverIndex + ".img")
+    $ras = $null
     try {
-        $thumb = $props.Thumbnail
-        if ($thumb -eq $null) { return '' }
         $ras = Await ($thumb.OpenReadAsync()) $streamType
-        if ($ras -eq $null) { return '' }
+    } catch {
+        Write-Log ("cover: open failed: " + $_.Exception.Message)
+        return ''
+    }
+    if ($ras -eq $null) { return '' }
+    # First way: wrap the WinRT stream as a .NET stream.
+    try {
         $net = [System.IO.WindowsRuntimeStreamExtensions]::AsStreamForRead($ras)
-        $script:coverIndex = ($script:coverIndex + 1) % 4
-        $file = Join-Path $CoverDir ("cover_" + $script:coverIndex + ".img")
         $fs = [System.IO.File]::Create($file)
         $net.CopyTo($fs)
         $fs.Close()
         $net.Close()
         if ((Get-Item $file).Length -gt 0) { return $file }
-    } catch { }
+    } catch {
+        Write-Log ("cover: stream copy failed: " + $_.Exception.Message)
+    }
+    # Second way: read the bytes with a DataReader.
+    try {
+        $null = [Windows.Storage.Streams.DataReader, Windows.Storage.Streams, ContentType = WindowsRuntime]
+        $size = [uint32]$ras.Size
+        $reader = New-Object Windows.Storage.Streams.DataReader($ras.GetInputStreamAt(0))
+        $null = Await ($reader.LoadAsync($size)) ([uint32])
+        $bytes = New-Object byte[] $size
+        $reader.ReadBytes($bytes)
+        [System.IO.File]::WriteAllBytes($file, $bytes)
+        if ($size -gt 0) { return $file }
+    } catch {
+        Write-Log ("cover: data reader failed: " + $_.Exception.Message)
+    }
     return ''
 }
 

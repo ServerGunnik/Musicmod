@@ -170,6 +170,10 @@ public final class MediaSource {
     }
 
     private void handle(JsonObject o) {
+        if (o.has("log")) {
+            LOG.info("Musicmod media bridge: {}", o.get("log").getAsString());
+            return;
+        }
         if (o.has("error")) {
             status = Status.FAILED;
             LOG.warn("Musicmod: Windows media controls unavailable ({})", o.get("error").getAsString());
@@ -231,6 +235,48 @@ public final class MediaSource {
             return;
         }
         current = new MediaInfo(str(o, "app"), title, artist, str(o, "album"), duration, base, playing, now);
+        maybeFetchCoverOnline(key, title, artist);
+    }
+
+    /** Look covers up on the internet (iTunes Search) when the player gives none. */
+    public static volatile boolean onlineCovers = true;
+
+    private String onlineKey = "";
+    private long onlineKeySince;
+    private boolean onlineTried;
+
+    /**
+     * When the player has not given a cover a few seconds into a track, look the
+     * cover up by artist and title (once per track, in the background).
+     */
+    private void maybeFetchCoverOnline(String key, String title, String artist) {
+        long now = System.currentTimeMillis();
+        if (!key.equals(onlineKey)) {
+            onlineKey = key;
+            onlineKeySince = now;
+            onlineTried = false;
+        }
+        if (onlineTried || !onlineCovers || coverFile != null || now - onlineKeySince < 2500) {
+            return;
+        }
+        onlineTried = true;
+        int versionAtStart = coverVersion;
+        Thread t = new Thread(() -> {
+            Path raw = workDir.resolve("cover_online.img");
+            Path target = workDir.resolve("cover_online_" + (versionAtStart & 1) + ".png");
+            if (CoverLookup.download(artist, title, raw) && Images.cover(raw, target, 256)) {
+                // Only use it if nothing changed meanwhile (same track, still no cover).
+                if (key.equals(onlineKey) && coverVersion == versionAtStart) {
+                    coverFile = target;
+                    coverVersion++;
+                    LOG.info("Musicmod: album cover for '{}' taken from the internet", title);
+                }
+            } else {
+                LOG.info("Musicmod: no album cover found for '{}'", title);
+            }
+        }, "Musicmod-Cover");
+        t.setDaemon(true);
+        t.start();
     }
 
     /** The bridge reports the file it saved the cover to ("" = none yet). Convert it once per change. */

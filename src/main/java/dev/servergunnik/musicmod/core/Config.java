@@ -36,6 +36,9 @@ public final class Config {
     public java.util.Map<String, String> styles = new java.util.HashMap<>();
 
     // HUD
+    /** Look album covers up on the internet when the player gives none. */
+    public boolean coverOnline = true;
+
     public boolean hudEnabled = true;
     public boolean hudSong = true;
     public boolean hudSongTime = true;
