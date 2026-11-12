@@ -28,9 +28,14 @@ CI builds all versions on every push and puts the jars on the `builds` branch
 ## Shared capes (server plugin)
 
 `server-plugin/` is a small Paper/Spigot/Purpur plugin (1.20.4+), **MusicmodCapes**. With it on a
-server, players who use Musicmod see each other's built-in capes. It only relays the cape id on the
-plugin channel `musicmod:cape`; players without the mod are not affected. Capes made from a player's
-own pictures are not shared.
+server, players who use Musicmod see each other's capes: built-in capes travel as an id on the
+plugin channel `musicmod:cape`, capes made from a player's own picture as a small PNG on
+`musicmod:cape_img`. Players without the mod are not affected.
+
+`plugins/MusicmodCapes/config.yml`:
+
+- `allow-custom-capes` (default `true`): set to `false` to share only the built-in capes.
+- `max-kilobytes` (default `256`): largest picture a player may upload.
 
 CI builds it to `plugin/MusicmodCapes.jar` on the `builds` branch. Put it in the server's `plugins/`
-folder and restart; there is nothing to configure.
+folder and restart.
