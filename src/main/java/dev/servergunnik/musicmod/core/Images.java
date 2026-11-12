@@ -10,6 +10,9 @@ import java.nio.file.Path;
 /** Image conversions done off the render thread (album covers, user capes). */
 public final class Images {
 
+    /** Pixels per unit of the 64x32 cape layout for capes made from a picture. */
+    private static final int CAPE_UNIT = 32;
+
     private Images() {
     }
 
@@ -28,7 +31,7 @@ public final class Images {
     }
 
     /**
-     * Turns a user picture into a cape texture and a 40x64 menu icon. A picture
+     * Turns a user picture into a cape texture and an 80x128 menu icon. A picture
      * twice as wide as tall (64x32, 128x64...) is taken as a ready cape texture;
      * anything else is used as the design on the outside of the cape.
      */
@@ -43,17 +46,21 @@ public final class Images {
             if (in.getWidth() == in.getHeight() * 2) {
                 tex = in;
                 int s = in.getWidth() / 64;
-                design = scale(in.getSubimage(s, s, 10 * s, 16 * s), 40, 64, false);
+                design = scale(in.getSubimage(s, s, 10 * s, 16 * s), 80, 128, false);
             } else {
-                design = scale(cropTo(in, 5, 8), 40, 64, true);
-                tex = new BufferedImage(256, 128, BufferedImage.TYPE_INT_ARGB);
+                // Keep the picture sharp: the outside of the cape is 320x512 px
+                // (a 2048x1024 texture, 32 px per unit of the 64x32 cape layout).
+                int u = CAPE_UNIT;
+                design = scale(cropTo(in, 5, 8), 10 * u, 16 * u, true);
+                tex = new BufferedImage(64 * u, 32 * u, BufferedImage.TYPE_INT_ARGB);
                 int lining = darker(average(design));
                 Graphics2D g = tex.createGraphics();
                 g.setColor(new java.awt.Color(lining));
-                g.fillRect(0, 0, 88, 68);       // whole cape box
-                g.fillRect(88, 0, 96, 88);      // elytra area
-                g.drawImage(design, 4, 4, null); // outside of the cape
+                g.fillRect(0, 0, 22 * u, 17 * u);        // whole cape box
+                g.fillRect(22 * u, 0, 24 * u, 22 * u);   // elytra area
+                g.drawImage(design, u, u, null);         // outside of the cape
                 g.dispose();
+                design = scale(design, 80, 128, true);   // menu icon
             }
             ImageIO.write(tex, "png", texture.toFile());
             ImageIO.write(design, "png", icon.toFile());

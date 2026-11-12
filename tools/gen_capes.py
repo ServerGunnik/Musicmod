@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """Generates the capes in src/main/resources/assets/musicmod/textures/cape/.
 
-Original designs drawn by code. Each cape is a 256x128 texture in the vanilla
-cape layout scaled 4x (the outside of the cape is 40x64 px at (4,4)), plus a
-40x64 thumbnail of the design for the menu and an index.json with the names.
+Original designs drawn by code. Each cape is a 1024x512 texture in the vanilla
+cape layout scaled 16x (the outside of the cape is 160x256 px at (16,16)), plus a
+160x256 thumbnail of the design for the menu and an index.json with the names.
 
 Usage: python3 tools/gen_capes.py   (needs numpy and Pillow)
 """
@@ -13,8 +13,12 @@ import numpy as np
 from PIL import Image
 
 OUT = os.path.join(os.path.dirname(__file__), '..', 'src', 'main', 'resources', 'assets', 'musicmod', 'textures', 'cape')
-W, H = 40, 64
-Y, X = np.mgrid[0:H, 0:W].astype(np.float32)
+K = 4                      # detail: every design unit is K x K pixels
+W, H = 40, 64              # design size in units (all shapes below use these coordinates)
+PW, PH = W * K, H * K      # design size in pixels
+Y, X = np.mgrid[0:PH, 0:PW].astype(np.float32)
+X = (X + 0.5) / K - 0.5
+Y = (Y + 0.5) / K - 0.5
 capes = []
 
 
@@ -34,12 +38,13 @@ def put(img, mask, color):
 def add(cid, label, design):
     design = np.clip(design, 0, 255)
     base = design.reshape(-1, 3).mean(0) * 0.55            # darker lining / edges
-    tex = np.zeros((128, 256, 4), dtype=np.float32)
-    tex[0:68, 0:88, :3] = base                               # whole cape box
-    tex[0:68, 0:88, 3] = 255
-    tex[4:68, 4:44, :3] = design                             # outside of the cape
-    tex[0:88, 88:184, :3] = base                             # elytra area: plain
-    tex[0:88, 88:184, 3] = 255
+    S = 4 * K                                                # pixels per unit of the 64x32 cape layout
+    tex = np.zeros((32 * S, 64 * S, 4), dtype=np.float32)
+    tex[0:17 * S, 0:22 * S, :3] = base                       # whole cape box
+    tex[0:17 * S, 0:22 * S, 3] = 255
+    tex[S:17 * S, S:11 * S, :3] = design                     # outside of the cape
+    tex[0:22 * S, 22 * S:46 * S, :3] = base                  # elytra area: plain
+    tex[0:22 * S, 22 * S:46 * S, 3] = 255
     Image.fromarray(tex.astype(np.uint8), 'RGBA').save(os.path.join(OUT, cid + '.png'))
     Image.fromarray(design.astype(np.uint8), 'RGB').save(os.path.join(OUT, cid + '_icon.png'))
     capes.append({'id': cid, 'label': label})
@@ -48,7 +53,9 @@ def add(cid, label, design):
 def stars(img, seed, n=40, color='#ffffff'):
     r = np.random.RandomState(seed)
     for _ in range(n):
-        img[r.randint(H), r.randint(W)] = rgb(color) * (0.5 + 0.5 * r.rand())
+        y, x = r.randint(PH - 1), r.randint(PW - 1)
+        size = 1 + (r.rand() < 0.3)
+        img[y:y + size, x:x + size] = rgb(color) * (0.5 + 0.5 * r.rand())
 
 
 os.makedirs(OUT, exist_ok=True)
@@ -63,7 +70,9 @@ add('note', 'Note', img)
 
 # 2. Galaxy: nebula blotches and stars.
 r = np.random.RandomState(2)
-n = np.kron(r.rand(H // 8 + 1, W // 8 + 1), np.ones((8, 8)))[:H, :W]
+n = np.kron(r.rand(H // 8 + 1, W // 8 + 1), np.ones((8 * K, 8 * K)))[:PH, :PW]
+for _ in range(3 * K):
+    n = (n + np.roll(n, K, 0) + np.roll(n, -K, 0) + np.roll(n, K, 1) + np.roll(n, -K, 1)) / 5
 n = (n + np.roll(n, 3, 0) + np.roll(n, 3, 1)) / 3
 img = grad('#0a0822', '#1c1048') + (n[..., None] ** 2) * np.array([150, 60, 200])
 stars(img, 3, 60)
@@ -101,7 +110,7 @@ stars(img, 6, 18)
 add('ice', 'Ice', img)
 
 # 7. Heart on black.
-img = np.zeros((H, W, 3), dtype=np.float32) + rgb('#0c0c10')
+img = np.zeros((PH, PW, 3), dtype=np.float32) + rgb('#0c0c10')
 hx, hy = (X - 19.5) / 11.0, -(Y - 30) / 11.0
 heart = (hx ** 2 + hy ** 2 - 1) ** 3 - hx ** 2 * hy ** 3 < 0
 put(img, heart, '#ff3a6a')
@@ -120,7 +129,7 @@ img = np.where((((X // 8) + (Y // 8)) % 2 == 0)[..., None], rgb('#f2f2f2'), rgb(
 add('checker', 'Checker', img.astype(np.float32))
 
 # 10. Neon stripes.
-img = np.zeros((H, W, 3), dtype=np.float32) + rgb('#120a24')
+img = np.zeros((PH, PW, 3), dtype=np.float32) + rgb('#120a24')
 d = np.mod(X + Y, 16)
 put(img, d < 3, '#ff3fc0')
 put(img, (d >= 8) & (d < 11), '#3af0ff')
