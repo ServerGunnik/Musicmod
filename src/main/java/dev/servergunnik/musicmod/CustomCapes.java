@@ -20,7 +20,8 @@ public final class CustomCapes {
     /** Prefix of the cape id stored in the config for user capes. */
     public static final String PREFIX = "custom:";
 
-    public record Cape(String id, String label, String texture, String icon) {
+    /** {@code net}: small copy of the texture that is sent to other players (null if it could not be made). */
+    public record Cape(String id, String label, String texture, String icon, Path net) {
     }
 
     private static Path folder;
@@ -57,6 +58,21 @@ public final class CustomCapes {
         return null;
     }
 
+    /** The small network copy of a user cape, or null. */
+    public static Path networkFile(String id) {
+        for (Cape c : capes) {
+            if (c.id().equals(id)) {
+                return c.net();
+            }
+        }
+        return null;
+    }
+
+    /** Folder for pictures received from other players. */
+    static Path remoteCache() {
+        return cache.resolveSibling("remote");
+    }
+
     /** Reads the folder again and (re)loads every picture. Call on the render thread. */
     public static void reload() {
         List<Cape> out = new ArrayList<>();
@@ -84,7 +100,9 @@ public final class CustomCapes {
                 String texPath = "dynamic/cape_" + key;
                 String iconPath = "dynamic/capeicon_" + key;
                 if (Textures.load(texPath, tex) && Textures.load(iconPath, icon)) {
-                    out.add(new Cape(PREFIX + name, label, texPath, iconPath));
+                    Path net = cache.resolve(key + "_net.png");
+                    out.add(new Cape(PREFIX + name, label, texPath, iconPath,
+                            Images.capeForNetwork(tex, net, 512) ? net : null));
                 }
             }
         } catch (IOException | RuntimeException e) {

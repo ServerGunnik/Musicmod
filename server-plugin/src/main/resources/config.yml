@@ -1,0 +1,8 @@
+# MusicmodCapes
+
+# Let players show capes made from their own pictures to other Musicmod players.
+# false = only the capes built into the mod are shared.
+allow-custom-capes: true
+
+# Largest picture a player may upload, in kilobytes (the mod sends about 20-200 KB).
+max-kilobytes: 256

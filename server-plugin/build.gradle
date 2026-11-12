@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'dev.servergunnik.musicmod'
-version = '1.0.0'
+version = '1.1.0'
 
 repositories {
     maven { url = 'https://repo.papermc.io/repository/maven-public/' }

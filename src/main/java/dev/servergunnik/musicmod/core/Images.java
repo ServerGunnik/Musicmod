@@ -70,6 +70,41 @@ public final class Images {
         }
     }
 
+    /**
+     * Writes a copy of a cape texture small enough to send to other players
+     * (at most {@code maxWidth} wide, 2:1). Returns false on failure.
+     */
+    public static boolean capeForNetwork(Path texture, Path target, int maxWidth) {
+        try {
+            BufferedImage in = ImageIO.read(texture.toFile());
+            if (in == null || in.getWidth() != in.getHeight() * 2) {
+                return false;
+            }
+            int w = Math.min(in.getWidth(), maxWidth);
+            ImageIO.write(w == in.getWidth() ? in : scale(in, w, w / 2, true), "png", target.toFile());
+            return true;
+        } catch (IOException | RuntimeException e) {
+            return false;
+        }
+    }
+
+    /**
+     * Checks a cape picture received from another player and writes a clean copy:
+     * it must decode as an image, be twice as wide as tall and at most 1024 px wide.
+     */
+    public static boolean sanitizeCape(byte[] data, Path target) {
+        try {
+            BufferedImage in = ImageIO.read(new java.io.ByteArrayInputStream(data));
+            if (in == null || in.getWidth() != in.getHeight() * 2 || in.getWidth() < 64 || in.getWidth() > 1024) {
+                return false;
+            }
+            ImageIO.write(scale(in, in.getWidth(), in.getHeight(), false), "png", target.toFile());
+            return true;
+        } catch (IOException | RuntimeException e) {
+            return false;
+        }
+    }
+
     /** Largest centered part of the image with the given aspect ratio. */
     private static BufferedImage cropTo(BufferedImage in, int aw, int ah) {
         int w = in.getWidth(), h = in.getHeight();
