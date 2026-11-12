@@ -32,6 +32,7 @@ public final class MusicmodClient implements ClientModInitializer {
     private static SkyLyrics sky;
     private static KeyHandle menuKey;
     private static KeyHandle toggleKey;
+    private static boolean capesLoaded;
 
     @Override
     public void onInitializeClient() {
@@ -47,6 +48,7 @@ public final class MusicmodClient implements ClientModInitializer {
                 "Musicmod/" + version + " (https://github.com/ServerGunnik/Musicmod)");
         tracker = new LyricsTracker(media, provider, MusicmodClient::config);
 
+        CustomCapes.init(dir);
         hud = new HudOverlay();
         sky = new SkyLyrics();
         Hooks.registerHud(hud::render);
@@ -69,6 +71,11 @@ public final class MusicmodClient implements ClientModInitializer {
         while (toggleKey.consumeClick()) {
             config.lyricsEnabled = !config.lyricsEnabled;
             saveConfig();
+        }
+        if (!capesLoaded && GameState.inWorld()) {
+            // User capes are runtime textures: load them once the game can draw.
+            capesLoaded = true;
+            CustomCapes.reload();
         }
         hud.tick();
         sky.tick();
@@ -109,7 +116,7 @@ public final class MusicmodClient implements ClientModInitializer {
                 .map(c -> c.getMetadata().getVersion().getFriendlyString()).orElse("");
         java.util.Map<String, String> styleFiles = Styles.files(config.styles);
         boolean want = sky.id != null || !styleFiles.isEmpty();
-        boolean written = want && ModPack.write(FabricLoader.getInstance().getGameDir().resolve("resourcepacks"), sky, styleFiles, mc);
+        boolean written = want && ModPack.write(FabricLoader.getInstance().getGameDir().resolve("resourcepacks"), sky, config.skyAnimated, styleFiles, mc);
         try {
             skyStatus = want && !written ? "write_failed" : GameState.applySkyPack(ModPack.PACK_ID, written);
         } catch (RuntimeException e) {
@@ -125,10 +132,16 @@ public final class MusicmodClient implements ClientModInitializer {
         return skyStatus;
     }
 
-    /** Cape chosen in the menu, or null for none (also null before the mod has started). */
-    public static String capeId() {
+    /** Texture (path in the mod's namespace) of the cape chosen in the menu, or null for none. */
+    public static String capeTexture() {
         Config c = config;
-        return c == null || c.cape == null || c.cape.isEmpty() ? null : c.cape;
+        if (c == null || c.cape == null || c.cape.isEmpty()) {
+            return null;
+        }
+        if (c.cape.startsWith(CustomCapes.PREFIX)) {
+            return CustomCapes.texture(c.cape);
+        }
+        return "textures/cape/" + c.cape + ".png";
     }
 
     public static boolean skyRendererPresent() {

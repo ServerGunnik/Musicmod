@@ -41,6 +41,11 @@ public final class MediaSource {
     private boolean clockPlaying;
     private boolean timelineBroken;
 
+    // Album cover of the current track, converted to a small PNG.
+    private String coverSource = "";
+    private volatile Path coverFile;
+    private volatile int coverVersion;
+
     public MediaSource(Path workDir) {
         this.workDir = workDir;
     }
@@ -51,6 +56,16 @@ public final class MediaSource {
 
     public MediaInfo current() {
         return current;
+    }
+
+    /** Changes whenever the cover changes (new picture, or none for this track). */
+    public int coverVersion() {
+        return coverVersion;
+    }
+
+    /** PNG of the current album cover, or null when the player gives none. */
+    public Path coverFile() {
+        return coverFile;
     }
 
     public static boolean isWindows() {
@@ -128,7 +143,8 @@ public final class MediaSource {
                 "powershell.exe", "-NoProfile", "-NonInteractive", "-ExecutionPolicy", "Bypass",
                 "-File", script.toString(),
                 "-ParentPid", Long.toString(ProcessHandle.current().pid()),
-                "-CommandFile", commandFile.toString());
+                "-CommandFile", commandFile.toString(),
+                "-CoverDir", workDir.toString());
         pb.redirectErrorStream(true);
         Process p = pb.start();
         process = p;
@@ -166,6 +182,7 @@ public final class MediaSource {
             current = MediaInfo.NONE;
             return;
         }
+        updateCover(str(o, "cover"));
         String title = str(o, "title");
         String artist = str(o, "artist");
         if (title.isEmpty()) {
@@ -214,6 +231,23 @@ public final class MediaSource {
             return;
         }
         current = new MediaInfo(str(o, "app"), title, artist, str(o, "album"), duration, base, playing, now);
+    }
+
+    /** The bridge reports the file it saved the cover to ("" = none yet). Convert it once per change. */
+    private void updateCover(String source) {
+        if (source.equals(coverSource)) {
+            return;
+        }
+        coverSource = source;
+        Path out = null;
+        if (!source.isEmpty()) {
+            Path target = workDir.resolve("cover_" + (coverVersion & 1) + ".png");
+            if (Images.cover(Path.of(source), target, 64)) {
+                out = target;
+            }
+        }
+        coverFile = out;
+        coverVersion++;
     }
 
     private static String str(JsonObject o, String k) {

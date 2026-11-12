@@ -28,6 +28,8 @@ public final class Config {
     public Theme theme = Theme.LAVENDER;
     public LyricFont font = LyricFont.MINECRAFT;
     public Sky sky = Sky.OFF;
+    /** Stars drift across the sky (a second, rotating layer). */
+    public boolean skyAnimated = true;
     /** Id of the chosen cape, "" = none (keeps the player's own cape). */
     public String cape = "";
     /** PvP styles: kind ("totem", "crystal", "obsidian", "anchor") -> style id; missing or "" = vanilla. */

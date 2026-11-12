@@ -69,6 +69,16 @@ public final class ModPack {
             rotate=false
             """;
 
+    /** Second sky layer: stars that drift around the vertical axis, added on top of the picture. */
+    private static final String DRIFT_PROPERTIES = """
+            # Written by Musicmod: drifting stars. They move with the world's clock.
+            source=./sky2.png
+            blend=add
+            rotate=true
+            axis=0.0 1.0 0.0
+            speed=3
+            """;
+
     private ModPack() {
     }
 
@@ -78,7 +88,7 @@ public final class ModPack {
      * /assets/musicmod/styles in the jar. Returns true when the pack has content
      * and was written; false when there is nothing to show or writing failed.
      */
-    public static boolean write(Path resourcePacksDir, Sky sky, Map<String, String> styleFiles, String mcVersion) {
+    public static boolean write(Path resourcePacksDir, Sky sky, boolean animated, Map<String, String> styleFiles, String mcVersion) {
         boolean hasSky = sky != null && sky.id != null;
         if (!hasSky && styleFiles.isEmpty()) {
             return false;
@@ -92,7 +102,15 @@ public final class ModPack {
                 Path skyDir = pack.resolve("assets/minecraft/optifine/sky/world0");
                 Files.createDirectories(skyDir);
                 Files.writeString(skyDir.resolve("sky1.properties"), PROPERTIES, StandardCharsets.UTF_8);
-                copy("/assets/musicmod/skies/" + sky.id + ".png", skyDir.resolve("sky1.png"));
+                String drift = "/assets/musicmod/skies/" + sky.id + "_drift.png";
+                if (animated && ModPack.class.getResource(drift) != null) {
+                    // Static picture + drifting stars.
+                    copy("/assets/musicmod/skies/" + sky.id + ".png", skyDir.resolve("sky1.png"));
+                    Files.writeString(skyDir.resolve("sky2.properties"), DRIFT_PROPERTIES, StandardCharsets.UTF_8);
+                    copy(drift, skyDir.resolve("sky2.png"));
+                } else {
+                    writeFlat(sky, skyDir.resolve("sky1.png"));
+                }
             }
             for (Map.Entry<String, String> e : styleFiles.entrySet()) {
                 Path target = pack.resolve("assets/minecraft").resolve(e.getKey());
@@ -103,6 +121,31 @@ public final class ModPack {
         } catch (IOException e) {
             LOG.warn("Musicmod: cannot write the resource pack ({})", e.toString());
             return false;
+        }
+    }
+
+    /** One still picture: the base with the drifting stars baked back in. */
+    private static void writeFlat(Sky sky, Path target) throws IOException {
+        String base = "/assets/musicmod/skies/" + sky.id + ".png";
+        String drift = "/assets/musicmod/skies/" + sky.id + "_drift.png";
+        if (ModPack.class.getResource(drift) == null) {
+            copy(base, target);
+            return;
+        }
+        try (InputStream b = ModPack.class.getResourceAsStream(base); InputStream d = ModPack.class.getResourceAsStream(drift)) {
+            java.awt.image.BufferedImage bi = javax.imageio.ImageIO.read(b);
+            java.awt.image.BufferedImage di = javax.imageio.ImageIO.read(d);
+            java.awt.image.BufferedImage out = new java.awt.image.BufferedImage(bi.getWidth(), bi.getHeight(), java.awt.image.BufferedImage.TYPE_INT_RGB);
+            for (int y = 0; y < bi.getHeight(); y++) {
+                for (int x = 0; x < bi.getWidth(); x++) {
+                    int p = bi.getRGB(x, y), q = di.getRGB(x, y);
+                    int r = Math.min(255, ((p >> 16) & 255) + ((q >> 16) & 255));
+                    int g = Math.min(255, ((p >> 8) & 255) + ((q >> 8) & 255));
+                    int bl = Math.min(255, (p & 255) + (q & 255));
+                    out.setRGB(x, y, (r << 16) | (g << 8) | bl);
+                }
+            }
+            javax.imageio.ImageIO.write(out, "png", target.toFile());
         }
     }
 

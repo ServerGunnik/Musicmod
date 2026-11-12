@@ -5,7 +5,8 @@
 # Commands (playpause / next / previous) are read from the file given in -CommandFile.
 param(
     [int]$ParentPid = 0,
-    [string]$CommandFile = ''
+    [string]$CommandFile = '',
+    [string]$CoverDir = ''
 )
 
 $ErrorActionPreference = 'SilentlyContinue'
@@ -26,6 +27,8 @@ function Await($op, [Type]$type) {
 $null = [Windows.Media.Control.GlobalSystemMediaTransportControlsSessionManager, Windows.Media.Control, ContentType = WindowsRuntime]
 $managerType = [Windows.Media.Control.GlobalSystemMediaTransportControlsSessionManager]
 $propsType = [Windows.Media.Control.GlobalSystemMediaTransportControlsSessionMediaProperties]
+$null = [Windows.Storage.Streams.IRandomAccessStreamWithContentType, Windows.Storage.Streams, ContentType = WindowsRuntime]
+$streamType = [Windows.Storage.Streams.IRandomAccessStreamWithContentType]
 
 $manager = Await ($managerType::RequestAsync()) $managerType
 if ($manager -eq $null) {
@@ -45,6 +48,32 @@ function Pick-Session {
 $lastProps = $null
 $lastPropsKey = ''
 $propsCheckedAt = [DateTime]::MinValue
+
+# Album cover: saved to a file whenever the track changes. The player often
+# publishes the picture a moment after the title, so a few polls may be needed.
+$coverKey = ''
+$coverFile = ''
+$coverTries = 0
+$coverIndex = 0
+
+function Save-Cover($props) {
+    if ($CoverDir -eq '' -or $props -eq $null) { return '' }
+    try {
+        $thumb = $props.Thumbnail
+        if ($thumb -eq $null) { return '' }
+        $ras = Await ($thumb.OpenReadAsync()) $streamType
+        if ($ras -eq $null) { return '' }
+        $net = [System.IO.WindowsRuntimeStreamExtensions]::AsStreamForRead($ras)
+        $script:coverIndex = ($script:coverIndex + 1) % 4
+        $file = Join-Path $CoverDir ("cover_" + $script:coverIndex + ".img")
+        $fs = [System.IO.File]::Create($file)
+        $net.CopyTo($fs)
+        $fs.Close()
+        $net.Close()
+        if ((Get-Item $file).Length -gt 0) { return $file }
+    } catch { }
+    return ''
+}
 
 while ($true) {
     if ($ParentPid -gt 0 -and -not (Get-Process -Id $ParentPid -ErrorAction SilentlyContinue)) { exit 0 }
@@ -90,12 +119,24 @@ while ($true) {
         $album = [string]$lastProps.AlbumTitle
     }
 
+    $key = "$artist|$title"
+    if ($key -ne $coverKey) {
+        $coverKey = $key
+        $coverFile = ''
+        $coverTries = 0
+    }
+    if ($coverFile -eq '' -and $coverTries -lt 8 -and $title -ne '') {
+        $coverTries++
+        $coverFile = Save-Cover $lastProps
+    }
+
     $data = [ordered]@{
         active     = $true
         app        = [string]$app
         title      = $title
         artist     = $artist
         album      = $album
+        cover      = [string]$coverFile
         positionMs = [long]$timeline.Position.TotalMilliseconds
         durationMs = [long]($timeline.EndTime - $timeline.StartTime).TotalMilliseconds
         updatedMs  = [long]$timeline.LastUpdatedTime.ToUnixTimeMilliseconds()

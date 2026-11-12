@@ -21,15 +21,15 @@ public final class Capes {
 
     /** Returns the skin with our cape, or null to leave the skin alone. */
     public static PlayerSkin apply(Object player, PlayerSkin skin) {
-        String cape = MusicmodClient.capeId();
+        String cape = MusicmodClient.capeTexture();
         if (cape == null || skin == null || player != Minecraft.getInstance().player) {
             return null;
         }
         if (skin == cachedFrom && cape.equals(cachedCape)) {
             return cachedOut;
         }
-        var texture = Fonts.id("textures/cape/" + cape + ".png");
-        cachedOut = new PlayerSkin(skin.body(), new ClientAsset.ResourceTexture(Fonts.id("cape/" + cape), texture), skin.elytra(), skin.model(), skin.secure());
+        var texture = Fonts.id(cape);
+        cachedOut = new PlayerSkin(skin.body(), new ClientAsset.ResourceTexture(texture, texture), skin.elytra(), skin.model(), skin.secure());
         cachedFrom = skin;
         cachedCape = cape;
         return cachedOut;

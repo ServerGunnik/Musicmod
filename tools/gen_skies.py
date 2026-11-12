@@ -50,7 +50,22 @@ def fbm(p, seed, octaves=5):
     return total / norm
 
 
+STAR_MODE = 'all'   # 'all', 'low' (only below STAR_CUT degrees) or 'high'
+STAR_CUT = 0.0
+
+
 def stars(d, seed, density, cells=70.0):
+    elev = np.degrees(np.arcsin(np.clip(d[..., 1], -1, 1)))
+    if STAR_MODE == 'low':
+        keep = 1 - smooth(STAR_CUT - 2, STAR_CUT + 2, elev)
+    elif STAR_MODE == 'high':
+        keep = smooth(STAR_CUT - 2, STAR_CUT + 2, elev)
+    else:
+        keep = 1.0
+    return keep * _stars(d, seed, density, cells)
+
+
+def _stars(d, seed, density, cells=70.0):
     p = d * cells
     i = np.floor(p).astype(np.int64)
     f = p - i
@@ -246,6 +261,26 @@ def shade(fn, d):
     return fn(d, e, az)
 
 
+# Stars above this elevation drift (second, rotating layer); lower stars stay with the
+# static picture so they never slide across a planet, moon or sun.
+DRIFT_CUT = {'saturn': 24, 'eclipse': 24, 'blood_moon': 24, 'neon_horizon': 20, 'sunset': 30, 'pink_sunset': 30}
+
+
+def render_layers(name, fn):
+    """Returns (base, drift): the static picture and the stars that drift over it (or None)."""
+    global STAR_MODE, STAR_CUT
+    STAR_CUT = DRIFT_CUT.get(name, 0)
+    STAR_MODE = 'all'
+    full = np.asarray(render(fn), dtype=np.float32)
+    STAR_MODE = 'low'
+    base = np.asarray(render(fn), dtype=np.float32)
+    STAR_MODE = 'all'
+    drift = np.clip(full - base, 0, 255)
+    if drift.max() < 24:
+        return Image.fromarray(full.astype(np.uint8), 'RGB'), None
+    return Image.fromarray(base.astype(np.uint8), 'RGB'), Image.fromarray(drift.astype(np.uint8), 'RGB')
+
+
 def render(fn):
     a = (np.arange(N) + 0.5) / N * 2 - 1          # left -> right
     b = 1 - (np.arange(N) + 0.5) / N * 2          # top -> bottom of the image is +1 -> -1
@@ -321,5 +356,11 @@ if __name__ == '__main__':
         if only and name not in only:
             continue
         path = os.path.join(OUT, name + '.png')
-        render(fn).save(path, optimize=True)
-        print(name, os.path.getsize(path) // 1024, 'KB')
+        base, drift = render_layers(name, fn)
+        base.save(path, optimize=True)
+        dpath = os.path.join(OUT, name + '_drift.png')
+        if drift is not None:
+            drift.save(dpath, optimize=True)
+        elif os.path.exists(dpath):
+            os.remove(dpath)
+        print(name, os.path.getsize(path) // 1024, 'KB', 'drift' if drift is not None else 'static')

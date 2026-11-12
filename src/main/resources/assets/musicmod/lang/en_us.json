@@ -121,5 +121,9 @@
   "musicmod.pack.status.error": "Applying failed. See the game log.",
   "musicmod.section.cape": "Cape",
   "musicmod.cape.none": "None",
-  "musicmod.cape.help": "Only you see this cape (other players would need the mod and it is not sent to them). Press F5 to look at it."
+  "musicmod.cape.help": "Only you see this cape (other players would need the mod and it is not sent to them). Press F5 to look at it.",
+  "musicmod.btn.reload_capes": "Reload my capes",
+  "musicmod.cape.custom": "Your own capes: put PNG or JPG pictures into",
+  "musicmod.opt.sky_animated": "Moving stars",
+  "musicmod.opt.sky_animated.desc": "Stars drift across the sky. They follow the world's clock, so they stand still where time is frozen."
 }
