@@ -1,5 +1,6 @@
 package dev.servergunnik.musicmod.ui;
 
+import dev.servergunnik.musicmod.CloudCapes;
 import dev.servergunnik.musicmod.CustomCapes;
 import dev.servergunnik.musicmod.MusicmodClient;
 import dev.servergunnik.musicmod.api.Draw;
@@ -78,6 +79,7 @@ final class Pages {
         out.add(fontGrid(ui));
         out.add(new Widget.Paragraph(() -> tr("musicmod.styles.help"), MenuUi.DIM));
         // Capes: tiles with a picture of the design. Only you see your cape.
+        CloudCapes.refreshState();
         List<CapeList.Cape> capes = CapeList.all();
         List<CustomCapes.Cape> mine = CustomCapes.all();
         out.add(new Widget.Header("musicmod.section.cape"));
@@ -114,6 +116,17 @@ final class Pages {
                         d.image(mine.get(i - 1 - capes.size()).icon(), ix, y, iw, h);
                     }
                 }, 48));
+        out.add(new Widget.Button("musicmod.btn.submit_cape", () -> {
+            if (cfg().cape != null && cfg().cape.startsWith(CustomCapes.PREFIX)) {
+                CloudCapes.submit(cfg().cape);
+            }
+        }));
+        out.add(new Widget.Paragraph(() -> {
+            String state = CloudCapes.customState();
+            String line = tr("musicmod.cloud.state." + (state == null ? "unknown" : state));
+            String msg = CloudCapes.message();
+            return msg.isEmpty() ? line : line + "\n" + tr(msg);
+        }, 0xFFE8C547));
         out.add(new Widget.Button("musicmod.btn.reload_capes", () -> {
             CustomCapes.reload();
             ui.rebuild();
@@ -216,6 +229,7 @@ final class Pages {
                 MusicmodClient.tracker().provider().retry(m);
             }
         }));
+        out.add(new Widget.Toggle(ui, "musicmod.opt.cloud_capes", () -> cfg().cloudCapes, v -> cfg().cloudCapes = v));
         out.add(new Widget.Toggle(ui, "musicmod.opt.cover_online", () -> cfg().coverOnline, v -> {
             cfg().coverOnline = v;
             dev.servergunnik.musicmod.core.MediaSource.onlineCovers = v;

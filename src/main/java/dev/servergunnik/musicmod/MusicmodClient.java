@@ -80,6 +80,7 @@ public final class MusicmodClient implements ClientModInitializer {
             CustomCapes.reload();
         }
         CapeSync.tick(GameState.inWorld(), config.cape);
+        CloudCapes.tick(GameState.inWorld(), config.cape);
         hud.tick();
         sky.tick();
     }
@@ -149,7 +150,9 @@ public final class MusicmodClient implements ClientModInitializer {
 
     /** Texture of the cape another player with the mod wears (needs the server plugin), or null. */
     public static String capeTextureOf(java.util.UUID player) {
-        return CapeSync.textureOf(player);
+        // A server plugin, when present, knows best; otherwise the capes service.
+        String fromServer = CapeSync.textureOf(player);
+        return fromServer != null ? fromServer : CloudCapes.textureOf(player);
     }
 
     public static boolean skyRendererPresent() {

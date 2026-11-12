@@ -21,7 +21,7 @@ public final class CustomCapes {
     public static final String PREFIX = "custom:";
 
     /** {@code net}: small copy of the texture that is sent to other players (null if it could not be made). */
-    public record Cape(String id, String label, String texture, String icon, Path net) {
+    public record Cape(String id, String label, String texture, String icon, Path net, Path iconFile) {
     }
 
     private static Path folder;
@@ -68,6 +68,16 @@ public final class CustomCapes {
         return null;
     }
 
+    /** The menu icon file of a user cape (sent to the admins as a preview), or null. */
+    public static Path iconFile(String id) {
+        for (Cape c : capes) {
+            if (c.id().equals(id)) {
+                return c.iconFile();
+            }
+        }
+        return null;
+    }
+
     /** Folder for pictures received from other players. */
     static Path remoteCache() {
         return cache.resolveSibling("remote");
@@ -102,7 +112,7 @@ public final class CustomCapes {
                 if (Textures.load(texPath, tex) && Textures.load(iconPath, icon)) {
                     Path net = cache.resolve(key + "_net.png");
                     out.add(new Cape(PREFIX + name, label, texPath, iconPath,
-                            Images.capeForNetwork(tex, net, 512) ? net : null));
+                            Images.capeForNetwork(tex, net, 512) ? net : null, icon));
                 }
             }
         } catch (IOException | RuntimeException e) {

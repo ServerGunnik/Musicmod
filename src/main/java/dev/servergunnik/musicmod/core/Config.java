@@ -27,6 +27,11 @@ public final class Config {
     // Look
     public Theme theme = Theme.LAVENDER;
     public LyricFont font = LyricFont.MINECRAFT;
+    /** Capes that work on every server: ask the capes service about the players nearby. */
+    public boolean cloudCapes = true;
+    /** Address of the capes service. */
+    public String capeServer = "http://game1.pl1.smrh.pl:10065";
+
     public Sky sky = Sky.OFF;
     /** Stars drift across the sky (a second, rotating layer). */
     public boolean skyAnimated = true;
