@@ -24,3 +24,13 @@ CI builds all versions on every push and puts the jars on the `builds` branch
 - `src/compat/<layer>/java` – the small parts that differ between Minecraft versions
   (`GuiDraw`, `MenuScreen`, `Hooks`, `TextEntities`, `GameState`). `versions/<mc>/gradle.properties`
   lists which layers each version uses.
+
+## Shared capes (server plugin)
+
+`server-plugin/` is a small Paper/Spigot/Purpur plugin (1.20.4+), **MusicmodCapes**. With it on a
+server, players who use Musicmod see each other's built-in capes. It only relays the cape id on the
+plugin channel `musicmod:cape`; players without the mod are not affected. Capes made from a player's
+own pictures are not shared.
+
+CI builds it to `plugin/MusicmodCapes.jar` on the `builds` branch. Put it in the server's `plugins/`
+folder and restart; there is nothing to configure.
