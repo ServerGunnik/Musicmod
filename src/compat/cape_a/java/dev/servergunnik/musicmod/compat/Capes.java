@@ -2,35 +2,47 @@ package dev.servergunnik.musicmod.compat;
 
 import dev.servergunnik.musicmod.MusicmodClient;
 import net.minecraft.client.Minecraft;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.client.resources.PlayerSkin;
 
 /**
- * Puts the cape chosen in the menu on the local player. Client-side only: other
- * players do not see it. The cape texture is a normal mod asset
+ * Puts Musicmod capes on players: the one chosen in the menu on the local player,
+ * and on other players the cape the MusicmodCapes server plugin reported for them. The cape texture is a normal mod asset
  * (assets/musicmod/textures/cape/&lt;id&gt;.png).
  */
 public final class Capes {
 
-    private static String cachedCape;
-    private static PlayerSkin cachedFrom;
-    private static PlayerSkin cachedOut;
+    private record Cached(String cape, PlayerSkin out) {
+    }
+
+    /** Skin with cape, per original skin object (skins are long-lived, one per player). */
+    private static final java.util.Map<PlayerSkin, Cached> CACHE = new java.util.IdentityHashMap<>();
 
     private Capes() {
     }
 
-    /** Returns the skin with our cape, or null to leave the skin alone. */
+    /** Returns the skin with a Musicmod cape, or null to leave the skin alone. */
     public static PlayerSkin apply(Object player, PlayerSkin skin) {
-        String cape = MusicmodClient.capeTexture();
-        if (cape == null || skin == null || player != Minecraft.getInstance().player) {
+        if (skin == null) {
             return null;
         }
-        if (skin == cachedFrom && cape.equals(cachedCape)) {
-            return cachedOut;
+        // Our own cape comes from the menu; other players' capes from the server plugin.
+        String cape = player == Minecraft.getInstance().player
+                ? MusicmodClient.capeTexture()
+                : player instanceof Entity e ? MusicmodClient.capeTextureOf(e.getUUID()) : null;
+        if (cape == null) {
+            return null;
+        }
+        Cached hit = CACHE.get(skin);
+        if (hit != null && hit.cape().equals(cape)) {
+            return hit.out();
+        }
+        if (CACHE.size() > 512) {
+            CACHE.clear();
         }
         var texture = Fonts.id(cape);
-        cachedOut = new PlayerSkin(skin.texture(), skin.textureUrl(), texture, skin.elytraTexture(), skin.model(), skin.secure());
-        cachedFrom = skin;
-        cachedCape = cape;
-        return cachedOut;
+        PlayerSkin out = new PlayerSkin(skin.texture(), skin.textureUrl(), texture, skin.elytraTexture(), skin.model(), skin.secure());
+        CACHE.put(skin, new Cached(cape, out));
+        return out;
     }
 }

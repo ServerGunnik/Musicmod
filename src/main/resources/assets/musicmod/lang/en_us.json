@@ -121,7 +121,7 @@
   "musicmod.pack.status.error": "Applying failed. See the game log.",
   "musicmod.section.cape": "Cape",
   "musicmod.cape.none": "None",
-  "musicmod.cape.help": "Only you see this cape (other players would need the mod and it is not sent to them). Press F5 to look at it.",
+  "musicmod.cape.help": "On servers with the MusicmodCapes plugin, other players with the mod see your built-in cape. Elsewhere, and for your own pictures, only you see it. Press F5 to look at it.",
   "musicmod.btn.reload_capes": "Reload my capes",
   "musicmod.cape.custom": "Your own capes: put PNG or JPG pictures into",
   "musicmod.opt.sky_animated": "Moving stars",

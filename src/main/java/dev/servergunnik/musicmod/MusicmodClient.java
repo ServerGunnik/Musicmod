@@ -50,6 +50,7 @@ public final class MusicmodClient implements ClientModInitializer {
         tracker = new LyricsTracker(media, provider, MusicmodClient::config);
 
         CustomCapes.init(dir);
+        CapeSync.init();
         hud = new HudOverlay();
         sky = new SkyLyrics();
         Hooks.registerHud(hud::render);
@@ -78,6 +79,7 @@ public final class MusicmodClient implements ClientModInitializer {
             capesLoaded = true;
             CustomCapes.reload();
         }
+        CapeSync.tick(GameState.inWorld(), config.cape);
         hud.tick();
         sky.tick();
     }
@@ -143,6 +145,11 @@ public final class MusicmodClient implements ClientModInitializer {
             return CustomCapes.texture(c.cape);
         }
         return "textures/cape/" + c.cape + ".png";
+    }
+
+    /** Texture of the cape another player with the mod wears (needs the server plugin), or null. */
+    public static String capeTextureOf(java.util.UUID player) {
+        return CapeSync.textureOf(player);
     }
 
     public static boolean skyRendererPresent() {

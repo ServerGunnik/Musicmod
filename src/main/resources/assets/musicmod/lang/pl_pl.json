@@ -121,7 +121,7 @@
   "musicmod.pack.status.error": "Nie udało się zastosować. Zobacz log gry.",
   "musicmod.section.cape": "Peleryna",
   "musicmod.cape.none": "Brak",
-  "musicmod.cape.help": "Tę pelerynę widzisz tylko Ty (inni gracze jej nie zobaczą). Wciśnij F5, żeby ją obejrzeć.",
+  "musicmod.cape.help": "Na serwerach z wtyczką MusicmodCapes inni gracze z modem widzą Twoją wbudowaną pelerynę. Gdzie indziej, oraz przy własnych obrazkach, widzisz ją tylko Ty. Wciśnij F5, żeby ją obejrzeć.",
   "musicmod.btn.reload_capes": "Wczytaj moje peleryny",
   "musicmod.cape.custom": "Własne peleryny: wrzuć obrazki PNG lub JPG do folderu",
   "musicmod.opt.sky_animated": "Ruchome gwiazdy",
