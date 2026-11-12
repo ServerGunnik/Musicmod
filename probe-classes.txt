@@ -41,3 +41,10 @@ net.minecraft.core.ClientAsset$Texture
 net.minecraft.core.ClientAsset$ResourceTexture
 net.minecraft.core.ClientAsset$DownloadedTexture
 net.minecraft.client.multiplayer.PlayerInfo (getSkin|Skin)
+net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry
+net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking (static|interface)
+net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking$PlayPayloadHandler
+net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking$Context
+net.minecraft.network.protocol.common.custom.CustomPacketPayload (static|interface|type)
+net.minecraft.network.protocol.common.custom.CustomPacketPayload$Type
+net.minecraft.network.codec.StreamCodec ( of\(|interface)

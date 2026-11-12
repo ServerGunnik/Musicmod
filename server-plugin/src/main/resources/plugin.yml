@@ -1,0 +1,6 @@
+name: MusicmodCapes
+version: 1.0.0
+main: dev.servergunnik.musicmod.plugin.MusicmodCapes
+api-version: '1.20'
+author: ServerGunnik
+description: Lets players who use the Musicmod client mod see each other's capes.
