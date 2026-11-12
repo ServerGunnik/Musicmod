@@ -32,3 +32,12 @@ net.minecraft.client.Options hideGui
 com.mojang.blaze3d.platform.InputConstants (KEY_M |KEY_A |KEY_RSHIFT|UNKNOWN|isKeyDown|getKey)
 net.minecraft.network.chat.FontDescription
 net.minecraft.network.chat.FontDescription$Resource
+net.minecraft.client.resources.PlayerSkin
+net.minecraft.world.entity.player.PlayerSkin
+net.minecraft.client.player.AbstractClientPlayer (getSkin|class |PlayerInfo|Skin)
+net.minecraft.client.entity.ClientAvatarEntity
+net.minecraft.core.ClientAsset
+net.minecraft.core.ClientAsset$Texture
+net.minecraft.core.ClientAsset$ResourceTexture
+net.minecraft.core.ClientAsset$DownloadedTexture
+net.minecraft.client.multiplayer.PlayerInfo (getSkin|Skin)
