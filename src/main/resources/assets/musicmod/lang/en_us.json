@@ -123,7 +123,7 @@
   "musicmod.cape.none": "None",
   "musicmod.cape.help": "Other Musicmod players see your built-in cape on any server. A cape from your own picture is shown to others after the admins approve it. Press F5 to look at yours.",
   "musicmod.btn.reload_capes": "Reload my capes",
-  "musicmod.cape.custom": "Your own capes: put PNG or JPG pictures into",
+  "musicmod.cape.custom": "Your own capes: open the folder with the button above, put PNG or JPG pictures in it (best 5:8, at least 320x512), then press \"Reload my capes\".",
   "musicmod.opt.sky_animated": "Moving stars",
   "musicmod.opt.sky_animated.desc": "Stars drift across the sky. They follow the world's clock, so they stand still where time is frozen.",
   "musicmod.opt.cover_online": "Covers from the internet",
@@ -140,5 +140,6 @@
   "musicmod.cloud.no_account": "Could not confirm your Minecraft account (premium account needed).",
   "musicmod.cloud.no_picture": "Choose one of your own capes first.",
   "musicmod.opt.cloud_capes": "Capes online",
-  "musicmod.opt.cloud_capes.desc": "See other Musicmod players' capes on any server (asks the capes service about players nearby)."
+  "musicmod.opt.cloud_capes.desc": "See other Musicmod players' capes on any server (asks the capes service about players nearby).",
+  "musicmod.btn.open_capes": "Open my capes folder"
 }

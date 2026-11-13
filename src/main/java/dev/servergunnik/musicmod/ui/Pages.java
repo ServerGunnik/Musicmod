@@ -127,12 +127,12 @@ final class Pages {
             String msg = CloudCapes.message();
             return msg.isEmpty() ? line : line + "\n" + tr(msg);
         }, 0xFFE8C547));
+        out.add(new Widget.Button("musicmod.btn.open_capes", CustomCapes::openFolder));
         out.add(new Widget.Button("musicmod.btn.reload_capes", () -> {
             CustomCapes.reload();
             ui.rebuild();
         }));
-        out.add(new Widget.Paragraph(() -> tr("musicmod.cape.help") + "\n" + tr("musicmod.cape.custom") + " "
-                + CustomCapes.folder(), MenuUi.DIM));
+        out.add(new Widget.Paragraph(() -> tr("musicmod.cape.help") + "\n" + tr("musicmod.cape.custom"), MenuUi.DIM));
         // PvP styles: recolored textures, one grid per item/block.
         for (String kind : Styles.KINDS) {
             List<Styles.Style> list = Styles.of(kind);

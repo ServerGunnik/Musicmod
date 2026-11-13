@@ -44,6 +44,26 @@ public final class CustomCapes {
         return folder;
     }
 
+    /** Opens the capes folder in the system file manager (Explorer / Finder / xdg-open). */
+    public static boolean openFolder() {
+        if (folder == null) {
+            return false;
+        }
+        try {
+            Files.createDirectories(folder);
+            String os = System.getProperty("os.name", "").toLowerCase(Locale.ROOT);
+            String path = folder.toAbsolutePath().toString();
+            String[] cmd = os.contains("win") ? new String[]{"explorer.exe", path}
+                    : os.contains("mac") ? new String[]{"open", path}
+                    : new String[]{"xdg-open", path};
+            new ProcessBuilder(cmd).start();
+            return true;
+        } catch (IOException | RuntimeException e) {
+            org.slf4j.LoggerFactory.getLogger("Musicmod").warn("Musicmod: cannot open the capes folder ({})", e.toString());
+            return false;
+        }
+    }
+
     public static List<Cape> all() {
         return capes;
     }

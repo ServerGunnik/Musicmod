@@ -123,7 +123,7 @@
   "musicmod.cape.none": "Brak",
   "musicmod.cape.help": "Inni gracze z Musicmod widzą Twoją wbudowaną pelerynę na każdym serwerze. Pelerynę z własnego obrazka zobaczą po akceptacji administracji. Wciśnij F5, żeby obejrzeć swoją.",
   "musicmod.btn.reload_capes": "Wczytaj moje peleryny",
-  "musicmod.cape.custom": "Własne peleryny: wrzuć obrazki PNG lub JPG do folderu",
+  "musicmod.cape.custom": "Własne peleryny: otwórz folder przyciskiem wyżej, wrzuć obrazki PNG lub JPG (najlepiej 5:8, co najmniej 320×512) i kliknij „Wczytaj moje peleryny”.",
   "musicmod.opt.sky_animated": "Ruchome gwiazdy",
   "musicmod.opt.sky_animated.desc": "Gwiazdy płyną po niebie. Idą za zegarem świata, więc stoją tam, gdzie czas jest zatrzymany.",
   "musicmod.opt.cover_online": "Okładki z internetu",
@@ -140,5 +140,6 @@
   "musicmod.cloud.no_account": "Nie udało się potwierdzić konta Minecraft (potrzebne konto premium).",
   "musicmod.cloud.no_picture": "Najpierw wybierz jedną ze swoich peleryn.",
   "musicmod.opt.cloud_capes": "Peleryny online",
-  "musicmod.opt.cloud_capes.desc": "Pokazuje peleryny innych graczy z Musicmod na każdym serwerze (pyta serwis o graczy w pobliżu)."
+  "musicmod.opt.cloud_capes.desc": "Pokazuje peleryny innych graczy z Musicmod na każdym serwerze (pyta serwis o graczy w pobliżu).",
+  "musicmod.btn.open_capes": "Otwórz folder z moimi pelerynami"
 }
