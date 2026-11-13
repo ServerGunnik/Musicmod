@@ -69,6 +69,10 @@ public final class CloudCapes {
     private static volatile String customState;
     /** Last message for the menu (a translation key), or "". */
     private static volatile String message = "";
+    /** Connection state for the menu: "", "ok", "offline", "account", "http_<code>". */
+    private static volatile String link = "";
+    private static volatile String linkDetail = "";
+    private static volatile int seenWithCape;
 
     private CloudCapes() {
     }
@@ -87,6 +91,28 @@ public final class CloudCapes {
 
     public static String message() {
         return message;
+    }
+
+    /** One line for the menu about the connection to the capes service. */
+    public static String linkState() {
+        return link;
+    }
+
+    public static String linkDetail() {
+        return linkDetail;
+    }
+
+    /** How many players around wear a cape according to the service. */
+    public static int seenWithCape() {
+        return seenWithCape;
+    }
+
+    private static void setLink(String state, String detail) {
+        if (!state.equals(link)) {
+            LOG.info("Musicmod capes service: {}{}", state, detail.isEmpty() ? "" : " (" + detail + ")");
+        }
+        link = state;
+        linkDetail = detail;
     }
 
     /** Called every client tick (render thread). */
@@ -117,12 +143,15 @@ public final class CloudCapes {
             WORKER.execute(() -> {
                 try {
                     JsonObject body = signed(name);
-                    if (body != null) {
+                    if (body == null) {
+                        setLink("account", "Mojang did not confirm the account");
+                    } else {
                         body.addProperty("cape", own);
                         JsonObject res = post(base + "/v1/cape", body);
                         if (res != null && res.has("cape")) {
                             sent = own;
                             customState = res.has("custom") && !res.get("custom").isJsonNull() ? res.get("custom").getAsString() : "none";
+                            setLink("ok", "");
                         }
                     }
                 } finally {
@@ -180,6 +209,9 @@ public final class CloudCapes {
         if (res == null) {
             return;
         }
+        if (!"account".equals(link)) {
+            setLink("ok", "");
+        }
         long now = System.currentTimeMillis();
         for (Map.Entry<UUID, String> p : ask.entrySet()) {
             UUID id = p.getKey();
@@ -201,6 +233,7 @@ public final class CloudCapes {
                 known.put(id, new Known(isBuiltIn(cape) ? cape : "", null, now));
             }
         }
+        seenWithCape = (int) known.values().stream().filter(k -> !k.cape().isEmpty()).count();
     }
 
     /** Fetches an approved custom cape once, checks it and queues it for loading. */
@@ -319,7 +352,15 @@ public final class CloudCapes {
         try {
             HttpResponse<String> res = HTTP.send(request, HttpResponse.BodyHandlers.ofString(StandardCharsets.UTF_8));
             if (res.statusCode() != 200) {
-                LOG.debug("Musicmod capes service: HTTP {} for {}", res.statusCode(), request.uri().getPath());
+                String err = "";
+                try {
+                    JsonElement e = JsonParser.parseString(res.body());
+                    if (e.isJsonObject() && e.getAsJsonObject().has("error")) {
+                        err = e.getAsJsonObject().get("error").getAsString();
+                    }
+                } catch (RuntimeException ignored) {
+                }
+                setLink(res.statusCode() == 401 ? "account" : "http_" + res.statusCode(), err);
                 return null;
             }
             JsonElement e = JsonParser.parseString(res.body());
@@ -328,6 +369,7 @@ public final class CloudCapes {
             Thread.currentThread().interrupt();
             return null;
         } catch (Exception e) {
+            setLink("offline", e.getClass().getSimpleName() + (e.getMessage() == null ? "" : ": " + e.getMessage()));
             return null;
         }
     }

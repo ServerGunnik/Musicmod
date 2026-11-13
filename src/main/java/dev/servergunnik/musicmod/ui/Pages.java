@@ -122,6 +122,18 @@ final class Pages {
             }
         }));
         out.add(new Widget.Paragraph(() -> {
+            if (!cfg().cloudCapes) {
+                return tr("musicmod.cloud.link.disabled");
+            }
+            String link = CloudCapes.linkState();
+            String key = link.isEmpty() ? "waiting" : link.startsWith("http_") ? "http" : link;
+            String line = tr("musicmod.cloud.link." + key).replace("%s", link.startsWith("http_") ? link.substring(5) : "");
+            if ("ok".equals(link)) {
+                line += " " + tr("musicmod.cloud.link.seen").replace("%s", String.valueOf(CloudCapes.seenWithCape()));
+            }
+            return CloudCapes.linkDetail().isEmpty() || "ok".equals(link) ? line : line + " (" + CloudCapes.linkDetail() + ")";
+        }, 0xFF9AD7FF));
+        out.add(new Widget.Paragraph(() -> {
             String state = CloudCapes.customState();
             String line = tr("musicmod.cloud.state." + (state == null ? "unknown" : state));
             String msg = CloudCapes.message();

@@ -141,5 +141,12 @@
   "musicmod.cloud.no_picture": "Najpierw wybierz jedną ze swoich peleryn.",
   "musicmod.opt.cloud_capes": "Peleryny online",
   "musicmod.opt.cloud_capes.desc": "Pokazuje peleryny innych graczy z Musicmod na każdym serwerze (pyta serwis o graczy w pobliżu).",
-  "musicmod.btn.open_capes": "Otwórz folder z moimi pelerynami"
+  "musicmod.btn.open_capes": "Otwórz folder z moimi pelerynami",
+  "musicmod.cloud.link.waiting": "Serwis peleryn: łączę... (wejdź do świata)",
+  "musicmod.cloud.link.ok": "Serwis peleryn: połączono.",
+  "musicmod.cloud.link.seen": "Gracze w pobliżu z peleryną: %s.",
+  "musicmod.cloud.link.offline": "Serwis peleryn: brak połączenia. Bot jest wyłączony albo port jest zamknięty.",
+  "musicmod.cloud.link.account": "Serwis peleryn: nie udało się potwierdzić konta Minecraft (potrzebne konto premium).",
+  "musicmod.cloud.link.http": "Serwis peleryn: błąd %s.",
+  "musicmod.cloud.link.disabled": "Serwis peleryn: wyłączony (Ustawienia > Peleryny online)."
 }

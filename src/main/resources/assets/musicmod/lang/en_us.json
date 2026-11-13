@@ -141,5 +141,12 @@
   "musicmod.cloud.no_picture": "Choose one of your own capes first.",
   "musicmod.opt.cloud_capes": "Capes online",
   "musicmod.opt.cloud_capes.desc": "See other Musicmod players' capes on any server (asks the capes service about players nearby).",
-  "musicmod.btn.open_capes": "Open my capes folder"
+  "musicmod.btn.open_capes": "Open my capes folder",
+  "musicmod.cloud.link.waiting": "Capes service: connecting... (join a world)",
+  "musicmod.cloud.link.ok": "Capes service: connected.",
+  "musicmod.cloud.link.seen": "Players around with a cape: %s.",
+  "musicmod.cloud.link.offline": "Capes service: cannot connect. The bot is off or its port is closed.",
+  "musicmod.cloud.link.account": "Capes service: your Minecraft account could not be confirmed (premium account needed).",
+  "musicmod.cloud.link.http": "Capes service: error %s.",
+  "musicmod.cloud.link.disabled": "Capes service: off (Settings > Capes online)."
 }
