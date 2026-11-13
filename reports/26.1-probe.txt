@@ -1,0 +1,525 @@
+PROBE[26.1] ===== net.minecraft.client.gui.GuiGraphics
+PROBE[26.1] Error: class not found: net.minecraft.client.gui.GuiGraphics
+PROBE[26.1] ===== net.minecraft.client.gui.GuiGraphicsExtractor
+PROBE[26.1] public class net.minecraft.client.gui.GuiGraphicsExtractor {
+PROBE[26.1]   private final org.joml.Matrix3x2fStack pose;
+PROBE[26.1]   public final net.minecraft.client.gui.GuiGraphicsExtractor$ScissorStack scissorStack;
+PROBE[26.1]   private final net.minecraft.client.renderer.texture.TextureAtlas guiSprites;
+PROBE[26.1]   public int guiWidth();
+PROBE[26.1]   public int guiHeight();
+PROBE[26.1]   public org.joml.Matrix3x2fStack pose();
+PROBE[26.1]   public void enableScissor(int, int, int, int);
+PROBE[26.1]   public void disableScissor();
+PROBE[26.1]   public boolean containsPointInScissor(int, int);
+PROBE[26.1]   public void fill(int, int, int, int, int);
+PROBE[26.1]   public void fill(com.mojang.blaze3d.pipeline.RenderPipeline, int, int, int, int, int);
+PROBE[26.1]   public void fillGradient(int, int, int, int, int, int);
+PROBE[26.1]   public void fill(com.mojang.blaze3d.pipeline.RenderPipeline, net.minecraft.client.gui.render.TextureSetup, int, int, int, int);
+PROBE[26.1]   public void textHighlight(int, int, int, int, boolean);
+PROBE[26.1]   public void text(net.minecraft.client.gui.Font, java.lang.String, int, int, int);
+PROBE[26.1]   public void text(net.minecraft.client.gui.Font, java.lang.String, int, int, int, boolean);
+PROBE[26.1]   public void text(net.minecraft.client.gui.Font, net.minecraft.util.FormattedCharSequence, int, int, int);
+PROBE[26.1]   public void text(net.minecraft.client.gui.Font, net.minecraft.util.FormattedCharSequence, int, int, int, boolean);
+PROBE[26.1]   public void text(net.minecraft.client.gui.Font, net.minecraft.network.chat.Component, int, int, int);
+PROBE[26.1]   public void text(net.minecraft.client.gui.Font, net.minecraft.network.chat.Component, int, int, int, boolean);
+PROBE[26.1]   public void textWithWordWrap(net.minecraft.client.gui.Font, net.minecraft.network.chat.FormattedText, int, int, int, int);
+PROBE[26.1]   public void textWithWordWrap(net.minecraft.client.gui.Font, net.minecraft.network.chat.FormattedText, int, int, int, int, boolean);
+PROBE[26.1]   public void textWithBackdrop(net.minecraft.client.gui.Font, net.minecraft.network.chat.Component, int, int, int, int);
+PROBE[26.1]   public void blit(com.mojang.blaze3d.pipeline.RenderPipeline, net.minecraft.resources.Identifier, int, int, float, float, int, int, int, int, int);
+PROBE[26.1]   public void blit(com.mojang.blaze3d.pipeline.RenderPipeline, net.minecraft.resources.Identifier, int, int, float, float, int, int, int, int);
+PROBE[26.1]   public void blit(com.mojang.blaze3d.pipeline.RenderPipeline, net.minecraft.resources.Identifier, int, int, float, float, int, int, int, int, int, int);
+PROBE[26.1]   public void blit(com.mojang.blaze3d.pipeline.RenderPipeline, net.minecraft.resources.Identifier, int, int, float, float, int, int, int, int, int, int, int);
+PROBE[26.1]   public void blit(net.minecraft.resources.Identifier, int, int, int, int, float, float, float, float);
+PROBE[26.1]   public void blit(com.mojang.blaze3d.textures.GpuTextureView, com.mojang.blaze3d.textures.GpuSampler, int, int, int, int, float, float, float, float);
+PROBE[26.1]   public void blitSprite(com.mojang.blaze3d.pipeline.RenderPipeline, net.minecraft.client.renderer.texture.TextureAtlasSprite, int, int, int, int);
+PROBE[26.1]   public void blitSprite(com.mojang.blaze3d.pipeline.RenderPipeline, net.minecraft.client.renderer.texture.TextureAtlasSprite, int, int, int, int, int);
+PROBE[26.1]   private void blitSprite(com.mojang.blaze3d.pipeline.RenderPipeline, net.minecraft.client.renderer.texture.TextureAtlasSprite, int, int, int, int, int, int, int, int, int);
+PROBE[26.1]   private void blitNineSlicedSprite(com.mojang.blaze3d.pipeline.RenderPipeline, net.minecraft.client.renderer.texture.TextureAtlasSprite, net.minecraft.client.resources.metadata.gui.GuiSpriteScaling$NineSlice, int, int, int, int, int);
+PROBE[26.1]   private void blitNineSliceInnerSegment(com.mojang.blaze3d.pipeline.RenderPipeline, net.minecraft.client.resources.metadata.gui.GuiSpriteScaling$NineSlice, net.minecraft.client.renderer.texture.TextureAtlasSprite, int, int, int, int, int, int, int, int, int, int, int);
+PROBE[26.1]   private void blitTiledSprite(com.mojang.blaze3d.pipeline.RenderPipeline, net.minecraft.client.renderer.texture.TextureAtlasSprite, int, int, int, int, int, int, int, int, int, int, int);
+PROBE[26.1]   private void innerBlit(com.mojang.blaze3d.pipeline.RenderPipeline, com.mojang.blaze3d.textures.GpuTextureView, com.mojang.blaze3d.textures.GpuSampler, int, int, int, int, float, float, float, float, int);
+PROBE[26.1]   private void innerTiledBlit(com.mojang.blaze3d.pipeline.RenderPipeline, com.mojang.blaze3d.textures.GpuTextureView, com.mojang.blaze3d.textures.GpuSampler, int, int, int, int, int, int, float, float, float, float, int);
+PROBE[26.1]   private static net.minecraft.client.resources.metadata.gui.GuiSpriteScaling getSpriteScaling(net.minecraft.client.renderer.texture.TextureAtlasSprite);
+PROBE[26.1]   public net.minecraft.client.renderer.texture.TextureAtlasSprite getSprite(net.minecraft.client.resources.model.sprite.SpriteId);
+PROBE[26.1]   public net.minecraft.client.gui.ActiveTextCollector textRendererForWidget(net.minecraft.client.gui.components.AbstractWidget, net.minecraft.client.gui.GuiGraphicsExtractor$HoveredTextEffects);
+PROBE[26.1]   public net.minecraft.client.gui.ActiveTextCollector textRenderer();
+PROBE[26.1]   public net.minecraft.client.gui.ActiveTextCollector textRenderer(net.minecraft.client.gui.GuiGraphicsExtractor$HoveredTextEffects);
+PROBE[26.1]   public net.minecraft.client.gui.ActiveTextCollector textRenderer(net.minecraft.client.gui.GuiGraphicsExtractor$HoveredTextEffects, java.util.function.Consumer<net.minecraft.network.chat.Style>);
+PROBE[26.1] ===== net.minecraft.client.gui.screens.Screen
+PROBE[26.1] public abstract class net.minecraft.client.gui.screens.Screen extends net.minecraft.client.gui.components.events.AbstractContainerEventHandler implements net.minecraft.client.gui.components.Renderable {
+PROBE[26.1]   private final java.util.List<net.minecraft.client.gui.components.Renderable> renderables;
+PROBE[26.1]   protected net.minecraft.client.gui.screens.Screen(net.minecraft.network.chat.Component);
+PROBE[26.1]   protected net.minecraft.client.gui.screens.Screen(net.minecraft.client.Minecraft, net.minecraft.client.gui.Font, net.minecraft.network.chat.Component);
+PROBE[26.1]   public final void extractRenderStateWithTooltipAndSubtitles(net.minecraft.client.gui.GuiGraphicsExtractor, int, int, float);
+PROBE[26.1]   public void extractRenderState(net.minecraft.client.gui.GuiGraphicsExtractor, int, int, float);
+PROBE[26.1]   public boolean keyPressed(net.minecraft.client.input.KeyEvent);
+PROBE[26.1]   public void onClose();
+PROBE[26.1]   public void removed();
+PROBE[26.1]   public void extractBackground(net.minecraft.client.gui.GuiGraphicsExtractor, int, int, float);
+PROBE[26.1]   protected void extractBlurredBackground(net.minecraft.client.gui.GuiGraphicsExtractor);
+PROBE[26.1]   protected void extractPanorama(net.minecraft.client.gui.GuiGraphicsExtractor, float);
+PROBE[26.1]   protected void extractMenuBackground(net.minecraft.client.gui.GuiGraphicsExtractor);
+PROBE[26.1]   protected void extractMenuBackground(net.minecraft.client.gui.GuiGraphicsExtractor, int, int, int, int);
+PROBE[26.1]   public static void extractMenuBackgroundTexture(net.minecraft.client.gui.GuiGraphicsExtractor, net.minecraft.resources.Identifier, int, int, float, float, int, int);
+PROBE[26.1]   public void extractTransparentBackground(net.minecraft.client.gui.GuiGraphicsExtractor);
+PROBE[26.1]   public boolean isPauseScreen();
+PROBE[26.1]   public boolean canInterruptWithAnotherScreen();
+PROBE[26.1] ===== net.minecraft.client.KeyMapping
+PROBE[26.1] public class net.minecraft.client.KeyMapping implements java.lang.Comparable<net.minecraft.client.KeyMapping> {
+PROBE[26.1]   private final net.minecraft.client.KeyMapping$Category category;
+PROBE[26.1]   public net.minecraft.client.KeyMapping(java.lang.String, int, net.minecraft.client.KeyMapping$Category);
+PROBE[26.1]   public net.minecraft.client.KeyMapping(java.lang.String, com.mojang.blaze3d.platform.InputConstants$Type, int, net.minecraft.client.KeyMapping$Category);
+PROBE[26.1]   public net.minecraft.client.KeyMapping(java.lang.String, com.mojang.blaze3d.platform.InputConstants$Type, int, net.minecraft.client.KeyMapping$Category, int);
+PROBE[26.1]   public net.minecraft.client.KeyMapping$Category getCategory();
+PROBE[26.1]   public boolean consumeClick();
+PROBE[26.1] ===== net.minecraft.client.KeyMapping$Category
+PROBE[26.1] Compiled from "KeyMapping.java"
+PROBE[26.1] public final class net.minecraft.client.KeyMapping$Category extends java.lang.Record {
+PROBE[26.1]   private final net.minecraft.resources.Identifier id;
+PROBE[26.1]   private static final java.util.List<net.minecraft.client.KeyMapping$Category> SORT_ORDER;
+PROBE[26.1]   public static final net.minecraft.client.KeyMapping$Category MOVEMENT;
+PROBE[26.1]   public static final net.minecraft.client.KeyMapping$Category MISC;
+PROBE[26.1]   public static final net.minecraft.client.KeyMapping$Category MULTIPLAYER;
+PROBE[26.1]   public static final net.minecraft.client.KeyMapping$Category GAMEPLAY;
+PROBE[26.1]   public static final net.minecraft.client.KeyMapping$Category INVENTORY;
+PROBE[26.1]   public static final net.minecraft.client.KeyMapping$Category CREATIVE;
+PROBE[26.1]   public static final net.minecraft.client.KeyMapping$Category SPECTATOR;
+PROBE[26.1]   public static final net.minecraft.client.KeyMapping$Category DEBUG;
+PROBE[26.1]   public net.minecraft.client.KeyMapping$Category(net.minecraft.resources.Identifier);
+PROBE[26.1]   private static net.minecraft.client.KeyMapping$Category register(java.lang.String);
+PROBE[26.1]   public static net.minecraft.client.KeyMapping$Category register(net.minecraft.resources.Identifier);
+PROBE[26.1]   public net.minecraft.network.chat.Component label();
+PROBE[26.1]   public final java.lang.String toString();
+PROBE[26.1]   public final int hashCode();
+PROBE[26.1]   public final boolean equals(java.lang.Object);
+PROBE[26.1]   public net.minecraft.resources.Identifier id();
+PROBE[26.1]   static {};
+PROBE[26.1] }
+PROBE[26.1] ===== net.minecraft.client.Minecraft
+PROBE[26.1] public class net.minecraft.client.Minecraft extends net.minecraft.util.thread.ReentrantBlockableEventLoop<java.lang.Runnable> implements com.mojang.blaze3d.platform.WindowEventHandler {
+PROBE[26.1]   public final net.minecraft.client.renderer.LevelRenderer levelRenderer;
+PROBE[26.1]   public final net.minecraft.client.gui.Font font;
+PROBE[26.1]   public final net.minecraft.client.gui.Font fontFilterFishy;
+PROBE[26.1]   public final net.minecraft.client.gui.Gui gui;
+PROBE[26.1]   public final net.minecraft.client.Options options;
+PROBE[26.1]   private final net.minecraft.world.level.storage.LevelStorageSource levelSource;
+PROBE[26.1]   private final boolean allowsMultiplayer;
+PROBE[26.1]   private final net.minecraft.client.gui.font.FontManager fontManager;
+PROBE[26.1]   private final net.minecraft.client.gui.screens.social.PlayerSocialManager playerSocialManager;
+PROBE[26.1]   private final net.minecraft.client.multiplayer.ProfileKeyPairManager profileKeyPairManager;
+PROBE[26.1]   private final net.minecraft.client.renderer.PlayerSkinRenderCache playerSkinRenderCache;
+PROBE[26.1]   public net.minecraft.client.multiplayer.MultiPlayerGameMode gameMode;
+PROBE[26.1]   public net.minecraft.client.multiplayer.ClientLevel level;
+PROBE[26.1]   public net.minecraft.client.player.LocalPlayer player;
+PROBE[26.1]   private net.minecraft.client.server.IntegratedServer singleplayerServer;
+PROBE[26.1]   private boolean isLocalServer;
+PROBE[26.1]   public net.minecraft.client.gui.screens.Screen screen;
+PROBE[26.1]   private net.minecraft.client.gui.screens.Overlay overlay;
+PROBE[26.1]   private final net.minecraft.client.multiplayer.chat.ChatListener chatListener;
+PROBE[26.1]   private net.minecraft.client.multiplayer.chat.report.ReportingContext reportingContext;
+PROBE[26.1]   private final net.minecraft.world.level.validation.DirectoryValidator directoryValidator;
+PROBE[26.1]   private boolean addInitialScreens(java.util.List<java.util.function.Function<java.lang.Runnable, net.minecraft.client.gui.screens.Screen>>);
+PROBE[26.1]   private void onFullscreenError(int, long);
+PROBE[26.1]   public net.minecraft.world.level.storage.LevelStorageSource getLevelSource();
+PROBE[26.1]   public void setScreen(net.minecraft.client.gui.screens.Screen);
+PROBE[26.1]   public void setOverlay(net.minecraft.client.gui.screens.Overlay);
+PROBE[26.1]   public int getFps();
+PROBE[26.1]   private boolean isMultiplayerServer();
+PROBE[26.1]   public net.minecraft.client.multiplayer.ProfileKeyPairManager getProfileKeyPairManager();
+PROBE[26.1]   public net.minecraft.client.gui.screens.worldselection.WorldOpenFlows createWorldOpenFlows();
+PROBE[26.1]   public void doWorldLoad(net.minecraft.world.level.storage.LevelStorageSource$LevelStorageAccess, net.minecraft.server.packs.repository.PackRepository, net.minecraft.server.WorldStem, java.util.Optional<net.minecraft.world.level.gamerules.GameRules>, boolean);
+PROBE[26.1]   public void setLevel(net.minecraft.client.multiplayer.ClientLevel);
+PROBE[26.1]   public void disconnect(net.minecraft.client.gui.screens.Screen, boolean);
+PROBE[26.1]   public void disconnect(net.minecraft.client.gui.screens.Screen, boolean, boolean);
+PROBE[26.1]   public void clearClientLevel(net.minecraft.client.gui.screens.Screen);
+PROBE[26.1]   public void setScreenAndShow(net.minecraft.client.gui.screens.Screen);
+PROBE[26.1]   private void updateLevelInEngines(net.minecraft.client.multiplayer.ClientLevel);
+PROBE[26.1]   private void updateLevelInEngines(net.minecraft.client.multiplayer.ClientLevel, boolean);
+PROBE[26.1]   public boolean allowsMultiplayer();
+PROBE[26.1]   public com.mojang.authlib.minecraft.BanDetails multiplayerBan();
+PROBE[26.1]   public net.minecraft.client.multiplayer.chat.ChatAbilities computeChatAbilities();
+PROBE[26.1]   public net.minecraft.client.multiplayer.ClientPacketListener getConnection();
+PROBE[26.1]   public static net.minecraft.client.Minecraft getInstance();
+PROBE[26.1]   public void updateReportEnvironment(net.minecraft.client.multiplayer.chat.report.ReportEnvironment);
+PROBE[26.1]   public net.minecraft.client.multiplayer.ServerData getCurrentServer();
+PROBE[26.1]   public boolean isLocalServer();
+PROBE[26.1]   public boolean hasSingleplayerServer();
+PROBE[26.1]   public net.minecraft.client.server.IntegratedServer getSingleplayerServer();
+PROBE[26.1]   public boolean isSingleplayer();
+PROBE[26.1]   public net.minecraft.client.gui.screens.Overlay getOverlay();
+PROBE[26.1]   public net.minecraft.client.gui.screens.social.PlayerSocialManager getPlayerSocialManager();
+PROBE[26.1]   public void prepareForMultiplayer();
+PROBE[26.1]   public net.minecraft.client.multiplayer.chat.ChatListener getChatListener();
+PROBE[26.1]   public net.minecraft.client.multiplayer.chat.report.ReportingContext getReportingContext();
+PROBE[26.1]   public net.minecraft.world.level.validation.DirectoryValidator directoryValidator();
+PROBE[26.1]   public net.minecraft.client.renderer.PlayerSkinRenderCache playerSkinRenderCache();
+PROBE[26.1]   private net.minecraft.client.server.IntegratedServer lambda$doWorldLoad$0(net.minecraft.world.level.storage.LevelStorageSource$LevelStorageAccess, net.minecraft.server.packs.repository.PackRepository, net.minecraft.server.WorldStem, java.util.Optional, net.minecraft.server.level.progress.LevelLoadListener, java.lang.Thread);
+PROBE[26.1]   private static net.minecraft.client.gui.screens.Screen lambda$addInitialScreens$3(com.mojang.authlib.GameProfile, java.lang.Runnable);
+PROBE[26.1]   private static net.minecraft.client.gui.screens.Screen lambda$addInitialScreens$1(com.mojang.authlib.minecraft.BanDetails, java.lang.Runnable);
+PROBE[26.1]   private net.minecraft.client.gui.screens.Screen lambda$addInitialScreens$0(java.lang.Runnable);
+PROBE[26.1]   private void lambda$buildInitialScreens$1(net.minecraft.client.gui.screens.Screen);
+PROBE[26.1] ===== net.minecraft.client.multiplayer.ClientLevel
+PROBE[26.1] public class net.minecraft.client.multiplayer.ClientLevel extends net.minecraft.world.level.Level implements net.minecraft.client.renderer.block.BlockAndTintGetter, net.minecraft.client.multiplayer.CacheSlot$Cleaner<net.minecraft.client.multiplayer.ClientLevel> {
+PROBE[26.1]   public void addEntity(net.minecraft.world.entity.Entity);
+PROBE[26.1]   public void removeEntity(int, net.minecraft.world.entity.Entity$RemovalReason);
+PROBE[26.1] ===== net.minecraft.world.entity.Display
+PROBE[26.1] public abstract class net.minecraft.world.entity.Display extends net.minecraft.world.entity.Entity {
+PROBE[26.1]   private static final net.minecraft.network.syncher.EntityDataAccessor<java.lang.Integer> DATA_TRANSFORMATION_INTERPOLATION_START_DELTA_TICKS_ID;
+PROBE[26.1]   private static final net.minecraft.network.syncher.EntityDataAccessor<java.lang.Integer> DATA_TRANSFORMATION_INTERPOLATION_DURATION_ID;
+PROBE[26.1]   private static final net.minecraft.network.syncher.EntityDataAccessor<java.lang.Integer> DATA_POS_ROT_INTERPOLATION_DURATION_ID;
+PROBE[26.1]   private static final net.minecraft.network.syncher.EntityDataAccessor<org.joml.Vector3fc> DATA_TRANSLATION_ID;
+PROBE[26.1]   private static final net.minecraft.network.syncher.EntityDataAccessor<org.joml.Vector3fc> DATA_SCALE_ID;
+PROBE[26.1]   private static final net.minecraft.network.syncher.EntityDataAccessor<org.joml.Quaternionfc> DATA_LEFT_ROTATION_ID;
+PROBE[26.1]   private static final net.minecraft.network.syncher.EntityDataAccessor<org.joml.Quaternionfc> DATA_RIGHT_ROTATION_ID;
+PROBE[26.1]   private static final net.minecraft.network.syncher.EntityDataAccessor<java.lang.Byte> DATA_BILLBOARD_RENDER_CONSTRAINTS_ID;
+PROBE[26.1]   private static final net.minecraft.network.syncher.EntityDataAccessor<java.lang.Integer> DATA_BRIGHTNESS_OVERRIDE_ID;
+PROBE[26.1]   private static final net.minecraft.network.syncher.EntityDataAccessor<java.lang.Float> DATA_VIEW_RANGE_ID;
+PROBE[26.1]   private static final net.minecraft.network.syncher.EntityDataAccessor<java.lang.Float> DATA_SHADOW_RADIUS_ID;
+PROBE[26.1]   private static final net.minecraft.network.syncher.EntityDataAccessor<java.lang.Float> DATA_SHADOW_STRENGTH_ID;
+PROBE[26.1]   private static final net.minecraft.network.syncher.EntityDataAccessor<java.lang.Float> DATA_WIDTH_ID;
+PROBE[26.1]   private static final net.minecraft.network.syncher.EntityDataAccessor<java.lang.Float> DATA_HEIGHT_ID;
+PROBE[26.1]   private static final net.minecraft.network.syncher.EntityDataAccessor<java.lang.Integer> DATA_GLOW_COLOR_OVERRIDE_ID;
+PROBE[26.1]   public final void setTransformation(com.mojang.math.Transformation);
+PROBE[26.1]   public final void setTransformationInterpolationDuration(int);
+PROBE[26.1]   public final void setTransformationInterpolationDelay(int);
+PROBE[26.1]   public final void setBillboardConstraints(net.minecraft.world.entity.Display$BillboardConstraints);
+PROBE[26.1]   public final net.minecraft.world.entity.Display$BillboardConstraints getBillboardConstraints();
+PROBE[26.1] ===== net.minecraft.world.entity.Display$TextDisplay
+PROBE[26.1] public class net.minecraft.world.entity.Display$TextDisplay extends net.minecraft.world.entity.Display {
+PROBE[26.1]   private static final net.minecraft.network.syncher.EntityDataAccessor<net.minecraft.network.chat.Component> DATA_TEXT_ID;
+PROBE[26.1]   private static final net.minecraft.network.syncher.EntityDataAccessor<java.lang.Integer> DATA_LINE_WIDTH_ID;
+PROBE[26.1]   private static final net.minecraft.network.syncher.EntityDataAccessor<java.lang.Integer> DATA_BACKGROUND_COLOR_ID;
+PROBE[26.1]   private static final net.minecraft.network.syncher.EntityDataAccessor<java.lang.Byte> DATA_TEXT_OPACITY_ID;
+PROBE[26.1]   private static final net.minecraft.network.syncher.EntityDataAccessor<java.lang.Byte> DATA_STYLE_FLAGS_ID;
+PROBE[26.1]   public net.minecraft.world.entity.Display$TextDisplay(net.minecraft.world.entity.EntityType<?>, net.minecraft.world.level.Level);
+PROBE[26.1]   public final void setText(net.minecraft.network.chat.Component);
+PROBE[26.1]   public final void setTextOpacity(byte);
+PROBE[26.1] ===== net.minecraft.world.entity.Display$BillboardConstraints
+PROBE[26.1] Compiled from "Display.java"
+PROBE[26.1] public final class net.minecraft.world.entity.Display$BillboardConstraints extends java.lang.Enum<net.minecraft.world.entity.Display$BillboardConstraints> implements net.minecraft.util.StringRepresentable {
+PROBE[26.1]   public static final net.minecraft.world.entity.Display$BillboardConstraints FIXED;
+PROBE[26.1]   public static final net.minecraft.world.entity.Display$BillboardConstraints VERTICAL;
+PROBE[26.1]   public static final net.minecraft.world.entity.Display$BillboardConstraints HORIZONTAL;
+PROBE[26.1]   public static final net.minecraft.world.entity.Display$BillboardConstraints CENTER;
+PROBE[26.1]   public static final com.mojang.serialization.Codec<net.minecraft.world.entity.Display$BillboardConstraints> CODEC;
+PROBE[26.1]   public static final java.util.function.IntFunction<net.minecraft.world.entity.Display$BillboardConstraints> BY_ID;
+PROBE[26.1]   private final byte id;
+PROBE[26.1]   private final java.lang.String name;
+PROBE[26.1]   private static final net.minecraft.world.entity.Display$BillboardConstraints[] $VALUES;
+PROBE[26.1]   public static net.minecraft.world.entity.Display$BillboardConstraints[] values();
+PROBE[26.1]   public static net.minecraft.world.entity.Display$BillboardConstraints valueOf(java.lang.String);
+PROBE[26.1]   private net.minecraft.world.entity.Display$BillboardConstraints(byte, java.lang.String);
+PROBE[26.1]   public java.lang.String getSerializedName();
+PROBE[26.1]   private byte getId();
+PROBE[26.1]   private static net.minecraft.world.entity.Display$BillboardConstraints[] $values();
+PROBE[26.1]   static {};
+PROBE[26.1] }
+PROBE[26.1] ===== net.minecraft.world.entity.Entity
+PROBE[26.1] public abstract class net.minecraft.world.entity.Entity implements net.minecraft.world.Nameable, net.minecraft.world.level.entity.EntityAccess, net.minecraft.world.scores.ScoreHolder, net.minecraft.network.syncher.SyncedDataHolder, net.minecraft.core.component.DataComponentGetter, net.minecraft.world.entity.ItemOwner, net.minecraft.world.entity.SlotProvider, net.minecraft.util.debug.DebugValueSource, net.minecraft.core.TypedInstance<net.minecraft.world.entity.EntityType<?>>, net.fabricmc.fabric.api.registry.fluid.EntityFluidExtension, net.fabricmc.fabric.api.attachment.v1.AttachmentTarget, net.fabricmc.fabric.api.event.lifecycle.v1.EntityLoadData, net.fabricmc.fabric.api.permission.v1.PermissionContextOwner {
+PROBE[26.1]   public void setId(int);
+PROBE[26.1]   public final void discard();
+PROBE[26.1]   public final void setPos(net.minecraft.world.phys.Vec3);
+PROBE[26.1]   public void setPos(double, double, double);
+PROBE[26.1]   public final void setOldPosAndRot();
+PROBE[26.1]   public final void setOldPosAndRot(net.minecraft.world.phys.Vec3, float, float);
+PROBE[26.1]   protected void setOldPos();
+PROBE[26.1]   private void setOldPos(net.minecraft.world.phys.Vec3);
+PROBE[26.1]   public float getXRot(float);
+PROBE[26.1]   public float getYRot(float);
+PROBE[26.1]   public java.util.UUID getUUID();
+PROBE[26.1]   public final double getX();
+PROBE[26.1]   public double getX(double);
+PROBE[26.1]   public double getEyeY();
+PROBE[26.1]   public float getYRot();
+PROBE[26.1]   public float getXRot();
+PROBE[26.1]   public final boolean isRemoved();
+PROBE[26.1] ===== net.minecraft.world.entity.EntityType
+PROBE[26.1] public class net.minecraft.world.entity.EntityType<T extends net.minecraft.world.entity.Entity> implements net.minecraft.world.level.entity.EntityTypeTest<net.minecraft.world.entity.Entity, T>, net.minecraft.world.flag.FeatureElement {
+PROBE[26.1]   public static final net.minecraft.world.entity.EntityType<net.minecraft.world.entity.Display$TextDisplay> TEXT_DISPLAY;
+PROBE[26.1] ===== net.minecraft.world.entity.EntityTypes
+PROBE[26.1] Error: class not found: net.minecraft.world.entity.EntityTypes
+PROBE[26.1] ===== net.minecraft.network.chat.Style
+PROBE[26.1] public final class net.minecraft.network.chat.Style {
+PROBE[26.1]   public static final net.minecraft.network.chat.Style EMPTY;
+PROBE[26.1]   public net.minecraft.network.chat.Style withColor(net.minecraft.network.chat.TextColor);
+PROBE[26.1]   public net.minecraft.network.chat.Style withColor(net.minecraft.ChatFormatting);
+PROBE[26.1]   public net.minecraft.network.chat.Style withColor(int);
+PROBE[26.1]   public net.minecraft.network.chat.Style withFont(net.minecraft.network.chat.FontDescription);
+PROBE[26.1] ===== net.minecraft.network.chat.Component
+PROBE[26.1] public interface net.minecraft.network.chat.Component extends com.mojang.brigadier.Message,net.minecraft.network.chat.FormattedText {
+PROBE[26.1]   public static net.minecraft.network.chat.MutableComponent literal(java.lang.String);
+PROBE[26.1]   public static net.minecraft.network.chat.MutableComponent empty();
+PROBE[26.1] ===== net.minecraft.network.chat.MutableComponent
+PROBE[26.1] public final class net.minecraft.network.chat.MutableComponent implements net.minecraft.network.chat.Component {
+PROBE[26.1]   public net.minecraft.network.chat.MutableComponent append(java.lang.String);
+PROBE[26.1]   public net.minecraft.network.chat.MutableComponent append(net.minecraft.network.chat.Component);
+PROBE[26.1]   public net.minecraft.network.chat.MutableComponent withStyle(java.util.function.UnaryOperator<net.minecraft.network.chat.Style>);
+PROBE[26.1]   public net.minecraft.network.chat.MutableComponent withStyle(net.minecraft.network.chat.Style);
+PROBE[26.1]   public net.minecraft.network.chat.MutableComponent withStyle(net.minecraft.ChatFormatting...);
+PROBE[26.1]   public net.minecraft.network.chat.MutableComponent withStyle(net.minecraft.ChatFormatting);
+PROBE[26.1] ===== net.minecraft.client.gui.Font
+PROBE[26.1] public class net.minecraft.client.gui.Font {
+PROBE[26.1]   public final int lineHeight = 9;
+PROBE[26.1]   public int width(java.lang.String);
+PROBE[26.1]   public int width(net.minecraft.network.chat.FormattedText);
+PROBE[26.1]   public int width(net.minecraft.util.FormattedCharSequence);
+PROBE[26.1] ===== net.minecraft.client.resources.language.I18n
+PROBE[26.1] Compiled from "I18n.java"
+PROBE[26.1] public class net.minecraft.client.resources.language.I18n {
+PROBE[26.1]   private static volatile net.minecraft.locale.Language language;
+PROBE[26.1]   private net.minecraft.client.resources.language.I18n();
+PROBE[26.1]   static void setLanguage(net.minecraft.locale.Language);
+PROBE[26.1]   public static java.lang.String get(java.lang.String, java.lang.Object...);
+PROBE[26.1]   public static boolean exists(java.lang.String);
+PROBE[26.1]   static {};
+PROBE[26.1] }
+PROBE[26.1] ===== net.minecraft.client.multiplayer.PlayerInfo
+PROBE[26.1] public class net.minecraft.client.multiplayer.PlayerInfo {
+PROBE[26.1]   public int getLatency();
+PROBE[26.1] ===== net.minecraft.resources.Identifier
+PROBE[26.1] public final class net.minecraft.resources.Identifier implements java.lang.Comparable<net.minecraft.resources.Identifier> {
+PROBE[26.1]   public static net.minecraft.resources.Identifier fromNamespaceAndPath(java.lang.String, java.lang.String);
+PROBE[26.1] ===== net.minecraft.resources.ResourceLocation
+PROBE[26.1] Error: class not found: net.minecraft.resources.ResourceLocation
+PROBE[26.1] ===== net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback
+PROBE[26.1] Error: class not found: net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback
+PROBE[26.1] ===== net.fabricmc.fabric.api.client.rendering.v1.hud.HudElementRegistry
+PROBE[26.1] Compiled from "HudElementRegistry.java"
+PROBE[26.1] public interface net.fabricmc.fabric.api.client.rendering.v1.hud.HudElementRegistry {
+PROBE[26.1]   public static void addFirst(net.minecraft.resources.Identifier, net.fabricmc.fabric.api.client.rendering.v1.hud.HudElement);
+PROBE[26.1]   public static void addLast(net.minecraft.resources.Identifier, net.fabricmc.fabric.api.client.rendering.v1.hud.HudElement);
+PROBE[26.1]   public static void attachElementBefore(net.minecraft.resources.Identifier, net.minecraft.resources.Identifier, net.fabricmc.fabric.api.client.rendering.v1.hud.HudElement);
+PROBE[26.1]   public static void attachElementAfter(net.minecraft.resources.Identifier, net.minecraft.resources.Identifier, net.fabricmc.fabric.api.client.rendering.v1.hud.HudElement);
+PROBE[26.1]   public static void removeElement(net.minecraft.resources.Identifier);
+PROBE[26.1]   public static void replaceElement(net.minecraft.resources.Identifier, java.util.function.Function<net.fabricmc.fabric.api.client.rendering.v1.hud.HudElement, net.fabricmc.fabric.api.client.rendering.v1.hud.HudElement>);
+PROBE[26.1] }
+PROBE[26.1] ===== net.fabricmc.fabric.api.client.rendering.v1.hud.HudElement
+PROBE[26.1] Compiled from "HudElement.java"
+PROBE[26.1] public interface net.fabricmc.fabric.api.client.rendering.v1.hud.HudElement {
+PROBE[26.1]   public abstract void extractRenderState(net.minecraft.client.gui.GuiGraphicsExtractor, net.minecraft.client.DeltaTracker);
+PROBE[26.1] }
+PROBE[26.1] ===== net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper
+PROBE[26.1] Error: class not found: net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper
+PROBE[26.1] ===== net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper
+PROBE[26.1] Compiled from "KeyMappingHelper.java"
+PROBE[26.1] public final class net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper {
+PROBE[26.1]   private net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper();
+PROBE[26.1]   public static net.minecraft.client.KeyMapping registerKeyMapping(net.minecraft.client.KeyMapping);
+PROBE[26.1]   public static com.mojang.blaze3d.platform.InputConstants$Key getBoundKeyOf(net.minecraft.client.KeyMapping);
+PROBE[26.1] }
+PROBE[26.1] ===== net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents
+PROBE[26.1] public final class net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents {
+PROBE[26.1]   public static final net.fabricmc.fabric.api.event.Event<net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents$EndTick> END_CLIENT_TICK;
+PROBE[26.1] ===== net.minecraft.client.gui.Gui
+PROBE[26.1] public class net.minecraft.client.gui.Gui {
+PROBE[26.1]   private final net.minecraft.client.gui.components.DebugScreenOverlay debugOverlay;
+PROBE[26.1]   public net.minecraft.client.gui.components.DebugScreenOverlay getDebugOverlay();
+PROBE[26.1] ===== net.minecraft.client.Options
+PROBE[26.1] public class net.minecraft.client.Options {
+PROBE[26.1]   public boolean hideGui;
+PROBE[26.1] ===== com.mojang.blaze3d.platform.InputConstants
+PROBE[26.1] public class com.mojang.blaze3d.platform.InputConstants {
+PROBE[26.1]   public static final int KEY_A = 65;
+PROBE[26.1]   public static final int KEY_M = 77;
+PROBE[26.1]   public static final int KEY_RSHIFT = 344;
+PROBE[26.1]   public static final com.mojang.blaze3d.platform.InputConstants$Key UNKNOWN;
+PROBE[26.1]   public static com.mojang.blaze3d.platform.InputConstants$Key getKey(net.minecraft.client.input.KeyEvent);
+PROBE[26.1]   public static com.mojang.blaze3d.platform.InputConstants$Key getKey(java.lang.String);
+PROBE[26.1]   public static boolean isKeyDown(com.mojang.blaze3d.platform.Window, int);
+PROBE[26.1] ===== net.minecraft.network.chat.FontDescription
+PROBE[26.1] Compiled from "FontDescription.java"
+PROBE[26.1] public interface net.minecraft.network.chat.FontDescription {
+PROBE[26.1]   public static final com.mojang.serialization.Codec<net.minecraft.network.chat.FontDescription> CODEC;
+PROBE[26.1]   public static final net.minecraft.network.chat.FontDescription$Resource DEFAULT;
+PROBE[26.1]   private static com.mojang.serialization.DataResult lambda$static$0(net.minecraft.network.chat.FontDescription);
+PROBE[26.1]   private static java.lang.String lambda$static$1(net.minecraft.network.chat.FontDescription);
+PROBE[26.1]   static {};
+PROBE[26.1] }
+PROBE[26.1] ===== net.minecraft.network.chat.FontDescription$Resource
+PROBE[26.1] Compiled from "FontDescription.java"
+PROBE[26.1] public final class net.minecraft.network.chat.FontDescription$Resource extends java.lang.Record implements net.minecraft.network.chat.FontDescription {
+PROBE[26.1]   private final net.minecraft.resources.Identifier id;
+PROBE[26.1]   public net.minecraft.network.chat.FontDescription$Resource(net.minecraft.resources.Identifier);
+PROBE[26.1]   public final java.lang.String toString();
+PROBE[26.1]   public final int hashCode();
+PROBE[26.1]   public final boolean equals(java.lang.Object);
+PROBE[26.1]   public net.minecraft.resources.Identifier id();
+PROBE[26.1] }
+PROBE[26.1] ===== net.minecraft.client.resources.PlayerSkin
+PROBE[26.1] Error: class not found: net.minecraft.client.resources.PlayerSkin
+PROBE[26.1] ===== net.minecraft.world.entity.player.PlayerSkin
+PROBE[26.1] Compiled from "PlayerSkin.java"
+PROBE[26.1] public final class net.minecraft.world.entity.player.PlayerSkin extends java.lang.Record {
+PROBE[26.1]   private final net.minecraft.core.ClientAsset$Texture body;
+PROBE[26.1]   private final net.minecraft.core.ClientAsset$Texture cape;
+PROBE[26.1]   private final net.minecraft.core.ClientAsset$Texture elytra;
+PROBE[26.1]   private final net.minecraft.world.entity.player.PlayerModelType model;
+PROBE[26.1]   private final boolean secure;
+PROBE[26.1]   public net.minecraft.world.entity.player.PlayerSkin(net.minecraft.core.ClientAsset$Texture, net.minecraft.core.ClientAsset$Texture, net.minecraft.core.ClientAsset$Texture, net.minecraft.world.entity.player.PlayerModelType, boolean);
+PROBE[26.1]   public static net.minecraft.world.entity.player.PlayerSkin insecure(net.minecraft.core.ClientAsset$Texture, net.minecraft.core.ClientAsset$Texture, net.minecraft.core.ClientAsset$Texture, net.minecraft.world.entity.player.PlayerModelType);
+PROBE[26.1]   public net.minecraft.world.entity.player.PlayerSkin with(net.minecraft.world.entity.player.PlayerSkin$Patch);
+PROBE[26.1]   public final java.lang.String toString();
+PROBE[26.1]   public final int hashCode();
+PROBE[26.1]   public final boolean equals(java.lang.Object);
+PROBE[26.1]   public net.minecraft.core.ClientAsset$Texture body();
+PROBE[26.1]   public net.minecraft.core.ClientAsset$Texture cape();
+PROBE[26.1]   public net.minecraft.core.ClientAsset$Texture elytra();
+PROBE[26.1]   public net.minecraft.world.entity.player.PlayerModelType model();
+PROBE[26.1]   public boolean secure();
+PROBE[26.1] }
+PROBE[26.1] ===== net.minecraft.client.player.AbstractClientPlayer
+PROBE[26.1] public abstract class net.minecraft.client.player.AbstractClientPlayer extends net.minecraft.world.entity.player.Player implements net.minecraft.client.entity.ClientAvatarEntity {
+PROBE[26.1]   private net.minecraft.client.multiplayer.PlayerInfo playerInfo;
+PROBE[26.1]   protected net.minecraft.client.multiplayer.PlayerInfo getPlayerInfo();
+PROBE[26.1]   public net.minecraft.world.entity.player.PlayerSkin getSkin();
+PROBE[26.1] ===== net.minecraft.client.entity.ClientAvatarEntity
+PROBE[26.1] Compiled from "ClientAvatarEntity.java"
+PROBE[26.1] public interface net.minecraft.client.entity.ClientAvatarEntity {
+PROBE[26.1]   public abstract net.minecraft.client.entity.ClientAvatarState avatarState();
+PROBE[26.1]   public abstract net.minecraft.world.entity.player.PlayerSkin getSkin();
+PROBE[26.1]   public abstract net.minecraft.world.entity.animal.parrot.Parrot$Variant getParrotVariantOnShoulder(boolean);
+PROBE[26.1]   public abstract boolean showExtraEars();
+PROBE[26.1] }
+PROBE[26.1] ===== net.minecraft.core.ClientAsset
+PROBE[26.1] Compiled from "ClientAsset.java"
+PROBE[26.1] public interface net.minecraft.core.ClientAsset {
+PROBE[26.1]   public abstract net.minecraft.resources.Identifier id();
+PROBE[26.1] }
+PROBE[26.1] ===== net.minecraft.core.ClientAsset$Texture
+PROBE[26.1] Compiled from "ClientAsset.java"
+PROBE[26.1] public interface net.minecraft.core.ClientAsset$Texture extends net.minecraft.core.ClientAsset {
+PROBE[26.1]   public abstract net.minecraft.resources.Identifier texturePath();
+PROBE[26.1] }
+PROBE[26.1] ===== net.minecraft.core.ClientAsset$ResourceTexture
+PROBE[26.1] Compiled from "ClientAsset.java"
+PROBE[26.1] public final class net.minecraft.core.ClientAsset$ResourceTexture extends java.lang.Record implements net.minecraft.core.ClientAsset$Texture {
+PROBE[26.1]   private final net.minecraft.resources.Identifier id;
+PROBE[26.1]   private final net.minecraft.resources.Identifier texturePath;
+PROBE[26.1]   public static final com.mojang.serialization.Codec<net.minecraft.core.ClientAsset$ResourceTexture> CODEC;
+PROBE[26.1]   public static final com.mojang.serialization.MapCodec<net.minecraft.core.ClientAsset$ResourceTexture> DEFAULT_FIELD_CODEC;
+PROBE[26.1]   public static final net.minecraft.network.codec.StreamCodec<io.netty.buffer.ByteBuf, net.minecraft.core.ClientAsset$ResourceTexture> STREAM_CODEC;
+PROBE[26.1]   public net.minecraft.core.ClientAsset$ResourceTexture(net.minecraft.resources.Identifier);
+PROBE[26.1]   public net.minecraft.core.ClientAsset$ResourceTexture(net.minecraft.resources.Identifier, net.minecraft.resources.Identifier);
+PROBE[26.1]   public final java.lang.String toString();
+PROBE[26.1]   public final int hashCode();
+PROBE[26.1]   public final boolean equals(java.lang.Object);
+PROBE[26.1]   public net.minecraft.resources.Identifier id();
+PROBE[26.1]   public net.minecraft.resources.Identifier texturePath();
+PROBE[26.1]   private static java.lang.String lambda$new$0(java.lang.String);
+PROBE[26.1]   static {};
+PROBE[26.1] }
+PROBE[26.1] ===== net.minecraft.core.ClientAsset$DownloadedTexture
+PROBE[26.1] Compiled from "ClientAsset.java"
+PROBE[26.1] public final class net.minecraft.core.ClientAsset$DownloadedTexture extends java.lang.Record implements net.minecraft.core.ClientAsset$Texture {
+PROBE[26.1]   private final net.minecraft.resources.Identifier texturePath;
+PROBE[26.1]   private final java.lang.String url;
+PROBE[26.1]   public net.minecraft.core.ClientAsset$DownloadedTexture(net.minecraft.resources.Identifier, java.lang.String);
+PROBE[26.1]   public net.minecraft.resources.Identifier id();
+PROBE[26.1]   public final java.lang.String toString();
+PROBE[26.1]   public final int hashCode();
+PROBE[26.1]   public final boolean equals(java.lang.Object);
+PROBE[26.1]   public net.minecraft.resources.Identifier texturePath();
+PROBE[26.1]   public java.lang.String url();
+PROBE[26.1] }
+PROBE[26.1] ===== net.minecraft.client.multiplayer.PlayerInfo
+PROBE[26.1] public class net.minecraft.client.multiplayer.PlayerInfo {
+PROBE[26.1]   private java.util.function.Supplier<net.minecraft.world.entity.player.PlayerSkin> skinLookup;
+PROBE[26.1]   private static java.util.function.Supplier<net.minecraft.world.entity.player.PlayerSkin> createSkinLookup(com.mojang.authlib.GameProfile);
+PROBE[26.1]   public net.minecraft.world.entity.player.PlayerSkin getSkin();
+PROBE[26.1] ===== net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry
+PROBE[26.1] Compiled from "PayloadTypeRegistry.java"
+PROBE[26.1] public interface net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry<B extends net.minecraft.network.FriendlyByteBuf> {
+PROBE[26.1]   public abstract <T extends net.minecraft.network.protocol.common.custom.CustomPacketPayload> net.minecraft.network.protocol.common.custom.CustomPacketPayload$TypeAndCodec<? super B, T> register(net.minecraft.network.protocol.common.custom.CustomPacketPayload$Type<T>, net.minecraft.network.codec.StreamCodec<? super B, T>);
+PROBE[26.1]   public abstract <T extends net.minecraft.network.protocol.common.custom.CustomPacketPayload> net.minecraft.network.protocol.common.custom.CustomPacketPayload$TypeAndCodec<? super B, T> registerLarge(net.minecraft.network.protocol.common.custom.CustomPacketPayload$Type<T>, net.minecraft.network.codec.StreamCodec<? super B, T>, int);
+PROBE[26.1]   public abstract <T extends net.minecraft.network.protocol.common.custom.CustomPacketPayload> net.minecraft.network.protocol.common.custom.CustomPacketPayload$TypeAndCodec<? super B, T> registerLarge(net.minecraft.network.protocol.common.custom.CustomPacketPayload$Type<T>, net.minecraft.network.codec.StreamCodec<? super B, T>, java.util.function.IntSupplier);
+PROBE[26.1]   public static net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry<net.minecraft.network.FriendlyByteBuf> serverboundConfiguration();
+PROBE[26.1]   public static net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry<net.minecraft.network.FriendlyByteBuf> clientboundConfiguration();
+PROBE[26.1]   public static net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry<net.minecraft.network.RegistryFriendlyByteBuf> serverboundPlay();
+PROBE[26.1]   public static net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry<net.minecraft.network.RegistryFriendlyByteBuf> clientboundPlay();
+PROBE[26.1] }
+PROBE[26.1] ===== net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking
+PROBE[26.1] public final class net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking {
+PROBE[26.1]   public static <T extends net.minecraft.network.protocol.common.custom.CustomPacketPayload> boolean registerGlobalReceiver(net.minecraft.network.protocol.common.custom.CustomPacketPayload$Type<T>, net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking$PlayPayloadHandler<T>);
+PROBE[26.1]   public static net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking$PlayPayloadHandler<?> unregisterGlobalReceiver(net.minecraft.resources.Identifier);
+PROBE[26.1]   public static java.util.Set<net.minecraft.resources.Identifier> getGlobalReceivers();
+PROBE[26.1]   public static <T extends net.minecraft.network.protocol.common.custom.CustomPacketPayload> boolean registerReceiver(net.minecraft.network.protocol.common.custom.CustomPacketPayload$Type<T>, net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking$PlayPayloadHandler<T>);
+PROBE[26.1]   public static net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking$PlayPayloadHandler<?> unregisterReceiver(net.minecraft.resources.Identifier);
+PROBE[26.1]   public static java.util.Set<net.minecraft.resources.Identifier> getReceived() throws java.lang.IllegalStateException;
+PROBE[26.1]   public static java.util.Set<net.minecraft.resources.Identifier> getSendable() throws java.lang.IllegalStateException;
+PROBE[26.1]   public static boolean canSend(net.minecraft.resources.Identifier) throws java.lang.IllegalArgumentException;
+PROBE[26.1]   public static boolean canSend(net.minecraft.network.protocol.common.custom.CustomPacketPayload$Type<?>);
+PROBE[26.1]   public static <T extends net.minecraft.network.protocol.common.custom.CustomPacketPayload> net.minecraft.network.protocol.Packet<net.minecraft.network.protocol.common.ServerCommonPacketListener> createServerboundPacket(T);
+PROBE[26.1]   public static net.fabricmc.fabric.api.networking.v1.PacketSender getSender() throws java.lang.IllegalStateException;
+PROBE[26.1]   public static void send(net.minecraft.network.protocol.common.custom.CustomPacketPayload);
+PROBE[26.1] ===== net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking$PlayPayloadHandler
+PROBE[26.1] Compiled from "ClientPlayNetworking.java"
+PROBE[26.1] public interface net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking$PlayPayloadHandler<T extends net.minecraft.network.protocol.common.custom.CustomPacketPayload> {
+PROBE[26.1]   public abstract void receive(T, net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking$Context);
+PROBE[26.1] }
+PROBE[26.1] ===== net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking$Context
+PROBE[26.1] Compiled from "ClientPlayNetworking.java"
+PROBE[26.1] public interface net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking$Context {
+PROBE[26.1]   public abstract net.minecraft.client.Minecraft client();
+PROBE[26.1]   public abstract net.minecraft.client.player.LocalPlayer player();
+PROBE[26.1]   public abstract net.fabricmc.fabric.api.networking.v1.PacketSender responseSender();
+PROBE[26.1]   public default net.fabricmc.fabric.api.networking.v1.context.PacketContext packetContext();
+PROBE[26.1] }
+PROBE[26.1] ===== net.minecraft.network.protocol.common.custom.CustomPacketPayload
+PROBE[26.1] public interface net.minecraft.network.protocol.common.custom.CustomPacketPayload {
+PROBE[26.1]   public abstract net.minecraft.network.protocol.common.custom.CustomPacketPayload$Type<? extends net.minecraft.network.protocol.common.custom.CustomPacketPayload> type();
+PROBE[26.1]   public static <B extends io.netty.buffer.ByteBuf, T extends net.minecraft.network.protocol.common.custom.CustomPacketPayload> net.minecraft.network.codec.StreamCodec<B, T> codec(net.minecraft.network.codec.StreamMemberEncoder<B, T>, net.minecraft.network.codec.StreamDecoder<B, T>);
+PROBE[26.1]   public static <T extends net.minecraft.network.protocol.common.custom.CustomPacketPayload> net.minecraft.network.protocol.common.custom.CustomPacketPayload$Type<T> createType(java.lang.String);
+PROBE[26.1]   public static <B extends net.minecraft.network.FriendlyByteBuf> net.minecraft.network.codec.StreamCodec<B, net.minecraft.network.protocol.common.custom.CustomPacketPayload> codec(net.minecraft.network.protocol.common.custom.CustomPacketPayload$FallbackProvider<B>, java.util.List<net.minecraft.network.protocol.common.custom.CustomPacketPayload$TypeAndCodec<? super B, ?>>);
+PROBE[26.1]   private static net.minecraft.resources.Identifier lambda$codec$0(net.minecraft.network.protocol.common.custom.CustomPacketPayload$TypeAndCodec);
+PROBE[26.1] ===== net.minecraft.network.protocol.common.custom.CustomPacketPayload$Type
+PROBE[26.1] Compiled from "CustomPacketPayload.java"
+PROBE[26.1] public final class net.minecraft.network.protocol.common.custom.CustomPacketPayload$Type<T extends net.minecraft.network.protocol.common.custom.CustomPacketPayload> extends java.lang.Record {
+PROBE[26.1]   private final net.minecraft.resources.Identifier id;
+PROBE[26.1]   public net.minecraft.network.protocol.common.custom.CustomPacketPayload$Type(net.minecraft.resources.Identifier);
+PROBE[26.1]   public final java.lang.String toString();
+PROBE[26.1]   public final int hashCode();
+PROBE[26.1]   public final boolean equals(java.lang.Object);
+PROBE[26.1]   public net.minecraft.resources.Identifier id();
+PROBE[26.1] }
+PROBE[26.1] ===== net.minecraft.network.codec.StreamCodec
+PROBE[26.1] public interface net.minecraft.network.codec.StreamCodec<B, V> extends net.minecraft.network.codec.StreamEncoder<B, V>, net.minecraft.network.codec.StreamDecoder<B, V> {
+PROBE[26.1]   public static <B, V> net.minecraft.network.codec.StreamCodec<B, V> of(net.minecraft.network.codec.StreamEncoder<B, V>, net.minecraft.network.codec.StreamDecoder<B, V>);
+PROBE[26.1] ===== net.minecraft.client.Minecraft
+PROBE[26.1] public class net.minecraft.client.Minecraft extends net.minecraft.util.thread.ReentrantBlockableEventLoop<java.lang.Runnable> implements com.mojang.blaze3d.platform.WindowEventHandler {
+PROBE[26.1]   public net.minecraft.client.User getUser();
+PROBE[26.1]   public com.mojang.authlib.GameProfile getGameProfile();
+PROBE[26.1]   public net.minecraft.server.Services services();
+PROBE[26.1] ===== net.minecraft.client.User
+PROBE[26.1] public class net.minecraft.client.User {
+PROBE[26.1]   public java.lang.String getSessionId();
+PROBE[26.1]   public java.util.UUID getProfileId();
+PROBE[26.1]   public java.lang.String getName();
+PROBE[26.1]   public java.lang.String getAccessToken();
+PROBE[26.1] ===== com.mojang.authlib.minecraft.MinecraftSessionService
+PROBE[26.1] public interface com.mojang.authlib.minecraft.MinecraftSessionService {
+PROBE[26.1]   public abstract void joinServer(java.util.UUID, java.lang.String, java.lang.String) throws com.mojang.authlib.exceptions.AuthenticationException;
+PROBE[26.1] ===== net.minecraft.client.multiplayer.ClientLevel
+PROBE[26.1] public class net.minecraft.client.multiplayer.ClientLevel extends net.minecraft.world.level.Level implements net.minecraft.client.renderer.block.BlockAndTintGetter, net.minecraft.client.multiplayer.CacheSlot$Cleaner<net.minecraft.client.multiplayer.ClientLevel> {
+PROBE[26.1]   public java.util.List<net.minecraft.client.player.AbstractClientPlayer> players();
+PROBE[26.1] ===== net.minecraft.server.Services
+PROBE[26.1] Compiled from "Services.java"
+PROBE[26.1] public final class net.minecraft.server.Services extends java.lang.Record {
+PROBE[26.1]   private final com.mojang.authlib.minecraft.MinecraftSessionService sessionService;
+PROBE[26.1]   private final com.mojang.authlib.yggdrasil.ServicesKeySet servicesKeySet;
+PROBE[26.1]   private final com.mojang.authlib.GameProfileRepository profileRepository;
+PROBE[26.1]   private final net.minecraft.server.players.UserNameToIdResolver nameToIdCache;
+PROBE[26.1]   private final net.minecraft.server.players.ProfileResolver profileResolver;
+PROBE[26.1]   private static final java.lang.String USERID_CACHE_FILE = "usercache.json";
+PROBE[26.1]   public net.minecraft.server.Services(com.mojang.authlib.minecraft.MinecraftSessionService, com.mojang.authlib.yggdrasil.ServicesKeySet, com.mojang.authlib.GameProfileRepository, net.minecraft.server.players.UserNameToIdResolver, net.minecraft.server.players.ProfileResolver);
+PROBE[26.1]   public static net.minecraft.server.Services create(com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService, java.io.File);
+PROBE[26.1]   public net.minecraft.util.SignatureValidator profileKeySignatureValidator();
+PROBE[26.1]   public boolean canValidateProfileKeys();
+PROBE[26.1]   public final java.lang.String toString();
+PROBE[26.1]   public final int hashCode();
+PROBE[26.1]   public final boolean equals(java.lang.Object);
+PROBE[26.1]   public com.mojang.authlib.minecraft.MinecraftSessionService sessionService();
+PROBE[26.1]   public com.mojang.authlib.yggdrasil.ServicesKeySet servicesKeySet();
+PROBE[26.1]   public com.mojang.authlib.GameProfileRepository profileRepository();
+PROBE[26.1]   public net.minecraft.server.players.UserNameToIdResolver nameToIdCache();
+PROBE[26.1]   public net.minecraft.server.players.ProfileResolver profileResolver();
+PROBE[26.1] }
